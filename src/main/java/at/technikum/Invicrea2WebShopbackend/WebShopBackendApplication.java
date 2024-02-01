@@ -9,4 +9,5 @@ public class WebShopBackendApplication {
     public static void main(String[] args) {
         SpringApplication.run( WebShopBackendApplication.class, args);
     }
+
 }
