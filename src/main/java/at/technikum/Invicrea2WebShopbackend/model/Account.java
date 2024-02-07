@@ -1,6 +1,7 @@
 package at.technikum.Invicrea2WebShopbackend.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 // extends AbstractPersistable<Long> // Id kann man auch so angeben
@@ -30,6 +31,9 @@ public class Account extends AbstractPersistable<Long> {
 
     @Enumerated(EnumType.STRING)
     private Status status;
+
+    @NotNull
+    private int coins;
 
     public Salutation getSalutation () {
         return salutation;
@@ -105,5 +109,13 @@ public class Account extends AbstractPersistable<Long> {
 
     public boolean isAdmin() {
         return Role.ADMIN.equals(role);
+    }
+
+    public int getCoins () {
+        return coins;
+    }
+
+    public void setCoins ( int coins ) {
+        this.coins = coins;
     }
 }

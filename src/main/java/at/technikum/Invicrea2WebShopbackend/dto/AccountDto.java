@@ -21,6 +21,8 @@ public class AccountDto {
     private Role role;
     private Status status;
 
+    private int coins;
+
     public String getSalutation () {
         return salutation;
     }
@@ -91,5 +93,21 @@ public class AccountDto {
 
     public void setStatus ( Status status ) {
         this.status = status;
+    }
+
+    public Long getId () {
+        return id;
+    }
+
+    public void setId ( Long id ) {
+        this.id = id;
+    }
+
+    public int getCoins () {
+        return coins;
+    }
+
+    public void setCoins ( int coins ) {
+        this.coins = coins;
     }
 }
