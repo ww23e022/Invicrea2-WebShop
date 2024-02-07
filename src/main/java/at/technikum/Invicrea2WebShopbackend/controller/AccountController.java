@@ -13,6 +13,7 @@ import java.util.List;
 @RequestMapping(value = "account")
 @CrossOrigin
 public class AccountController {
+    
     private final AccountService accountService;
 
     @Autowired

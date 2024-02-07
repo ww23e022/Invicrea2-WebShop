@@ -1,5 +1,4 @@
 package at.technikum.Invicrea2WebShopbackend.repository;
-
 import at.technikum.Invicrea2WebShopbackend.model.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
 

@@ -20,7 +20,6 @@ public class AccountDto {
     private String country;
     private Role role;
     private Status status;
-
     private int coins;
 
     public String getSalutation () {

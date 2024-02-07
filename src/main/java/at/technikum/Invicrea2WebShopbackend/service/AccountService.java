@@ -1,5 +1,4 @@
 package at.technikum.Invicrea2WebShopbackend.service;
-
 import at.technikum.Invicrea2WebShopbackend.dto.AccountDto;
 import at.technikum.Invicrea2WebShopbackend.model.Account;
 import at.technikum.Invicrea2WebShopbackend.model.Salutation;
