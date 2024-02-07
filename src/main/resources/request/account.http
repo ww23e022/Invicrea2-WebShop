@@ -1,0 +1,17 @@
+### POST one Account by Id
+POST http://localhost:8080/account/register
+Content-Type: application/json
+
+### GET all Accounts
+GET http://localhost:8080/account
+Content-Type: application/json
+
+### Create a Account
+PUT http://localhost:8080/account + accountId
+Content-Type: application/json
+
+{
+  "id":10,
+  "bezeichnung":"01/02/2024",
+  "preis":3.99
+}
