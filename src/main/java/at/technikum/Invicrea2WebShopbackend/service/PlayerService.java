@@ -44,4 +44,8 @@ public class PlayerService {
     public void deletePlayer(Long id) {
         playerRepository.deleteById(id);
     }
+
+    public int getPlayerCountByAccountId(Long accountId) {
+        return playerRepository.countPlayersByAccountId(accountId);
+    }
 }

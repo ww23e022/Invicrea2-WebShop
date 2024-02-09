@@ -2,6 +2,7 @@ package at.technikum.Invicrea2WebShopbackend.controller;
 
 import at.technikum.Invicrea2WebShopbackend.dto.PlayerDto;
 import at.technikum.Invicrea2WebShopbackend.mapper.PlayerMapper;
+import at.technikum.Invicrea2WebShopbackend.model.Account;
 import at.technikum.Invicrea2WebShopbackend.model.Player;
 import at.technikum.Invicrea2WebShopbackend.service.AccountService;
 import at.technikum.Invicrea2WebShopbackend.service.PlayerService;
@@ -48,9 +49,18 @@ public class PlayerController {
     public PlayerDto createPlayer(@RequestBody PlayerDto playerDto) {
         // Überprüfen, ob die account_id gültig ist
         if (accountService.isValidAccountId(playerDto.getAccountId())) {
-            Player player = playerMapper.toEntity(playerDto);
-            player = playerService.savePlayer(player);
-            return playerMapper.toDto(player);
+            // Überprüfen, ob der Account bereits 4 Spieler hat
+            if (playerService.getPlayerCountByAccountId(playerDto.getAccountId()) < 4) {
+                // Das Account-Objekt für die gegebene account_id abrufen
+                Account account = accountService.getAccountById(playerDto.getAccountId());
+                // Spielerobjekt erstellen und dem Account zuweisen
+                Player player = playerMapper.toEntity(playerDto);
+                player.setAccount(account);
+                player = playerService.savePlayer(player);
+                return playerMapper.toDto(player);
+            } else {
+                throw new IllegalArgumentException("Ein Account kann maximal 4 Spieler erstellen.");
+            }
         } else {
             throw new IllegalArgumentException("Ungültige account_id.");
         }
