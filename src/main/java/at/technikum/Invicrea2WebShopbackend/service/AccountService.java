@@ -4,6 +4,7 @@ import at.technikum.Invicrea2WebShopbackend.model.Account;
 import at.technikum.Invicrea2WebShopbackend.model.Salutation;
 import at.technikum.Invicrea2WebShopbackend.model.Status;
 import at.technikum.Invicrea2WebShopbackend.repository.AccountRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.regex.Pattern;
 public class AccountService {
     private final AccountRepository accountRepository;
 
+    @Autowired
     public AccountService(AccountRepository accountRepository) {
         this.accountRepository = accountRepository;
     }
@@ -22,18 +24,21 @@ public class AccountService {
         return accountRepository.findAll();
     }
 
-    private static final String PASSWORD_REGEX =
-            "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{12,}$";
-
     private static final String EMAIL_REGEX =
             "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+
+
+    public boolean isValidAccountId(Long accountId) {
+        // Überprüfen, ob die accountId gültig ist
+        return accountRepository.existsById(accountId);
+    }
 
     public Account getAccountById(Long accountId) {
         return accountRepository.findById(accountId)
                 .orElseThrow(() -> new RuntimeException("Account not found"));
     }
 
-    public Account registerAccount(AccountDto accountDto, Salutation salutation) {
+    public void registerAccount( AccountDto accountDto, Salutation salutation) {
         validateRegistration(accountDto);
 
         Account account = new Account();
@@ -53,11 +58,11 @@ public class AccountService {
         account.setRole(accountDto.getRole());
         account.setStatus(Status.ACTIVE);
 
-        return accountRepository.save(account);
+        accountRepository.save( account );
     }
 
     public Account updateAccount(Long accountId, AccountDto accountDto) {
-        validateUpdate(accountDto);
+        validateRegistration(accountDto);
 
         Account existingAccount = getAccountById(accountId);
 
@@ -130,36 +135,8 @@ public class AccountService {
         }
     }
 
-    private void validateUpdate(AccountDto accountDto) {
-        // Implement validation logic for account update
-        // For example, check for unique email, username, etc.
 
-        if (usernameExists(accountDto.getUsername(), accountDto.getId())) {
-            throw new RuntimeException("Username already exists");
-        }
 
-        if (isEmail(accountDto.getUsername())) {
-            throw new RuntimeException("Username cannot be an email address");
-        }
-
-        if (!isValidPassword(accountDto.getPassword())) {
-            throw new RuntimeException("Invalid password format " +
-                    "minimum 12 characters, including uppercase and " +
-                    "lowercase letters, numbers, and symbols");
-        }
-
-        if (!accountDto.getPassword().equals(accountDto.getRepeatPassword())) {
-            throw new RuntimeException("Passwords do not match");
-        }
-
-        if (!isValidEmail(accountDto.getEmail())) {
-            throw new RuntimeException("Invalid email format");
-        }
-
-        if (emailExists(accountDto.getEmail(), accountDto.getId())) {
-            throw new RuntimeException("Email already exists");
-        }
-    }
 
     private boolean isEmail(String input) {
         Pattern pattern = Pattern.compile(EMAIL_REGEX);
@@ -199,14 +176,6 @@ public class AccountService {
         return accountRepository.findByEmail(email).isPresent();
     }
 
-    private boolean usernameExists(String username, Long accountId) {
-        return accountRepository.findByUsernameAndIdNot(username, accountId).isPresent();
-    }
-
-    private boolean emailExists(String email, Long accountId) {
-        return accountRepository.findByEmailAndIdNot(email, accountId).isPresent();
-    }
-
     public boolean authenticate(String username, String password) {
         // Implementieren Sie die Logik zur Überprüfung der Anmeldeinformationen
         // Beispiel: Überprüfen Sie Benutzername und Passwort in der Datenbank
@@ -216,5 +185,4 @@ public class AccountService {
 
         return account.getPassword().equals(password);
     }
-
 }

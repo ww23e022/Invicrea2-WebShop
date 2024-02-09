@@ -1,19 +1,16 @@
 package at.technikum.Invicrea2WebShopbackend.model;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "player")
-public class Player {
+public class Player{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String name;
 
     @Enumerated(EnumType.STRING)
@@ -21,17 +18,19 @@ public class Player {
 
     private int level;
 
-    @OneToOne
-    @JoinColumn(name = "account_id", referencedColumnName = "id")
+    @ManyToOne
+    @JoinColumn(name = "account_id")
     private Account account;
+
 
     // Constructors, getters, and setters...
 
-    public Long getId() {
+
+    public Long getId () {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId ( Long id ) {
         this.id = id;
     }
 

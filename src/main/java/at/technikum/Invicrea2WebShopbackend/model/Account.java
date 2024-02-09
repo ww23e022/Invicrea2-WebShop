@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
+import java.util.List;
+
 // extends AbstractPersistable<Long> // Id kann man auch so angeben
 
 @Entity
@@ -17,6 +19,7 @@ public class Account extends AbstractPersistable<Long> {
 
     private String email;
 
+    @NotNull
     private String username;
 
     private String password;
@@ -33,6 +36,9 @@ public class Account extends AbstractPersistable<Long> {
 
     @NotNull
     private int coins;
+
+    @OneToMany(mappedBy = "account")
+    private List<Player> players;
 
     public Salutation getSalutation () {
         return salutation;
@@ -116,5 +122,13 @@ public class Account extends AbstractPersistable<Long> {
 
     public void setCoins ( int coins ) {
         this.coins = coins;
+    }
+
+    public List<Player> getPlayers () {
+        return players;
+    }
+
+    public void setPlayers ( List<Player> players ) {
+        this.players = players;
     }
 }

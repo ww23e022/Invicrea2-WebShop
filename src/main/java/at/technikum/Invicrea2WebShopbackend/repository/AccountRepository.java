@@ -7,6 +7,4 @@ import java.util.Optional;
 public interface AccountRepository extends JpaRepository<Account, Long> {
     Optional<Account> findByUsername( String username);
     Optional<Account> findByEmail(String email);
-    Optional<Account> findByUsernameAndIdNot(String username, Long id);
-    Optional<Account> findByEmailAndIdNot(String email, Long id);
 }
