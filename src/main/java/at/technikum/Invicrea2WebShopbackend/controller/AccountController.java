@@ -79,7 +79,16 @@ public class AccountController {
 
     @PostMapping("/login")
     public String login(@RequestBody AccountDto accountDto) {
-        if (accountService.authenticate(accountDto.getUsername(), accountDto.getPassword())) {
+        String usernameOrEmail = accountDto.getUsername();
+        // Überprüfen Sie, ob die E-Mail-Adresse gesetzt ist,
+        // wenn nicht, verwenden Sie den Benutzernamen
+        if (accountDto.getEmail() != null && !accountDto.getEmail().isEmpty()) {
+            usernameOrEmail = accountDto.getEmail();
+        }
+
+        String password = accountDto.getPassword();
+
+        if (accountService.authenticate(usernameOrEmail, password)) {
             return "Login successful";
         } else {
             return "Invalid username or password";

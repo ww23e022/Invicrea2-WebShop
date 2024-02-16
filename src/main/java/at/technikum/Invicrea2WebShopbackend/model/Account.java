@@ -1,5 +1,6 @@
 package at.technikum.Invicrea2WebShopbackend.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.jpa.domain.AbstractPersistable;
@@ -38,6 +39,7 @@ public class Account extends AbstractPersistable<Long> {
     private int coins;
 
     @OneToMany(mappedBy = "account")
+    @JsonManagedReference
     private List<Player> players;
 
     public Salutation getSalutation () {

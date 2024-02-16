@@ -48,4 +48,8 @@ public class PlayerService {
     public int getPlayerCountByAccountId(Long accountId) {
         return playerRepository.countPlayersByAccountId(accountId);
     }
+
+    public List<Player> findPlayersByName(String name) {
+        return playerRepository.findByName(name);
+    }
 }

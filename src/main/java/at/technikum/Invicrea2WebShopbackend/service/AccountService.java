@@ -176,13 +176,24 @@ public class AccountService {
         return accountRepository.findByEmail(email).isPresent();
     }
 
-    public boolean authenticate(String username, String password) {
-        // Implementieren Sie die Logik zur Überprüfung der Anmeldeinformationen
-        // Beispiel: Überprüfen Sie Benutzername und Passwort in der Datenbank
-        Account account = accountRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException(
-                        "Account not found for username: " + username));
+    public boolean authenticate(String usernameOrEmail, String password) {
+        // Check if the input is an email
+        boolean isEmail = isValidEmail(usernameOrEmail);
 
+        Account account;
+        if (isEmail) {
+            // If it's an email, find the account by email
+            account = accountRepository.findByEmail(usernameOrEmail)
+                    .orElseThrow(() -> new RuntimeException(
+                            "Account not found for email: " + usernameOrEmail));
+        } else {
+            // If it's not an email, find the account by username
+            account = accountRepository.findByUsername(usernameOrEmail)
+                    .orElseThrow(() -> new RuntimeException(
+                            "Account not found for username: " + usernameOrEmail));
+        }
+
+        // Check if the provided password matches the account's password
         return account.getPassword().equals(password);
     }
 }

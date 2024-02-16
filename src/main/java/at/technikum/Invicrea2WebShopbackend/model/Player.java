@@ -1,5 +1,6 @@
 package at.technikum.Invicrea2WebShopbackend.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
@@ -20,6 +21,7 @@ public class Player{
 
     @ManyToOne
     @JoinColumn(name = "account_id")
+    @JsonBackReference
     private Account account;
 
 

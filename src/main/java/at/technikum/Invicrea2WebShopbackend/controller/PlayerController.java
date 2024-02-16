@@ -96,8 +96,14 @@ public class PlayerController {
     @GetMapping("/sorted")
     public List<PlayerDto> getAllPlayersSortedByLevel() {
         List<Player> sortedPlayers = playerService.getAllPlayers().stream()
-                .sorted(Comparator.comparingInt(Player::getLevel))
+                .sorted(Comparator.comparingInt(Player::getLevel).reversed())
                 .collect(Collectors.toList());
         return playerMapper.toDtos(sortedPlayers);
+    }
+
+    @GetMapping("/search")
+    public List<PlayerDto> searchPlayersByName(@RequestParam String name) {
+        List<Player> foundPlayers = playerService.findPlayersByName(name);
+        return playerMapper.toDtos(foundPlayers);
     }
 }
