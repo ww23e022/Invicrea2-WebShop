@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class AccountDto {
-    private Long id;
+    private String id;
     private String salutation;
     private String additionalInfo; // Hinzugefügtes Feld für "Other" Geschlecht
     private String email;
@@ -94,11 +94,11 @@ public class AccountDto {
         this.status = status;
     }
 
-    public Long getId () {
+    public String getId () {
         return id;
     }
 
-    public void setId ( Long id ) {
+    public void setId ( String id ) {
         this.id = id;
     }
 
