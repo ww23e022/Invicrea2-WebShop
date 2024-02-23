@@ -1,5 +1,6 @@
 package at.technikum.Invicrea2WebShopbackend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -41,6 +42,10 @@ public class Account extends AbstractPersistable<Long> {
     @OneToMany(mappedBy = "account")
     @JsonManagedReference
     private List<Player> players;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "account")
+    private List<Order> order;
 
     public Salutation getSalutation () {
         return salutation;
@@ -132,5 +137,13 @@ public class Account extends AbstractPersistable<Long> {
 
     public void setPlayers ( List<Player> players ) {
         this.players = players;
+    }
+
+    public List<Order> getOrder () {
+        return order;
+    }
+
+    public void setOrder ( List<Order> order ) {
+        this.order = order;
     }
 }

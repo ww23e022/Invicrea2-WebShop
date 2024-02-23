@@ -1,10 +1,13 @@
 package at.technikum.Invicrea2WebShopbackend.dto;
 
+import at.technikum.Invicrea2WebShopbackend.model.Order;
 import at.technikum.Invicrea2WebShopbackend.model.Role;
 import at.technikum.Invicrea2WebShopbackend.model.Status;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @NoArgsConstructor //(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
@@ -21,6 +24,7 @@ public class AccountDto {
     private Role role;
     private Status status;
     private int coins;
+    private List<Order> order;
 
     public String getSalutation () {
         return salutation;
@@ -108,5 +112,13 @@ public class AccountDto {
 
     public void setCoins ( int coins ) {
         this.coins = coins;
+    }
+
+    public List<Order> getOrder () {
+        return order;
+    }
+
+    public void setOrder ( List<Order> order ) {
+        this.order = order;
     }
 }
