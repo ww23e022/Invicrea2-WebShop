@@ -11,7 +11,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "account")
-public class Account extends AbstractPersistable<String> {
+public class Account extends AbstractPersistable<Long> {
     @Enumerated(EnumType.STRING)
     private Salutation salutation;
 
