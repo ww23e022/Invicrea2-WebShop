@@ -1,4 +1,5 @@
 package at.technikum.Invicrea2WebShopbackend.controller;
+
 import at.technikum.Invicrea2WebShopbackend.dto.ItemDto;
 import at.technikum.Invicrea2WebShopbackend.mapper.ItemMapper;
 import at.technikum.Invicrea2WebShopbackend.model.Item;
@@ -24,95 +25,76 @@ public class ItemController {
     @Autowired
     private CoinsService coinsService;
 
-
-
+    // Constructor for injecting ItemService and ItemMapper
     public ItemController(ItemService itemService, ItemMapper itemMapper) {
         this.itemService = itemService;
         this.itemMapper = itemMapper;
     }
 
+    // Handler for POST requests on "/items/addItem" adds items
     @PostMapping("/addItem")
     public String addItems(@RequestBody List<Item> items) {
         try {
+            // Loop through all the passed items
             for (Item item : items) {
+                // Convert the item to a DTO
                 ItemDto newItemDto = itemMapper.toItemDto(item);
 
+                // Check if the price is negative
                 if (newItemDto.getPrice() < 0) {
-                    return "Der Preis kann nicht negativ sein.";
+                    return "Price cannot be negative.";
                 }
 
+                // Validate the item
                 itemService.validateItem(newItemDto);
 
+                // Convert the DTO back to an item
                 Item newItem = itemMapper.toItem(newItemDto);
 
+                // Add and save the item
                 itemService.addItem(newItem, newItem.getCategory());
                 itemService.saveItem(newItem);
             }
-            return "Items wurden erfolgreich hinzugefügt.";
+            return "Items added successfully.";
         } catch (IllegalArgumentException e) {
             return e.getMessage();
         } catch (Exception e) {
-            return "Fehler beim Hinzufügen der Items: " + e.getMessage();
+            return "Error adding items: " + e.getMessage();
         }
     }
 
-    /*@PostMapping("/addItem")
-    public String addItem(@RequestBody Item item) {
-        try {
-            ItemDto newItemDto = itemMapper.toItemDto(item);
-
-            if (newItemDto.getPrice() < 0) {
-                return "Der Preis kann nicht negativ sein.";
-            }
-
-            itemService.validateItem(newItemDto);
-
-            Item newItem = itemMapper.toItem(newItemDto);
-
-            itemService.addItem(newItem, newItem.getCategory());
-            itemService.saveItem(newItem);
-            return "Item wurde erfolgreich hinzugefügt.";
-        } catch (IllegalArgumentException e) {
-            return e.getMessage();
-        } catch (Exception e) {
-            return "Fehler beim Hinzufügen des Items: " + e.getMessage();
-        }
-    }*/
-
-
-
-    //@PostMapping("/addItems")
-    //public List<Item> addItems(@RequestBody List<Item> products) {
-    //    return itemService.saveItems(products);
-   // }
-
+    // Handler for GET requests on "/items/items" returns all items
     @GetMapping("/items")
     public List<Item> findAllItems() {
         return itemService.getItems();
     }
 
+    // Handler for GET requests on "/items/itemById/{id}" returns an item by ID
     @GetMapping("/itemById/{id}")
     public ItemDto findItemById(@PathVariable Long id) {
         Item item = itemService.getItemById(id);
-
         return itemMapper.toItemDto(item);
     }
 
+    // Handler for GET requests on "/items/item/{name}" returns an item by name
     @GetMapping("/item/{name}")
     public Item findItemByName(@PathVariable String name) {
         return itemService.getItemByName(name);
     }
 
+    // Handler for DELETE requests on "/items/delete/{id}" deletes an item
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteItem(@PathVariable Long id) {
         return itemService.deleteItem(id);
     }
 
+    // Handler for PUT requests on "/items/update" updates an item
     @PutMapping("/update")
     public Item updateItem(@RequestBody Item item) {
         return itemService.updateItem(item);
     }
 
+    // Handler for GET requests on "/items/itemsByCategory" returns items by category
     @GetMapping("/itemsByCategory")
     public List<Item> getItemsByCategory(@RequestParam(required = false) ItemCategory category) {
         if (category == null) {
@@ -121,13 +103,17 @@ public class ItemController {
             return itemService.getItemsByCategory(category);
         }
     }
+
+    // Handler for POST requests on "/items/addItemToCategory" adds an item with category
     @PostMapping("/addItemToCategory")
     public ResponseEntity<String> addItemWithCategory(@RequestBody Item item,
                                                       @RequestParam ItemCategory category) {
         itemService.addItemWithCategory(item, category);
-        return ResponseEntity.ok("Item wurde erfolgreich hinzugefügt.");
+        return ResponseEntity.ok("Item added successfully.");
     }
 
+    // Handler for GET requests on "/items/accounts/{accountId}/items"
+    // returns items for an account
     @GetMapping("/accounts/{accountId}/items")
     public List<Item> getItemsByAccountId(@PathVariable Long accountId) {
         return itemService.getItems(accountId);

@@ -20,9 +20,6 @@ public class ShoppingCartItem {
 
     private int quantity;
 
-    // Getters and setters
-
-
     public Long getId () {
         return id;
     }

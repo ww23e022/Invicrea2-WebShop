@@ -23,6 +23,7 @@ public class PlayerController {
     private final PlayerMapper playerMapper;
     private final AccountService accountService;
 
+    // Constructor for injecting PlayerService, PlayerMapper, and AccountService
     @Autowired
     public PlayerController(PlayerService playerService,
                             PlayerMapper playerMapper,
@@ -32,58 +33,65 @@ public class PlayerController {
         this.accountService = accountService;
     }
 
+    // Handler for GET requests on "/players" returns all players
     @GetMapping
     public List<PlayerDto> readAllPlayers() {
         List<Player> players = playerService.getAllPlayers();
         return playerMapper.toDtos(players);
     }
 
+    // Handler for GET requests on "/players/{id}" returns a player by ID
     @GetMapping("/{id}")
     public PlayerDto readPlayer(@PathVariable Long id) {
         Player player = playerService.getPlayerById(id);
         return playerMapper.toDto(player);
     }
 
+    // Handler for POST requests on "/players" creates a new player
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public PlayerDto createPlayer(@RequestBody PlayerDto playerDto) {
-        // Überprüfen, ob die account_id gültig ist
+        // Check if the account_id is valid
         if (accountService.isValidAccountId(playerDto.getAccountId())) {
-            // Überprüfen, ob der Account bereits 4 Spieler hat
+            // Check if the account already has 4 players
             if (playerService.getPlayerCountByAccountId(playerDto.getAccountId()) < 4) {
-                // Das Account-Objekt für die gegebene account_id abrufen
+                // Get the Account object for the given account_id
                 Account account = accountService.getAccountById(playerDto.getAccountId());
-                // Spielerobjekt erstellen und dem Account zuweisen
+                // Create a player object and assign it to the account
                 Player player = playerMapper.toEntity(playerDto);
                 player.setAccount(account);
                 player = playerService.savePlayer(player);
                 return playerMapper.toDto(player);
             } else {
-                throw new IllegalArgumentException("Ein Account kann maximal 4 Spieler erstellen.");
+                throw new IllegalArgumentException("An account can create a maximum of 4 players.");
             }
         } else {
-            throw new IllegalArgumentException("Ungültige account_id.");
+            throw new IllegalArgumentException("Invalid account_id.");
         }
     }
 
+    // Handler for PUT requests on "/players/{id}" updates a player
     @PutMapping("/{id}")
-    public PlayerDto updatePlayer(@PathVariable Long id, @RequestBody PlayerDto updatedPlayerDto) {
-        // Überprüfen, ob die account_id gültig ist
+    public PlayerDto updatePlayer(@PathVariable Long id,
+                                  @RequestBody PlayerDto updatedPlayerDto) {
+        // Check if the account_id is valid
         if (accountService.isValidAccountId(updatedPlayerDto.getAccountId())) {
             Player updatedPlayer = playerMapper.toEntity(updatedPlayerDto);
             PlayerDto resultDto = playerMapper.toDto(playerService.updatePlayer(id, updatedPlayer));
-            resultDto.setId(id); // Behalte dieselbe ID wie angefordert bei
+            resultDto.setId(id); // Keep the same ID as requested
             return resultDto;
         } else {
-            throw new IllegalArgumentException("Ungültige Account ID.");
+            throw new IllegalArgumentException("Invalid Account ID.");
         }
     }
 
+    // Handler for DELETE requests on "/players/{id}" deletes a player
     @DeleteMapping("/{id}")
     public void deletePlayer(@PathVariable Long id) {
         playerService.deletePlayer(id);
     }
 
+    // Handler for GET requests on "/players/top5" returns the top 5 players by level
     @GetMapping("/top5")
     public List<PlayerDto> getTop5PlayersByLevel() {
         List<Player> topPlayers = playerService.getAllPlayers().stream()
@@ -93,6 +101,7 @@ public class PlayerController {
         return playerMapper.toDtos(topPlayers);
     }
 
+    // Handler for GET requests on "/players/sorted" returns all players sorted by level
     @GetMapping("/sorted")
     public List<PlayerDto> getAllPlayersSortedByLevel() {
         List<Player> sortedPlayers = playerService.getAllPlayers().stream()
@@ -101,6 +110,7 @@ public class PlayerController {
         return playerMapper.toDtos(sortedPlayers);
     }
 
+    // Handler for GET requests on "/players/search" searches players by name
     @GetMapping("/search")
     public List<PlayerDto> searchPlayersByName(@RequestParam String name) {
         List<Player> foundPlayers = playerService.findPlayersByName(name);

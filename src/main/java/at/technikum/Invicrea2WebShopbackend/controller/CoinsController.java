@@ -14,28 +14,36 @@ public class CoinsController {
     private CoinsService coinsService;
 
     @Autowired
-    private AccountService accountService; // Hier muss der AccountService eingebunden werden
+    private AccountService accountService; // Here, the AccountService needs to be injected
 
+    // Handler for PUT requests on "/coins/addCoins/{accountId}" adds coins to an account
     @PutMapping("/addCoins/{accountId}")
-    public String addCoinsToAccount(@PathVariable Long accountId, @RequestParam int coinsToAdd) {
+    public String addCoinsToAccount(@PathVariable Long accountId,
+                                    @RequestParam int coinsToAdd) {
         try {
+            // Get the account by ID
             Account account = accountService.getAccountById(accountId);
+            // Add coins to the account
             coinsService.addCoinsToAccount(account, coinsToAdd);
-            return "Coins wurden erfolgreich hinzugefügt.";
+            return "Coins were added successfully.";
         } catch (Exception e) {
-            return "Fehler beim Hinzufügen von Coins: " + e.getMessage();
+            return "Error adding coins: " + e.getMessage();
         }
     }
 
+    // Handler for PUT requests on "/coins/subtractCoins/{accountId}"
+    // subtracts coins from an account
     @PutMapping("/subtractCoins/{accountId}")
     public String subtractCoinsFromAccount(@PathVariable Long accountId,
                                            @RequestParam int coinsToSubtract) {
         try {
+            // Get the account by ID
             Account account = accountService.getAccountById(accountId);
+            // Subtract coins from the account
             coinsService.subtractCoinsFromAccount(account, coinsToSubtract);
-            return "Coins wurden erfolgreich abgezogen.";
+            return "Coins were subtracted successfully.";
         } catch (Exception e) {
-            return "Fehler beim Abziehen von Coins: " + e.getMessage();
+            return "Error subtracting coins: " + e.getMessage();
         }
     }
 }
