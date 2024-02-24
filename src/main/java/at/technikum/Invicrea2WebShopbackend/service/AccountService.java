@@ -211,4 +211,8 @@ public class AccountService {
 
         return items;
     }
+
+    public Account findById(Long id) {
+        return accountRepository.findById(id).orElse(null);
+    }
 }

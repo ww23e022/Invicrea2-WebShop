@@ -3,6 +3,7 @@ package at.technikum.Invicrea2WebShopbackend.dto;
 import at.technikum.Invicrea2WebShopbackend.model.Order;
 import at.technikum.Invicrea2WebShopbackend.model.Role;
 import at.technikum.Invicrea2WebShopbackend.model.Status;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,6 +25,8 @@ public class AccountDto {
     private Role role;
     private Status status;
     private int coins;
+
+    @JsonIgnore
     private List<Order> order;
 
     public String getSalutation () {

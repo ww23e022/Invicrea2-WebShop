@@ -4,15 +4,18 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import java.util.List;
 
 // extends AbstractPersistable<Long> // Id kann man auch so angeben
 
 @Entity
-@Table(name = "account")
-public class Account extends AbstractPersistable<Long> {
+@Table(name = "accounts")
+public class Account {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @Enumerated(EnumType.STRING)
     private Salutation salutation;
 
@@ -46,6 +49,14 @@ public class Account extends AbstractPersistable<Long> {
     @JsonIgnore
     @OneToMany(mappedBy = "account")
     private List<Order> order;
+
+    public Long getId () {
+        return id;
+    }
+
+    public void setId ( Long id ) {
+        this.id = id;
+    }
 
     public Salutation getSalutation () {
         return salutation;
