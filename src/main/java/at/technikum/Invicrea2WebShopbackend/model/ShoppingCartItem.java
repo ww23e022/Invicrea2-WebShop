@@ -3,7 +3,7 @@ package at.technikum.Invicrea2WebShopbackend.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "cart_items") // Ändern Sie den Tabellennamen entsprechend
+@Table(name = "shopping_cart_items") // Ändern Sie den Tabellennamen entsprechend
 public class ShoppingCartItem {
 
     @Id

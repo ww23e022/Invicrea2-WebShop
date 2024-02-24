@@ -2,7 +2,6 @@ package at.technikum.Invicrea2WebShopbackend.controller;
 
 import at.technikum.Invicrea2WebShopbackend.dto.AccountDto;
 import at.technikum.Invicrea2WebShopbackend.model.Account;
-import at.technikum.Invicrea2WebShopbackend.model.Item;
 import at.technikum.Invicrea2WebShopbackend.model.Salutation;
 import at.technikum.Invicrea2WebShopbackend.service.AccountService;
 import at.technikum.Invicrea2WebShopbackend.service.ItemService;
@@ -102,10 +101,5 @@ public class AccountController {
     @PostMapping("/logout")
     public String logout() {
         return "Logout successful";
-    }
-
-    @GetMapping("/{accountId}/items")
-    public List<Item> getItemsByAccountId( @PathVariable Long accountId) {
-        return accountService.getItems(accountId);
     }
 }

@@ -1,14 +1,12 @@
 package at.technikum.Invicrea2WebShopbackend.service;
 import at.technikum.Invicrea2WebShopbackend.dto.AccountDto;
 import at.technikum.Invicrea2WebShopbackend.model.Account;
-import at.technikum.Invicrea2WebShopbackend.model.Item;
 import at.technikum.Invicrea2WebShopbackend.model.Salutation;
 import at.technikum.Invicrea2WebShopbackend.model.Status;
 import at.technikum.Invicrea2WebShopbackend.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -197,19 +195,6 @@ public class AccountService {
 
         // Check if the provided password matches the account's password
         return account.getPassword().equals(password);
-    }
-
-    public List<Item> getItems(Long accountId) {
-        var orders = accountRepository.findById(accountId).get().getOrder();
-        List<Item> items = new ArrayList<Item>();
-        for (var order : orders) {
-            var transactions = order.getCoinTransactions();
-            for (var transaction : transactions) {
-                items.add(transaction.getItem());
-            }
-        }
-
-        return items;
     }
 
     public Account findById(Long id) {

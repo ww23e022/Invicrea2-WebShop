@@ -127,4 +127,9 @@ public class ItemController {
         itemService.addItemWithCategory(item, category);
         return ResponseEntity.ok("Item wurde erfolgreich hinzugefügt.");
     }
+
+    @GetMapping("/accounts/{accountId}/items")
+    public List<Item> getItemsByAccountId(@PathVariable Long accountId) {
+        return itemService.getItems(accountId);
+    }
 }
