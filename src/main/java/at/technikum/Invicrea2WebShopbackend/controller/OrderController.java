@@ -1,9 +1,7 @@
 package at.technikum.Invicrea2WebShopbackend.controller;
 
-import at.technikum.Invicrea2WebShopbackend.dto.AccountDto;
 import at.technikum.Invicrea2WebShopbackend.dto.OrderDto;
 import at.technikum.Invicrea2WebShopbackend.mapper.OrderMapper;
-import at.technikum.Invicrea2WebShopbackend.model.CoinTransaction;
 import at.technikum.Invicrea2WebShopbackend.model.Order;
 import at.technikum.Invicrea2WebShopbackend.service.AccountService;
 import at.technikum.Invicrea2WebShopbackend.service.OrderService;
@@ -11,8 +9,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,23 +46,28 @@ public class OrderController {
     }
 
     // Handler for POST requests on "/orders" creates a new order
-    @PostMapping
+    @PostMapping("/create/{accountId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public OrderDto create(@RequestBody @Valid OrderDto orderDto) {
-        Order order = orderMapper.toEntity(orderDto);
-        order = orderService.save(order);
+    public OrderDto createOrder(@PathVariable Long accountId) {
+        Order order = orderService.createOrder(accountId);
         return orderMapper.toDto(order);
     }
 
     // Handler for PUT requests on "/orders/{id}" updates an order
     @PutMapping("/{id}")
-    public OrderDto update(@PathVariable long id) {
-        // This method returns a dummy OrderDto with sample data;
-        // it needs to be implemented to update orders
-        return new OrderDto("1",
-                LocalDateTime.now(),
-                new AccountDto(),
-                new ArrayList<CoinTransaction>());
+    public OrderDto update(@PathVariable long id, @RequestBody @Valid OrderDto updatedOrderDto) {
+        // Find the order in the database by its ID
+        Order order = orderService.find(String.valueOf(id));
+
+        // Update the order properties with the new values from the updatedOrderDto
+        order.setOrderDate(updatedOrderDto.getOrderDate());
+        // Set other properties accordingly
+
+        // Save the updated order back to the database
+        order = orderService.save(order);
+
+        // Map the updated order back to a DTO and return it
+        return orderMapper.toDto(order);
     }
 
     // Handler for DELETE requests on "/orders/{id}" deletes an order

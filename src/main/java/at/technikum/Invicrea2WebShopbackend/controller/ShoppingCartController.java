@@ -1,13 +1,10 @@
 package at.technikum.Invicrea2WebShopbackend.controller;
 
-import at.technikum.Invicrea2WebShopbackend.dto.AccountDto;
-import at.technikum.Invicrea2WebShopbackend.model.Account;
 import at.technikum.Invicrea2WebShopbackend.model.ShoppingCart;
 import at.technikum.Invicrea2WebShopbackend.model.ShoppingCartItem;
 import at.technikum.Invicrea2WebShopbackend.service.AccountService;
 import at.technikum.Invicrea2WebShopbackend.service.ShoppingCartService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,20 +22,6 @@ public class ShoppingCartController {
                                   AccountService accountService) {
         this.shoppingCartService = shoppingCartService;
         this.accountService = accountService;
-    }
-
-    // Handler for POST requests on "/shopping-cart/create" creates a new shopping cart
-    @PostMapping("/create")
-    public ResponseEntity<?> createShoppingCart(@RequestBody AccountDto accountDto) {
-        // Check if the account exists
-        Account account = accountService.findById(accountDto.getId());
-        if (account == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Account not found");
-        }
-
-        // The account exists, so create the shopping cart
-        ShoppingCart shoppingCart = shoppingCartService.createShoppingCart(account);
-        return ResponseEntity.ok(shoppingCart);
     }
 
     // Handler for GET requests on "/shopping-cart/{accountId}"

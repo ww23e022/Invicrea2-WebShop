@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class OrderDto {
-    private String id;
+    private Long id;
     private LocalDateTime orderDate;
     @JsonIgnore
     private AccountDto account;
@@ -16,7 +16,7 @@ public class OrderDto {
     public OrderDto() {
     }
 
-    public OrderDto(String id, LocalDateTime orderDate, AccountDto account,
+    public OrderDto(Long id, LocalDateTime orderDate, AccountDto account,
                     List<CoinTransaction> coinTransactions) {
         this.id = id;
         this.orderDate = orderDate;
@@ -24,11 +24,11 @@ public class OrderDto {
         this.coinTransactions = coinTransactions;
     }
 
-    public String getId() {
+    public Long getId () {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId ( Long id ) {
         this.id = id;
     }
 

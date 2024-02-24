@@ -50,6 +50,9 @@ public class Account {
     @OneToMany(mappedBy = "account")
     private List<Order> order;
 
+    @OneToOne(mappedBy = "account")
+    private ShoppingCart shoppingCart;
+
     public Long getId () {
         return id;
     }
@@ -156,5 +159,13 @@ public class Account {
 
     public void setOrder ( List<Order> order ) {
         this.order = order;
+    }
+
+    public ShoppingCart getShoppingCart () {
+        return shoppingCart;
+    }
+
+    public void setShoppingCart ( ShoppingCart shoppingCart ) {
+        this.shoppingCart = shoppingCart;
     }
 }

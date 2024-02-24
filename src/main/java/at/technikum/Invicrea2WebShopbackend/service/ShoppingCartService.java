@@ -30,12 +30,6 @@ public class ShoppingCartService {
         this.itemRepository = itemRepository;
     }
 
-    public ShoppingCart createShoppingCart(Account account) {
-        ShoppingCart cart = new ShoppingCart();
-        cart.setAccount(account);
-        return shoppingCartRepository.save(cart);
-    }
-
     public Optional<ShoppingCart> getShoppingCartByAccountId(Long accountId) {
         return shoppingCartRepository.findByAccountId(accountId);
     }
@@ -44,9 +38,12 @@ public class ShoppingCartService {
         return shoppingCartItemRepository.findAllByShoppingCartId(shoppingCartId);
     }
 
-    public void addItemToCart(Long shoppingCartId, Long itemId, int quantity) {
+    public void addItemToCart(Long accountId, Long itemId, int quantity) {
+        ShoppingCart shoppingCart = shoppingCartRepository.findByAccountId(accountId)
+                .orElseGet(() -> createShoppingCart(accountId));
+
         Optional<ShoppingCartItem> existingItem = shoppingCartItemRepository
-                .findByShoppingCartIdAndItemId(shoppingCartId, itemId);
+                .findByShoppingCartIdAndItemId(shoppingCart.getId(), itemId);
 
         if (existingItem.isPresent()) {
             ShoppingCartItem item = existingItem.get();
@@ -54,7 +51,7 @@ public class ShoppingCartService {
             shoppingCartItemRepository.save(item);
         } else {
             ShoppingCartItem newItem = new ShoppingCartItem();
-            newItem.setShoppingCart(shoppingCartRepository.getById(shoppingCartId));
+            newItem.setShoppingCart(shoppingCart);
             newItem.setItem(itemRepository.getById(itemId));
             newItem.setQuantity(quantity);
             shoppingCartItemRepository.save(newItem);
@@ -70,5 +67,13 @@ public class ShoppingCartService {
 
     public void clearCart(Long shoppingCartId) {
         shoppingCartItemRepository.deleteAllByShoppingCartId(shoppingCartId);
+    }
+
+    private ShoppingCart createShoppingCart(Long accountId) {
+        ShoppingCart cart = new ShoppingCart();
+        Account account = new Account();
+        account.setId(accountId);
+        cart.setAccount(account);
+        return shoppingCartRepository.save(cart);
     }
 }

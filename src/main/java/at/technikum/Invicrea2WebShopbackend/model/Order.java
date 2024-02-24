@@ -9,9 +9,9 @@ import java.util.List;
 @Entity
 @Table(name = "orders")
 public class Order {
-
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private LocalDateTime orderDate;
 
@@ -23,20 +23,21 @@ public class Order {
     @OneToMany
     private List<CoinTransaction> coinTransactions;
 
-    public Order(String id) {
+
+    public Order(Long id) {
         this.id = id;
         orderDate = LocalDateTime.now();
     }
 
-    protected Order() {
+    public Order() {
         orderDate = LocalDateTime.now();
     }
 
-    public String getId() {
+    public Long getId () {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId ( Long id ) {
         this.id = id;
     }
 

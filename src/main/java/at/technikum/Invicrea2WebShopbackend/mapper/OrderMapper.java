@@ -4,8 +4,6 @@ import at.technikum.Invicrea2WebShopbackend.dto.OrderDto;
 import at.technikum.Invicrea2WebShopbackend.model.Order;
 import org.springframework.stereotype.Component;
 
-import java.util.UUID;
-
 @Component
 public class OrderMapper {
 
@@ -17,13 +15,11 @@ public class OrderMapper {
     }
     public Order toEntity(OrderDto orderDto) {
         if (orderDto.getId() == null) {
-            return new Order(
-                    UUID.randomUUID().toString()
-            );
+            return new Order(); // Wenn die ID null ist, erstellen Sie
+            // eine neue Bestellung mit automatisch generierter ID
+        } else {
+            return new Order(orderDto.getId());
+            // Andernfalls verwenden Sie die angegebene ID aus dem OrderDto
         }
-
-        return new Order(
-                orderDto.getId()
-        );
     }
 }

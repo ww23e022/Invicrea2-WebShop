@@ -15,7 +15,7 @@ public class CoinTransaction {
     private Item item;
 
     @ManyToOne
-    @JoinColumn(name="order_id")
+    @JoinColumn(name = "order_id")
     private Order order;
 
     private int coins;
@@ -56,5 +56,11 @@ public class CoinTransaction {
         this.item = item;
     }
 
+    public Order getOrder () {
+        return order;
+    }
 
+    public void setOrder ( Order order ) {
+        this.order = order;
+    }
 }
