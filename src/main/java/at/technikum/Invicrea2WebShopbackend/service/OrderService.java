@@ -71,7 +71,8 @@ public class OrderService {
         Order order = buildOrder(account);
         List<CoinTransaction> coinTransactions = createCoinTransactions(cartItems, order);
 
-        saveOrderAndClearShoppingCart(order, shoppingCart.getCartItems());
+        saveOrderAndClearShoppingCart(order, shoppingCart);
+
         saveOrderItemsInOrderHistory(coinTransactions, order);
 
         return order;
@@ -98,13 +99,13 @@ public class OrderService {
         return coinTransactions;
     }
 
-    private void saveOrderAndClearShoppingCart(
-            Order order,
-            List<ShoppingCartItem> cartItems) {
+    private void saveOrderAndClearShoppingCart(Order order, ShoppingCart shoppingCart) {
         order = orderRepository.save(order);
-        for (ShoppingCartItem cartItem : cartItems) {
-            shoppingCartItemRepository.delete(cartItem);
+        List<Long> cartItemIds = new ArrayList<>();
+        for (ShoppingCartItem cartItem : shoppingCart.getCartItems()) {
+            cartItemIds.add(cartItem.getId());
         }
+        shoppingCartItemRepository.deleteAllByIdIn(cartItemIds);
     }
 
     private void saveOrderItemsInOrderHistory(
