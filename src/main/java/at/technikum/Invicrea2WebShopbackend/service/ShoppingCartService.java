@@ -54,6 +54,7 @@ public class ShoppingCartService {
             newItem.setShoppingCart(shoppingCart);
             newItem.setItem(itemRepository.getById(itemId));
             newItem.setQuantity(quantity);
+            newItem.setItemName(newItem.getItem().getName()); // Setzen des Artikelnamens
             shoppingCartItemRepository.save(newItem);
         }
     }
@@ -69,7 +70,7 @@ public class ShoppingCartService {
         shoppingCartItemRepository.deleteAllByShoppingCartId(shoppingCartId);
     }
 
-    private ShoppingCart createShoppingCart(Long accountId) {
+    public ShoppingCart createShoppingCart(Long accountId) {
         ShoppingCart cart = new ShoppingCart();
         Account account = new Account();
         account.setId(accountId);

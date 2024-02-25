@@ -1,6 +1,5 @@
 package at.technikum.Invicrea2WebShopbackend.service;
 
-
 import at.technikum.Invicrea2WebShopbackend.exception.EntityNotFoundException;
 import at.technikum.Invicrea2WebShopbackend.model.*;
 import at.technikum.Invicrea2WebShopbackend.repository.AccountRepository;
@@ -20,16 +19,17 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final AccountRepository accountRepository;
     private final ShoppingCartItemRepository shoppingCartItemRepository;
+    private final OrderHistoryRepository orderHistoryRepository;
 
     @Autowired
-    private OrderHistoryRepository orderHistoryRepository;
-
     public OrderService(OrderRepository orderRepository,
                         AccountRepository accountRepository,
-                        ShoppingCartItemRepository shoppingCartItemRepository) {
+                        ShoppingCartItemRepository shoppingCartItemRepository,
+                        OrderHistoryRepository orderHistoryRepository) {
         this.orderRepository = orderRepository;
         this.accountRepository = accountRepository;
         this.shoppingCartItemRepository = shoppingCartItemRepository;
+        this.orderHistoryRepository = orderHistoryRepository;
     }
 
     public List<Order> findAll() {
@@ -40,6 +40,7 @@ public class OrderService {
         return orderRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
     }
+
     public Order save(Order order) {
         return orderRepository.save(order);
     }
@@ -49,31 +50,31 @@ public class OrderService {
     }
 
     public List<Order> getOrderHistoryByAccountId(Long accountId) {
-        Account account = accountRepository.findById(accountId).orElse(null);
-        if (account != null) {
-            return account.getOrder();
-        } else {
-            throw new EntityNotFoundException("Das Benutzerkonto mit der ID "
-                    + accountId + " wurde nicht gefunden.");
-        }
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Das Benutzerkonto mit der ID " +
+                                accountId
+                                + " wurde nicht gefunden."));
+        return account.getOrder();
     }
 
     public Order createOrder(Long accountId) {
-        Account account = getAccountById(accountId);
-        Order order = buildOrder(account);
-        List<CoinTransaction> coinTransactions =
-                createCoinTransactions(
-                        account.getShoppingCart().getCartItems(),
-                        order);
-        saveOrderAndClearShoppingCart(order, account.getShoppingCart().getCartItems());
-        saveOrderItemsInOrderHistory(coinTransactions, order);
-        return order;
-    }
-
-    private Account getAccountById(Long accountId) {
-        return accountRepository.findById(accountId)
+        Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new EntityNotFoundException(
-                        "Das Benutzerkonto mit der ID " + accountId + " wurde nicht gefunden."));
+                        "Das Benutzerkonto mit der ID " +
+                                accountId
+                                + " wurde nicht gefunden."));
+
+        ShoppingCart shoppingCart = account.getShoppingCart();
+        List<ShoppingCartItem> cartItems = shoppingCart.getCartItems();
+
+        Order order = buildOrder(account);
+        List<CoinTransaction> coinTransactions = createCoinTransactions(cartItems, order);
+
+        saveOrderAndClearShoppingCart(order, shoppingCart.getCartItems());
+        saveOrderItemsInOrderHistory(coinTransactions, order);
+
+        return order;
     }
 
     private Order buildOrder(Account account) {
@@ -97,16 +98,24 @@ public class OrderService {
         return coinTransactions;
     }
 
-    private void saveOrderAndClearShoppingCart(Order order, List<ShoppingCartItem> cartItems) {
-        orderRepository.save(order);
-        shoppingCartItemRepository.deleteAll(cartItems);
+    private void saveOrderAndClearShoppingCart(
+            Order order,
+            List<ShoppingCartItem> cartItems) {
+        order = orderRepository.save(order);
+        for (ShoppingCartItem cartItem : cartItems) {
+            shoppingCartItemRepository.delete(cartItem);
+        }
     }
 
-    private void saveOrderItemsInOrderHistory(List<CoinTransaction> coinTransactions, Order order) {
+    private void saveOrderItemsInOrderHistory(
+            List<CoinTransaction> coinTransactions,
+            Order order) {
         for (CoinTransaction coinTransaction : coinTransactions) {
             OrderHistory orderHistory = new OrderHistory();
             orderHistory.setOrder(order);
             orderHistory.setItem(coinTransaction.getItem());
+            // Setzen des Artikelnamens
+            orderHistory.setItemName(coinTransaction.getItem().getName());
             orderHistory.setQuantity(coinTransaction.getCoins());
             orderHistoryRepository.save(orderHistory);
         }

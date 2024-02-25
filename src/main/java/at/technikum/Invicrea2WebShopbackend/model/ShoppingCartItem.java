@@ -18,6 +18,9 @@ public class ShoppingCartItem {
     @JoinColumn(name = "item_id", referencedColumnName = "itemId")
     private Item item;
 
+    @Column(name = "item_name")
+    private String itemName;
+
     private int quantity;
 
     public Long getId () {
@@ -50,5 +53,13 @@ public class ShoppingCartItem {
 
     public void setQuantity ( int quantity ) {
         this.quantity = quantity;
+    }
+
+    public String getItemName () {
+        return itemName;
+    }
+
+    public void setItemName ( String itemName ) {
+        this.itemName = itemName;
     }
 }
