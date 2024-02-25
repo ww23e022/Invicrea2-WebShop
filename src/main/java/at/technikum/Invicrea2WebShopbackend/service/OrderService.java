@@ -1,6 +1,7 @@
 package at.technikum.Invicrea2WebShopbackend.service;
 
 import at.technikum.Invicrea2WebShopbackend.exception.EntityNotFoundException;
+import at.technikum.Invicrea2WebShopbackend.exception.InsufficientCoinsException;
 import at.technikum.Invicrea2WebShopbackend.model.*;
 import at.technikum.Invicrea2WebShopbackend.repository.AccountRepository;
 import at.technikum.Invicrea2WebShopbackend.repository.OrderHistoryRepository;
@@ -62,11 +63,21 @@ public class OrderService {
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Das Benutzerkonto mit der ID " +
-                                accountId
-                                + " wurde nicht gefunden."));
+                                accountId +
+                                " wurde nicht gefunden."));
 
         ShoppingCart shoppingCart = account.getShoppingCart();
         List<ShoppingCartItem> cartItems = shoppingCart.getCartItems();
+
+        // Überprüfen, ob der Benutzer genügend Münzen hat
+        int totalCoinsNeeded = calculateTotalCoins(cartItems);
+        if (account.getCoins() < totalCoinsNeeded) {
+            throw new InsufficientCoinsException("Nicht genügend Münzen auf dem Konto");
+        }
+
+        // Münzen abziehen
+        account.setCoins(account.getCoins() - totalCoinsNeeded);
+        accountRepository.save(account);
 
         Order order = buildOrder(account);
         List<CoinTransaction> coinTransactions = createCoinTransactions(cartItems, order);
@@ -76,6 +87,14 @@ public class OrderService {
         saveOrderItemsInOrderHistory(coinTransactions, order);
 
         return order;
+    }
+
+    private int calculateTotalCoins(List<ShoppingCartItem> cartItems) {
+        int totalCoins = 0;
+        for (ShoppingCartItem cartItem : cartItems) {
+            totalCoins += cartItem.getItem().getPrice() * cartItem.getQuantity();
+        }
+        return totalCoins;
     }
 
     private Order buildOrder(Account account) {
@@ -115,8 +134,12 @@ public class OrderService {
             OrderHistory orderHistory = new OrderHistory();
             orderHistory.setOrder(order);
             orderHistory.setItem(coinTransaction.getItem());
-            // Setzen des Artikelnamens
             orderHistory.setItemName(coinTransaction.getItem().getName());
+            //orderHistory.setItemPrice(coinTransaction.getItem().getPrice());
+            double totalPrice =
+                    coinTransaction.getItem().getPrice() *
+                            coinTransaction.getCoins(); // Berechnung des Gesamtpreises
+            orderHistory.setItemPrice(totalPrice); // Setzen des Gesamtpreises
             orderHistory.setQuantity(coinTransaction.getCoins());
             orderHistoryRepository.save(orderHistory);
         }

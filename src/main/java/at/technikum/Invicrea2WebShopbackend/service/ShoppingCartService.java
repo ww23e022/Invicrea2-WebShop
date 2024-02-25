@@ -48,13 +48,22 @@ public class ShoppingCartService {
         if (existingItem.isPresent()) {
             ShoppingCartItem item = existingItem.get();
             item.setQuantity(item.getQuantity() + quantity);
+            item.setItemName(item.getItem().getName());
+            double totalPrice =
+                    item.getItem().getPrice()
+                            * item.getQuantity(); // Berechnung des Gesamtpreises
+            item.setItemPrice(totalPrice); // Setzen des Gesamtpreises
             shoppingCartItemRepository.save(item);
         } else {
             ShoppingCartItem newItem = new ShoppingCartItem();
             newItem.setShoppingCart(shoppingCart);
             newItem.setItem(itemRepository.getById(itemId));
             newItem.setQuantity(quantity);
-            newItem.setItemName(newItem.getItem().getName()); // Setzen des Artikelnamens
+            newItem.setItemName(newItem.getItem().getName());
+            double totalPrice =
+                    newItem.getItem().getPrice() *
+                            newItem.getQuantity(); // Berechnung des Gesamtpreises
+            newItem.setItemPrice(totalPrice); // Setzen des Gesamtpreises
             shoppingCartItemRepository.save(newItem);
         }
     }

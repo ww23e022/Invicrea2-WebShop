@@ -36,7 +36,6 @@ public class Item {
         this.description = description;
         this.imageUrl = imageUrl;
         this.category = category;
-
     }
 
     public Item() {
@@ -90,5 +89,4 @@ public class Item {
     public void setCategory(ItemCategory category) {
         this.category = category;
     }
-
 }

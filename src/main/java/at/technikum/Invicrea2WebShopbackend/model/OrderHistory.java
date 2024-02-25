@@ -20,6 +20,9 @@ public class OrderHistory {
     @Column(name = "item_name")
     private String itemName;
 
+    @Column(name = "item_price")
+    private double itemPrice;
+
     private int quantity;
 
     // Konstruktoren, Getter und Setter
@@ -63,5 +66,13 @@ public class OrderHistory {
 
     public void setItemName ( String itemName ) {
         this.itemName = itemName;
+    }
+
+    public double getItemPrice () {
+        return itemPrice;
+    }
+
+    public void setItemPrice ( double itemPrice ) {
+        this.itemPrice = itemPrice;
     }
 }

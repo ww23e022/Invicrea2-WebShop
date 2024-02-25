@@ -21,6 +21,9 @@ public class ShoppingCartItem {
     @Column(name = "item_name")
     private String itemName;
 
+    @Column(name = "item_price")
+    private double itemPrice;
+
     private int quantity;
 
     public Long getId () {
@@ -61,5 +64,13 @@ public class ShoppingCartItem {
 
     public void setItemName ( String itemName ) {
         this.itemName = itemName;
+    }
+
+    public double getItemPrice () {
+        return itemPrice;
+    }
+
+    public void setItemPrice ( double itemPrice ) {
+        this.itemPrice = itemPrice;
     }
 }
