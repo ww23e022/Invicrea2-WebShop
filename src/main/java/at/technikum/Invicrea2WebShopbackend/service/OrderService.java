@@ -100,7 +100,7 @@ public class OrderService {
     }
 
     private void saveOrderAndClearShoppingCart(Order order, ShoppingCart shoppingCart) {
-        order = orderRepository.save(order);
+        orderRepository.save(order);
         List<Long> cartItemIds = new ArrayList<>();
         for (ShoppingCartItem cartItem : shoppingCart.getCartItems()) {
             cartItemIds.add(cartItem.getId());
