@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-/*
+/**
 REST-Controller für die Verwaltung von Warenkörben.
 */
 @RestController
