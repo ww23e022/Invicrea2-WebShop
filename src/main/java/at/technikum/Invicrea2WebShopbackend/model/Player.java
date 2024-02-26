@@ -6,6 +6,9 @@ import jakarta.persistence.Table;
 
 import jakarta.persistence.*;
 
+/**
+ * Entität, die einen Spieler im Spiel repräsentiert.
+ */
 @Entity
 @Table(name = "player")
 public class Player{

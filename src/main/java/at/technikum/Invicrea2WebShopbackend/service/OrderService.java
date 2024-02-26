@@ -136,7 +136,7 @@ public class OrderService {
             orderHistory.setItem(coinTransaction.getItem());
             orderHistory.setItemName(coinTransaction.getItem().getName());
             //orderHistory.setItemPrice(coinTransaction.getItem().getPrice());
-            double totalPrice =
+            int totalPrice =
                     coinTransaction.getItem().getPrice() *
                             coinTransaction.getCoins(); // Berechnung des Gesamtpreises
             orderHistory.setItemPrice(totalPrice); // Setzen des Gesamtpreises

@@ -1,7 +1,12 @@
 package at.technikum.Invicrea2WebShopbackend.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 
+/**
+ * Entität, die den Verlauf von Bestellungen repräsentiert.
+ */
 @Entity
 @Table(name = "order_history")
 public class OrderHistory {
@@ -21,8 +26,12 @@ public class OrderHistory {
     private String itemName;
 
     @Column(name = "item_price")
-    private double itemPrice;
+    @NotNull(message = "Item price must be specified")
+    @Min(value = 0, message = "Item price must be positive")
+    private int itemPrice;
 
+    @NotNull(message = "Quantity must be specified")
+    @Min(value = 1, message = "Quantity must be at least 1")
     private int quantity;
 
     // Konstruktoren, Getter und Setter
@@ -68,11 +77,11 @@ public class OrderHistory {
         this.itemName = itemName;
     }
 
-    public double getItemPrice () {
+    public int getItemPrice () {
         return itemPrice;
     }
 
-    public void setItemPrice ( double itemPrice ) {
+    public void setItemPrice ( int itemPrice ) {
         this.itemPrice = itemPrice;
     }
 }

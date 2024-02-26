@@ -4,15 +4,12 @@ import at.technikum.Invicrea2WebShopbackend.model.Order;
 import at.technikum.Invicrea2WebShopbackend.model.Role;
 import at.technikum.Invicrea2WebShopbackend.model.Status;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@NoArgsConstructor //(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
-@Data
+/**
+ * Dto representing account-related information.
+ */
 public class AccountDto {
     private Long id;
     private String salutation;

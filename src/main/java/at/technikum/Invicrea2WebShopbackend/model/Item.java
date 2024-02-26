@@ -5,7 +5,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
-
+/**
+ * Entität, die ein Artikel im Webshop repräsentiert.
+ */
 @Entity
 @Table(name = "items")
 public class Item {

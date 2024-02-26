@@ -7,16 +7,16 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 /**
- * Repository-Schnittstelle für den Zugriff auf Warenkorb-Datenbankoperationen.
+ * Repository interface for accessing database operations related to shopping carts.
  */
 @Repository
 public interface ShoppingCartRepository extends JpaRepository<ShoppingCart, Long> {
 
     /**
-     * Sucht einen Warenkorb anhand der Kontonummer.
+     * Finds a shopping cart by account ID.
      *
-     * @param accountId Die ID des Kontos.
-     * @return Der Warenkorb des Kontos, falls vorhanden.
+     * @param accountId The ID of the account.
+     * @return The shopping cart of the account, if found.
      */
     Optional<ShoppingCart> findByAccountId( Long accountId);
 }

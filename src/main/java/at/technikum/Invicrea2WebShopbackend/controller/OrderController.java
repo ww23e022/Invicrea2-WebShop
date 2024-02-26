@@ -3,10 +3,8 @@ package at.technikum.Invicrea2WebShopbackend.controller;
 import at.technikum.Invicrea2WebShopbackend.dto.OrderDto;
 import at.technikum.Invicrea2WebShopbackend.mapper.OrderMapper;
 import at.technikum.Invicrea2WebShopbackend.model.Order;
-import at.technikum.Invicrea2WebShopbackend.service.AccountService;
 import at.technikum.Invicrea2WebShopbackend.service.OrderService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,9 +16,6 @@ import java.util.stream.Collectors;
 @CrossOrigin
 public class OrderController {
     private final OrderMapper orderMapper;
-
-    @Autowired
-    private AccountService accountService;
 
     private final OrderService orderService;
 

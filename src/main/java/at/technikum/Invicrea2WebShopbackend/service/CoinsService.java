@@ -46,10 +46,4 @@ public class CoinsService {
         //coinTransaction.setTransactionDate(LocalDateTime.now());
         coinTransactionRepository.save(coinTransaction);
     }
-
-    @Transactional
-    public String buyItemWithCoins(String itemId, Account account) {
-        // Implement buying item with coins logic here
-        return "";
-    }
 }

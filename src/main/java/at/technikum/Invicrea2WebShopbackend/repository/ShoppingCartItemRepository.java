@@ -12,39 +12,39 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Repository-Schnittstelle für den Zugriff auf Warenkorbposition-Datenbankoperationen.
+ * Repository interface for accessing database operations related to shopping cart items.
  */
 @Repository
 public interface ShoppingCartItemRepository extends JpaRepository<ShoppingCartItem, Long> {
 
     /**
-     * Sucht eine Warenkorbposition anhand der Warenkorb-ID und der Artikel-ID.
+     * Finds a shopping cart item by its shopping cart ID and item ID.
      *
-     * @param shoppingCartId Die ID des Warenkorbs.
-     * @param itemId         Die ID des Artikels.
-     * @return Die Warenkorbposition, falls vorhanden.
+     * @param shoppingCartId The ID of the shopping cart.
+     * @param itemId         The ID of the item.
+     * @return The shopping cart item, if found.
      */
     Optional<ShoppingCartItem> findByShoppingCartIdAndItemId( Long shoppingCartId, Long itemId);
 
     /**
-     * Sucht alle Warenkorbpositionen anhand der Warenkorb-ID.
+     * Finds all shopping cart items by shopping cart ID.
      *
-     * @param shoppingCartId Die ID des Warenkorbs.
-     * @return Eine Liste von Warenkorbpositionen.
+     * @param shoppingCartId The ID of the shopping cart.
+     * @return A list of shopping cart items.
      */
     List<ShoppingCartItem> findAllByShoppingCartId(Long shoppingCartId);
 
     /**
-     * Löscht alle Warenkorbpositionen anhand der Warenkorb-ID.
+     * Deletes all shopping cart items by shopping cart ID.
      *
-     * @param shoppingCartId Die ID des Warenkorbs.
+     * @param shoppingCartId The ID of the shopping cart.
      */
     void deleteAllByShoppingCartId(Long shoppingCartId);
 
     /**
-     * Löscht alle Warenkorbpositionen anhand einer Liste von IDs.
+     * Deletes all shopping cart items by a list of IDs.
      *
-     * @param ids Die Liste der IDs der Warenkorbpositionen.
+     * @param ids The list of IDs of shopping cart items.
      */
     @Transactional
     @Modifying

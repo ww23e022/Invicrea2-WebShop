@@ -6,6 +6,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDateTime;
 import java.util.List;
 
+
+/**
+ * Dto representing order-related information.
+ */
 public class OrderDto {
     private Long id;
     private LocalDateTime orderDate;

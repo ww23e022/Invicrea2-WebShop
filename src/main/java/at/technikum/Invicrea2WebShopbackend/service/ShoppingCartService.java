@@ -56,7 +56,7 @@ public class ShoppingCartService {
             ShoppingCartItem item = existingItem.get();
             item.setQuantity(item.getQuantity() + quantity);
             item.setItemName(item.getItem().getName());
-            double totalPrice =
+            int totalPrice =
                     item.getItem().getPrice()
                             * item.getQuantity(); // Berechnung des Gesamtpreises
             item.setItemPrice(totalPrice); // Setzen des Gesamtpreises
@@ -67,7 +67,7 @@ public class ShoppingCartService {
             newItem.setItem(itemRepository.getById(itemId));
             newItem.setQuantity(quantity);
             newItem.setItemName(newItem.getItem().getName());
-            double totalPrice =
+            int totalPrice =
                     newItem.getItem().getPrice() *
                             newItem.getQuantity(); // Berechnung des Gesamtpreises
             newItem.setItemPrice(totalPrice); // Setzen des Gesamtpreises
@@ -81,7 +81,7 @@ public class ShoppingCartService {
 
         existingItem.ifPresent(item -> {
             item.setQuantity(quantity);
-            double totalPrice = item.getItem().getPrice() * quantity;
+            int totalPrice = item.getItem().getPrice() * quantity;
             item.setItemPrice(totalPrice);
             shoppingCartItemRepository.save(item);
         });

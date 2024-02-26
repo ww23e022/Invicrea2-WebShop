@@ -7,9 +7,18 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Mapper class responsible for mapping between Player and PlayerDto objects.
+ */
 @Component
 public class PlayerMapper {
 
+    /**
+     * Maps a Player object to a PlayerDto object.
+     *
+     * @param player The Player object to map.
+     * @return The corresponding PlayerDto object.
+     */
     public PlayerDto toDto( Player player) {
         PlayerDto playerDto = new PlayerDto();
         playerDto.setId(player.getId());
@@ -22,6 +31,12 @@ public class PlayerMapper {
         return playerDto;
     }
 
+    /**
+     * Maps a PlayerDto object to a Player object.
+     *
+     * @param playerDto The PlayerDto object to map.
+     * @return The corresponding Player object.
+     */
     public Player toEntity(PlayerDto playerDto) {
         Player player = new Player();
         player.setId(playerDto.getId());
@@ -32,15 +47,15 @@ public class PlayerMapper {
         return player;
     }
 
+    /**
+     * Maps a list of Player objects to a list of PlayerDto objects.
+     *
+     * @param players The list of Player objects to map.
+     * @return The corresponding list of PlayerDto objects.
+     */
     public List<PlayerDto> toDtos(List<Player> players) {
         return players.stream()
                 .map(this::toDto)
-                .collect(Collectors.toList());
-    }
-
-    public List<Player> toEntities( List<PlayerDto> playerDtos) {
-        return playerDtos.stream()
-                .map(this::toEntity)
                 .collect(Collectors.toList());
     }
 }

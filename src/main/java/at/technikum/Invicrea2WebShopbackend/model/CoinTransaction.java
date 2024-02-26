@@ -1,9 +1,12 @@
 package at.technikum.Invicrea2WebShopbackend.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 /**
- * Entität, die eine Transaktion mit Coins repräsentiert.
+ * Entity representing a transaction with coins.
  */
 @Entity
 @Table(name = "coin_transaction")
@@ -21,11 +24,12 @@ public class CoinTransaction {
     @JoinColumn(name = "order_id")
     private Order order;
 
+    @NotNull(message = "Coins amount must be specified")
+    @Min(value = 0, message = "Coins amount must be positive")
     private int coins;
 
+    @NotBlank(message = "Transaction type must be specified")
     private String transactionType;
-
-
 
     public Long getId() {
         return id;

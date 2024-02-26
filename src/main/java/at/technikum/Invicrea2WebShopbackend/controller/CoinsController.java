@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * REST-Controller für die Verwaltung von Coins.
+ * REST controller for managing coins.
  */
 @RestController
 @RequestMapping("/coins")
@@ -20,11 +20,11 @@ public class CoinsController {
     private AccountService accountService;
 
     /**
-     * Fügt Coins zu einem Konto hinzu.
+     * Adds coins to an account.
      *
-     * @param accountId    Die ID des Kontos.
-     * @param coinsToAdd   Die Anzahl der hinzuzufügenden Coins.
-     * @return Eine Bestätigungsmeldung.
+     * @param accountId    The ID of the account.
+     * @param coinsToAdd   The number of coins to add.
+     * @return A confirmation message.
      */
     @PutMapping("/addCoins/{accountId}")
     public String addCoinsToAccount(@PathVariable Long accountId,
@@ -35,11 +35,11 @@ public class CoinsController {
     }
 
     /**
-     * Subtrahiert Coins von einem Konto.
+     * Subtracts coins from an account.
      *
-     * @param accountId         Die ID des Kontos.
-     * @param coinsToSubtract   Die Anzahl der abzuziehenden Coins.
-     * @return Eine Bestätigungsmeldung.
+     * @param accountId         The ID of the account.
+     * @param coinsToSubtract   The number of coins to subtract.
+     * @return A confirmation message.
      */
     @PutMapping("/subtractCoins/{accountId}")
     public String subtractCoinsFromAccount(@PathVariable Long accountId,

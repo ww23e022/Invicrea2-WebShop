@@ -6,6 +6,9 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Entität, die eine Bestellung im Webshop repräsentiert.
+ */
 @Entity
 @Table(name = "orders")
 public class Order {
