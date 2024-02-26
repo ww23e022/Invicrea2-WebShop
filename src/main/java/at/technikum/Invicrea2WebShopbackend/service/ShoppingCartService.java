@@ -31,7 +31,14 @@ public class ShoppingCartService {
     }
 
     public Optional<ShoppingCart> getShoppingCartByAccountId(Long accountId) {
-        return shoppingCartRepository.findByAccountId(accountId);
+        return shoppingCartRepository.findByAccountId(accountId)
+                .map(shoppingCart -> {
+                    shoppingCart.setCartItems(
+                            shoppingCartItemRepository.
+                                    findAllByShoppingCartId(
+                                            shoppingCart.getId()));
+                    return shoppingCart;
+                });
     }
 
     public List<ShoppingCartItem> getItemsInCart(Long shoppingCartId) {
@@ -67,6 +74,19 @@ public class ShoppingCartService {
             shoppingCartItemRepository.save(newItem);
         }
     }
+
+    public void updateCartItem(Long shoppingCartId, Long itemId, int quantity) {
+        Optional<ShoppingCartItem> existingItem = shoppingCartItemRepository
+                .findByShoppingCartIdAndItemId(shoppingCartId, itemId);
+
+        existingItem.ifPresent(item -> {
+            item.setQuantity(quantity);
+            double totalPrice = item.getItem().getPrice() * quantity;
+            item.setItemPrice(totalPrice);
+            shoppingCartItemRepository.save(item);
+        });
+    }
+
 
     public void removeItemFromCart(Long shoppingCartId, Long itemId) {
         Optional<ShoppingCartItem> existingItem = shoppingCartItemRepository

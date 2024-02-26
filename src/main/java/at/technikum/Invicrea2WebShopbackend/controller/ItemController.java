@@ -32,7 +32,7 @@ public class ItemController {
     }
 
     // Handler for POST requests on "/items/addItem" adds items
-    @PostMapping("/addItem")
+    @PostMapping("/addItems")
     public String addItems(@RequestBody List<Item> items) {
         try {
             // Loop through all the passed items

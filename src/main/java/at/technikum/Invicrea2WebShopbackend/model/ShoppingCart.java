@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 
 import java.util.List;
 
+/**
+ * Entität, die einen Warenkorb repräsentiert.
+ */
 @Entity
 public class ShoppingCart {
 
@@ -17,8 +20,6 @@ public class ShoppingCart {
 
     @OneToMany(mappedBy = "shoppingCart", cascade = CascadeType.ALL)
     private List<ShoppingCartItem> cartItems;
-
-    // Getters and setters
 
     public Long getId () {
         return id;

@@ -9,7 +9,6 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 @Service
 public class CoinsService {
     @Autowired
@@ -47,10 +46,10 @@ public class CoinsService {
         //coinTransaction.setTransactionDate(LocalDateTime.now());
         coinTransactionRepository.save(coinTransaction);
     }
+
     @Transactional
     public String buyItemWithCoins(String itemId, Account account) {
-
+        // Implement buying item with coins logic here
         return "";
     }
 }
-

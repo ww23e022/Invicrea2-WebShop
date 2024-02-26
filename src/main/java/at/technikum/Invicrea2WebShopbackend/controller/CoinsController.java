@@ -6,6 +6,9 @@ import at.technikum.Invicrea2WebShopbackend.service.CoinsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * REST-Controller für die Verwaltung von Coins.
+ */
 @RestController
 @RequestMapping("/coins")
 public class CoinsController {
@@ -14,36 +17,35 @@ public class CoinsController {
     private CoinsService coinsService;
 
     @Autowired
-    private AccountService accountService; // Here, the AccountService needs to be injected
+    private AccountService accountService;
 
-    // Handler for PUT requests on "/coins/addCoins/{accountId}" adds coins to an account
+    /**
+     * Fügt Coins zu einem Konto hinzu.
+     *
+     * @param accountId    Die ID des Kontos.
+     * @param coinsToAdd   Die Anzahl der hinzuzufügenden Coins.
+     * @return Eine Bestätigungsmeldung.
+     */
     @PutMapping("/addCoins/{accountId}")
     public String addCoinsToAccount(@PathVariable Long accountId,
                                     @RequestParam int coinsToAdd) {
-        try {
-            // Get the account by ID
-            Account account = accountService.getAccountById(accountId);
-            // Add coins to the account
-            coinsService.addCoinsToAccount(account, coinsToAdd);
-            return "Coins were added successfully.";
-        } catch (Exception e) {
-            return "Error adding coins: " + e.getMessage();
-        }
+        Account account = accountService.getAccountById(accountId);
+        coinsService.addCoinsToAccount(account, coinsToAdd);
+        return "Coins were added successfully.";
     }
 
-    // Handler for PUT requests on "/coins/subtractCoins/{accountId}"
-    // subtracts coins from an account
+    /**
+     * Subtrahiert Coins von einem Konto.
+     *
+     * @param accountId         Die ID des Kontos.
+     * @param coinsToSubtract   Die Anzahl der abzuziehenden Coins.
+     * @return Eine Bestätigungsmeldung.
+     */
     @PutMapping("/subtractCoins/{accountId}")
     public String subtractCoinsFromAccount(@PathVariable Long accountId,
                                            @RequestParam int coinsToSubtract) {
-        try {
-            // Get the account by ID
-            Account account = accountService.getAccountById(accountId);
-            // Subtract coins from the account
-            coinsService.subtractCoinsFromAccount(account, coinsToSubtract);
-            return "Coins were subtracted successfully.";
-        } catch (Exception e) {
-            return "Error subtracting coins: " + e.getMessage();
-        }
+        Account account = accountService.getAccountById(accountId);
+        coinsService.subtractCoinsFromAccount(account, coinsToSubtract);
+        return "Coins were subtracted successfully.";
     }
 }

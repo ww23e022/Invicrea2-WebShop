@@ -2,6 +2,9 @@ package at.technikum.Invicrea2WebShopbackend.model;
 
 import jakarta.persistence.*;
 
+/**
+ * Entität, die einen Artikel im Warenkorb repräsentiert.
+ */
 @Entity
 @Table(name = "shopping_cart_items") // Ändern Sie den Tabellennamen entsprechend
 public class ShoppingCartItem {

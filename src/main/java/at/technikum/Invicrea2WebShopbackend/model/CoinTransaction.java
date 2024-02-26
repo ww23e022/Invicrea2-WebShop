@@ -2,6 +2,9 @@ package at.technikum.Invicrea2WebShopbackend.model;
 
 import jakarta.persistence.*;
 
+/**
+ * Entität, die eine Transaktion mit Coins repräsentiert.
+ */
 @Entity
 @Table(name = "coin_transaction")
 public class CoinTransaction {
