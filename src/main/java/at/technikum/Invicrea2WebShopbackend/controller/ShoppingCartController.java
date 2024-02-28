@@ -20,7 +20,7 @@ public class ShoppingCartController {
     private final ShoppingCartService shoppingCartService;
     private final AccountService accountService;
 
-    /*
+    /**
     Konstruktor für die Injection von ShoppingCartService und AccountService.
     @param shoppingCartService Der ShoppingCartService.
     @param accountService      Der AccountService.

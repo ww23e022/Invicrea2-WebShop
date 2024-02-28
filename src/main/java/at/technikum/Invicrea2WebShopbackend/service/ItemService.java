@@ -94,15 +94,4 @@ public class ItemService {
         }
     }
 
-    public List<Item> getItems(Long accountId) {
-        var orders = accountRepository.findById(accountId).get().getOrder();
-        List<Item> items = new ArrayList<>();
-        for (var order : orders) {
-            var transactions = order.getCoinTransactions();
-            for (var transaction : transactions) {
-                items.add(transaction.getItem());
-            }
-        }
-        return items;
-    }
 }

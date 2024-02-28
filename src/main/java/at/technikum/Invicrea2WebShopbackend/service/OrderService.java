@@ -69,22 +69,19 @@ public class OrderService {
         ShoppingCart shoppingCart = account.getShoppingCart();
         List<ShoppingCartItem> cartItems = shoppingCart.getCartItems();
 
-        // Überprüfen, ob der Benutzer genügend Münzen hat
         int totalCoinsNeeded = calculateTotalCoins(cartItems);
         if (account.getCoins() < totalCoinsNeeded) {
             throw new InsufficientCoinsException("Nicht genügend Münzen auf dem Konto");
         }
 
-        // Münzen abziehen
         account.setCoins(account.getCoins() - totalCoinsNeeded);
         accountRepository.save(account);
 
         Order order = buildOrder(account);
-        List<CoinTransaction> coinTransactions = createCoinTransactions(cartItems, order);
 
         saveOrderAndClearShoppingCart(order, shoppingCart);
 
-        saveOrderItemsInOrderHistory(coinTransactions, order);
+        saveOrderItemsInOrderHistory(cartItems, order);
 
         return order;
     }
@@ -104,20 +101,6 @@ public class OrderService {
         return order;
     }
 
-    private List<CoinTransaction> createCoinTransactions(
-            List<ShoppingCartItem> cartItems,
-            Order order) {
-        List<CoinTransaction> coinTransactions = new ArrayList<>();
-        for (ShoppingCartItem cartItem : cartItems) {
-            CoinTransaction coinTransaction = new CoinTransaction();
-            coinTransaction.setItem(cartItem.getItem());
-            coinTransaction.setOrder(order);
-            coinTransaction.setCoins(cartItem.getQuantity());
-            coinTransactions.add(coinTransaction);
-        }
-        return coinTransactions;
-    }
-
     private void saveOrderAndClearShoppingCart(Order order, ShoppingCart shoppingCart) {
         orderRepository.save(order);
         List<Long> cartItemIds = new ArrayList<>();
@@ -128,19 +111,16 @@ public class OrderService {
     }
 
     private void saveOrderItemsInOrderHistory(
-            List<CoinTransaction> coinTransactions,
+            List<ShoppingCartItem> cartItems,
             Order order) {
-        for (CoinTransaction coinTransaction : coinTransactions) {
+        for (ShoppingCartItem cartItem : cartItems) {
             OrderHistory orderHistory = new OrderHistory();
             orderHistory.setOrder(order);
-            orderHistory.setItem(coinTransaction.getItem());
-            orderHistory.setItemName(coinTransaction.getItem().getName());
-            //orderHistory.setItemPrice(coinTransaction.getItem().getPrice());
-            int totalPrice =
-                    coinTransaction.getItem().getPrice() *
-                            coinTransaction.getCoins(); // Berechnung des Gesamtpreises
-            orderHistory.setItemPrice(totalPrice); // Setzen des Gesamtpreises
-            orderHistory.setQuantity(coinTransaction.getCoins());
+            orderHistory.setItem(cartItem.getItem());
+            orderHistory.setItemName(cartItem.getItem().getName());
+            int totalPrice = cartItem.getItem().getPrice() * cartItem.getQuantity();
+            orderHistory.setItemPrice(totalPrice);
+            orderHistory.setQuantity(cartItem.getQuantity());
             orderHistoryRepository.save(orderHistory);
         }
     }

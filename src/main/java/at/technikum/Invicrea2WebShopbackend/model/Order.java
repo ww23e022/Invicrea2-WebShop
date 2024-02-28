@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * Entität, die eine Bestellung im Webshop repräsentiert.
@@ -22,9 +21,6 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "account_id", referencedColumnName = "id")
     private Account account;
-
-    @OneToMany
-    private List<CoinTransaction> coinTransactions;
 
 
     public Order(Long id) {
@@ -60,11 +56,4 @@ public class Order {
         this.account = account;
     }
 
-    public List<CoinTransaction> getCoinTransactions() {
-        return coinTransactions;
-    }
-
-    public void setCoinTransactions(List<CoinTransaction> coinTransactions) {
-        this.coinTransactions = coinTransactions;
-    }
 }

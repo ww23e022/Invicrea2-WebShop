@@ -116,6 +116,7 @@ public class ItemController {
     // returns items for an account
     @GetMapping("/accounts/{accountId}/items")
     public List<Item> getItemsByAccountId(@PathVariable Long accountId) {
-        return itemService.getItems(accountId);
+        //return itemService.getItems(accountId);
+        return null;
     }
 }

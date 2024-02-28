@@ -48,4 +48,19 @@ public class CoinsController {
         coinsService.subtractCoinsFromAccount(account, coinsToSubtract);
         return "Coins were subtracted successfully.";
     }
+
+    /**
+     * Retrieves the number of coins in the specified account.
+     *
+     * @param accountId The ID of the account.
+     * @return The number of coins in the account.
+     */
+    @GetMapping("/viewCoins/{accountId}")
+    public int viewCoinsInAccount(@PathVariable Long accountId) {
+        // Ruft das Konto mit der angegebenen Account-ID ab
+        Account account = accountService.getAccountById(accountId);
+
+        // Ruft die Anzahl der Münzen im Konto über den CoinsService ab
+        return coinsService.getCoinsInAccount(account);
+    }
 }

@@ -46,4 +46,8 @@ public class CoinsService {
         //coinTransaction.setTransactionDate(LocalDateTime.now());
         coinTransactionRepository.save(coinTransaction);
     }
+
+    public int getCoinsInAccount(Account account) {
+        return account.getCoins();
+    }
 }

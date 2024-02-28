@@ -16,14 +16,6 @@ public class CoinTransaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "item_id", referencedColumnName = "itemId")
-    private Item item;
-
-    @ManyToOne
-    @JoinColumn(name = "order_id")
-    private Order order;
-
     @NotNull(message = "Coins amount must be specified")
     @Min(value = 0, message = "Coins amount must be positive")
     private int coins;
@@ -53,21 +45,5 @@ public class CoinTransaction {
 
     public void setTransactionType(String transactionType) {
         this.transactionType = transactionType;
-    }
-
-    public Item getItem() {
-        return item;
-    }
-
-    public void setItem(Item item) {
-        this.item = item;
-    }
-
-    public Order getOrder () {
-        return order;
-    }
-
-    public void setOrder ( Order order ) {
-        this.order = order;
     }
 }
