@@ -32,7 +32,7 @@ public class ShoppingCartController {
     }
 
     /**
-     * Handler für GET-Anfragen auf "/shopping-cart/{accountId}".
+     * GET-Anfragen auf "/shopping-cart/{accountId}".
      * Gibt den Warenkorb anhand der Kontonummer zurück.
      *
      * @param accountId Die ID des Kontos.
