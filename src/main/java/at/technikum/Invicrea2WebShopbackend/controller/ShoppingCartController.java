@@ -55,7 +55,7 @@ public class ShoppingCartController {
     }
 
     /**
-     * Handler für POST-Anfragen auf "/shopping-cart/{shoppingCartId}/add-item/{itemId}".
+     * POST-Anfragen auf "/shopping-cart/{shoppingCartId}/add-item/{itemId}".
      * Fügt einen Artikel zum Warenkorb hinzu.
      *
      * @param shoppingCartId Die ID des Warenkorbs.
@@ -70,7 +70,7 @@ public class ShoppingCartController {
     }
 
     /**
-     * Handler für PUT-Anfragen auf "/shopping-cart/{shoppingCartId}/update-item/{itemId}".
+     * PUT-Anfragen auf "/shopping-cart/{shoppingCartId}/update-item/{itemId}".
      * Aktualisiert die Menge eines Artikels im Warenkorb.
      *
      * @param shoppingCartId Die ID des Warenkorbs.
@@ -86,7 +86,7 @@ public class ShoppingCartController {
 
 
     /**
-     * Handler für DELETE-Anfragen auf "/shopping-cart/{shoppingCartId}/remove-item/{itemId}".
+     * DELETE-Anfragen auf "/shopping-cart/{shoppingCartId}/remove-item/{itemId}".
      * Entfernt einen Artikel aus dem Warenkorb.
      *
      * @param shoppingCartId Die ID des Warenkorbs.
@@ -99,7 +99,7 @@ public class ShoppingCartController {
     }
 
     /**
-     * Handler für DELETE-Anfragen auf "/shopping-cart/{shoppingCartId}/clear".
+     * DELETE-Anfragen auf "/shopping-cart/{shoppingCartId}/clear".
      * Leert den Warenkorb.
      *
      * @param shoppingCartId Die ID des zu leerenden Warenkorbs.

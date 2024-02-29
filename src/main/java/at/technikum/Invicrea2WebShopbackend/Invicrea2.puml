@@ -1,0 +1,231 @@
+@startuml
+package controller {
+
+    class AccountController {
+        - accountService: AccountService
+        - itemService: ItemService
+        + AccountController(accountService: AccountService, itemService: ItemService)
+        + getAllAccounts(): List<Account>
+        + getAccountById(accountId: Long): Account
+        + registerAccount(accountDto: AccountDto): String
+        + updateAccount(accountId: Long, accountDto: AccountDto): Account
+        + banAccount(accountId: Long): String
+        + unbanAccount(accountId: Long): String
+        + deleteAccount(accountId: Long): String
+        + login(accountDto: AccountDto): String
+        + logout(): String
+    }
+
+    class CoinsController {
+        - coinsService: CoinsService
+        - accountService: AccountService
+        + addCoinsToAccount(accountId: Long, coinsToAdd: int): String
+        + subtractCoinsFromAccount(accountId: Long, coinsToSubtract: int): String
+    }
+
+    class ItemController {
+        - itemService: ItemService
+        - itemMapper: ItemMapper
+        - accountService: AccountService
+        - coinsService: CoinsService
+        + ItemController(itemService: ItemService, itemMapper: ItemMapper)
+        + addItems(items: List<Item>): String
+        + findAllItems(): List<Item>
+        + findItemById(id: Long): ItemDto
+        + findItemByName(name: String): Item
+        + deleteItem(id: Long): ResponseEntity<String>
+        + updateItem(item: Item): Item
+        + getItemsByCategory(category: ItemCategory): List<Item>
+        + addItemWithCategory(item: Item, category: ItemCategory): ResponseEntity<String>
+        + getItemsByAccountId(accountId: Long): List<Item>
+    }
+
+    class OrderController {
+        - orderMapper: OrderMapper
+        - accountService: AccountService
+        - orderService: OrderService
+        + OrderController(orderMapper: OrderMapper, orderService: OrderService)
+        + readAll(): List<OrderDto>
+        + read(id: long): OrderDto
+        + createOrder(accountId: Long): OrderDto
+        + update(id: long, updatedOrderDto: @Valid OrderDto): OrderDto
+        + delete(id: String)
+        + getOrderHistoryByAccountId(accountId: Long): List<Order>
+    }
+
+    class PlayerController {
+            - playerService: PlayerService
+            - playerMapper: PlayerMapper
+            - accountService: AccountService
+            + PlayerController(playerService: PlayerService, playerMapper: PlayerMapper, accountService: AccountService)
+            + readAllPlayers(): List<PlayerDto>
+            + readPlayer(id: Long): PlayerDto
+            + createPlayer(playerDto: PlayerDto): PlayerDto
+            + updatePlayer(id: Long, updatedPlayerDto: PlayerDto): PlayerDto
+            + deletePlayer(id: Long)
+            + getTop5PlayersByLevel(): List<PlayerDto>
+            + getAllPlayersSortedByLevel(): List<PlayerDto>
+            + searchPlayersByName(name: String): List<PlayerDto>
+        }
+
+    class ShoppingCartController {
+        - shoppingCartService: ShoppingCartService
+        - accountService: AccountService
+        + ShoppingCartController(shoppingCartService: ShoppingCartService, accountService: AccountService)
+        + getShoppingCartByAccountId(accountId: Long): Optional<ShoppingCart>
+        + getItemsInCart(shoppingCartId: Long): List<ShoppingCartItem>
+        + addItemToCart(shoppingCartId: Long, itemId: Long, quantity: int)
+        + removeItemFromCart(shoppingCartId: Long, itemId: Long)
+        + clearCart(shoppingCartId: Long)
+    }
+}
+
+package "model" {
+    class Account {
+        - id: Long
+        - salutation: Salutation
+        - additionalInfo: String
+        - email: String
+        - username: String
+        - password: String
+        - repeatPassword: String
+        - country: String
+        - role: Role
+        - status: Status
+        - coins: int
+        + GETTER & SETTER
+    }
+
+    class CoinTransaction {
+        - id: Long
+        - item: Item
+        - order: Order
+        - coins: int
+        - transactionType: String
+        + GETTER & SETTER
+    }
+
+    enum Empire {
+        JINNO
+        SHINSOO
+        CHUNJO
+    }
+
+    class Item {
+        - itemId: Long
+        - name: String
+        - price: int
+        - description: String
+        - imageUrl: String
+        - category: ItemCategory
+        + GETTER & SETTER
+    }
+
+    enum ItemCategory {
+        VIEW_ALL
+        WAFFEN
+        RÜSTUNG
+        SCHMUCK
+        SONSTIGES
+    }
+
+    class Order {
+        - id: Long
+        - orderDate: LocalDateTime
+        - account: Account
+        - coinTransactions: List<CoinTransaction>
+        + GETTER & SETTER
+    }
+
+    class Player {
+        - id: Long
+        - name: String
+        - empire: Empire
+        - level: int
+        - account: Account
+        + GETTER & SETTER
+    }
+
+    enum Role {
+        USER
+        ADMIN
+    }
+
+    enum Salutation {
+        MALE
+        FEMALE
+        OTHER
+    }
+
+    class ShoppingCart {
+        - id: Long
+        - account: Account
+        - cartItems: List<ShoppingCartItem>
+        + GETTER & SETTER
+    }
+
+    class ShoppingCartItem {
+        - id: Long
+        - shoppingCart: ShoppingCart
+        - item: Item
+        - itemName: String
+        - itemPrice: double
+        - quantity: int
+        + GETTER & SETTER
+    }
+
+    enum Status {
+        ACTIVE
+        BANNED
+    }
+}
+
+package dto {
+    class AccountDto {
+        - id: Long
+        - salutation: String
+        - additionalInfo: String
+        - email: String
+        - username: String
+        - password: String
+        - repeatPassword: String
+        - country: String
+        - role: Role
+        - status: Status
+        - coins: int
+        - order: List<Order>
+        + AccountDto()
+        + AccountDto(id: Long, salutation: String, additionalInfo: String, email: String, username: String, password: String, repeatPassword: String, country: String, role: Role, status: Status, coins: int, order: List<Order>)
+        + GETTER & SETTER
+    }
+    class ItemDto {
+        - itemId: Long
+        - name: String
+        - price: int
+        - description: String
+        - imageUrl: String
+        - category: ItemCategory
+        + ItemDto()
+        + GETTER & SETTER
+    }
+    class OrderDto {
+        - id: Long
+        - orderDate: LocalDateTime
+        - account: AccountDto
+        - coinTransactions: List<CoinTransaction>
+        + OrderDto()
+        + OrderDto(id: Long, orderDate: LocalDateTime, account: AccountDto, coinTransactions: List<CoinTransaction>)
+        + GETTER & SETTER
+    }
+    class PlayerDto {
+        - id: Long
+        - name: String
+        - empire: Empire
+        - level: int
+        - accountId: Long
+        + PlayerDto()
+        + GETTER & SETTER
+    }
+}
+
+@enduml

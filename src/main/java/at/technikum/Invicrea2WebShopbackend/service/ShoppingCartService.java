@@ -31,19 +31,42 @@ public class ShoppingCartService {
     }
 
     public Optional<ShoppingCart> getShoppingCartByAccountId(Long accountId) {
-        return shoppingCartRepository.findByAccountId(accountId)
-                .map(shoppingCart -> {
-                    shoppingCart.setCartItems(
-                            shoppingCartItemRepository.
-                                    findAllByShoppingCartId(
-                                            shoppingCart.getId()));
-                    return shoppingCart;
-                });
+        Optional<ShoppingCart> optionalShoppingCart =
+                shoppingCartRepository.
+                        findByAccountId(accountId);
+
+        if (optionalShoppingCart.isPresent()) {
+            ShoppingCart shoppingCart = optionalShoppingCart.get();
+            List<ShoppingCartItem> cartItems =
+                    shoppingCartItemRepository.
+                            findAllByShoppingCartId(shoppingCart.getId());
+
+            // Iteriere durch die Warenkorbpositionen und
+            // setze den Namen basierend auf dem Item-Objekt
+            for (ShoppingCartItem item : cartItems) {
+                item.setItemName(item.getItem().getName());
+            }
+
+            shoppingCart.setCartItems(cartItems);
+            return Optional.of(shoppingCart);
+        } else {
+            return Optional.empty();
+        }
     }
 
+
     public List<ShoppingCartItem> getItemsInCart(Long shoppingCartId) {
-        return shoppingCartItemRepository.findAllByShoppingCartId(shoppingCartId);
+        List<ShoppingCartItem> cartItems =
+                shoppingCartItemRepository.
+                        findAllByShoppingCartId(shoppingCartId);
+        // Iteriere durch die Warenkorbpositionen und
+        // setze den Namen basierend auf dem Item-Objekt
+        for (ShoppingCartItem item : cartItems) {
+            item.setItemName(item.getItem().getName());
+        }
+        return cartItems;
     }
+
 
     public void addItemToCart(Long accountId, Long itemId, int quantity) {
         ShoppingCart shoppingCart = shoppingCartRepository.findByAccountId(accountId)

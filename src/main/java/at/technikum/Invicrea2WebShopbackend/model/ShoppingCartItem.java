@@ -82,4 +82,16 @@ public class ShoppingCartItem {
     public void setItemPrice ( int itemPrice ) {
         this.itemPrice = itemPrice;
     }
+
+    @Override
+    public String toString() {
+        return "ShoppingCartItem{" +
+                "id=" + id +
+                ", shoppingCart=" + shoppingCart +
+                ", item=" + item +
+                ", itemName='" + itemName + '\'' +
+                ", itemPrice=" + itemPrice +
+                ", quantity=" + quantity +
+                '}';
+    }
 }
