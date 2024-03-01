@@ -105,11 +105,4 @@ public class ItemController {
             return itemService.getItemsByCategory(category);
         }
     }
-
-    // Diese Methode verarbeitet GET-Anfragen auf dem Endpunkt "/items/accounts/{accountId}/items".
-    // Sie gibt alle Items für ein bestimmtes Konto zurück.
-    @GetMapping("/accounts/{accountId}/items")
-    public List<Item> getItemsByAccountId(@PathVariable("accountId") Long accountId) {
-        return itemService.getItems();
-    }
 }
