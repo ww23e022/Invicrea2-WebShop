@@ -26,7 +26,7 @@ public class AccountController {
         this.itemService = itemService;
     }
 
-    //GET requests on "/account" returns a list of all accounts
+    // Handler for GET requests on "/account" returns a list of all accounts
     @GetMapping
     public List<Account> getAllAccounts() {
         return accountService.getAllAccounts();
@@ -77,21 +77,21 @@ public class AccountController {
         return "Account banned successfully";
     }
 
-    //PUT requests on "/account/unban/{accountId}" unbans an account
+    // PUT requests on "/account/unban/{accountId}" unbans an account
     @PutMapping("/unban/{accountId}")
     public String unbanAccount(@PathVariable Long accountId) {
         accountService.unbanAccount(accountId);
         return "Account unbanned successfully";
     }
 
-    // Handler for DELETE requests on "/account/{accountId}" deletes an account
+    // DELETE requests on "/account/{accountId}" deletes an account
     @DeleteMapping("/{accountId}")
     public String deleteAccount(@PathVariable Long accountId) {
         accountService.deleteAccountById(accountId);
         return "Account deleted successfully";
     }
 
-    //POST requests on "/account/login" performs a login
+    // POST requests on "/account/login" performs a login
     /*@PostMapping("/login")
     public String login(@RequestBody AccountDto accountDto) {
         String usernameOrEmail = accountDto.getUsername();
@@ -110,7 +110,7 @@ public class AccountController {
         }
     }
 
-    // Handler for POST requests on "/account/logout" performs a logout
+    // POST requests on "/account/logout" performs a logout
     @PostMapping("/logout")
     public String logout() {
         return "Logout successful";
