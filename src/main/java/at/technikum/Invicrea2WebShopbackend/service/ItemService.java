@@ -74,15 +74,6 @@ public class ItemService {
         item.setCategory(category);
         items.add(item);
     }
-    public Item findItemById(Long id) {
-        return itemRepository.findById((id)).orElse(null);
-    }
-    /*public List<Item> getItemsByAccountId(Long id) {
-        // Hier wird angenommen, dass es eine Methode in deinem ItemRepository gibt,
-        // die die Items für einen Account abruft
-        // Implementiere diese Methode entsprechend in deinem ItemRepository
-        return itemRepository.findByOwnerAccountId(id);
-    }*/
 
     public void validateItem(ItemDto item) {
         if (item.getName() == null || item.getName().isEmpty() ||

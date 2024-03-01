@@ -69,13 +69,6 @@ public class ItemController {
         return itemService.getItems();
     }
 
-    // Handler for GET requests on "/items/itemById/{id}" returns an item by ID
-    @GetMapping("/itemById/{id}")
-    public ItemDto findItemById(@PathVariable Long id) {
-        Item item = itemService.getItemById(id);
-        return itemMapper.toItemDto(item);
-    }
-
     // Handler for GET requests on "/items/item/{name}" returns an item by name
     @GetMapping("/item/{name}")
     public Item findItemByName(@PathVariable String name) {
