@@ -9,9 +9,7 @@ import java.util.List;
 
 // extends AbstractPersistable<Long> // Id kann man auch so angeben
 
-/**
- * Entität, die ein Benutzerkonto im Webshop repräsentiert.
- */
+/** Entität, die ein Benutzerkonto im Webshop repräsentiert. */
 @Entity
 @Table(name = "accounts")
 public class Account {

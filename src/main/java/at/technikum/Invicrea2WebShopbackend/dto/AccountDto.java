@@ -7,9 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.List;
 
-/**
- * Dto representing account-related information.
- */
+/** Dto representing account-related information. */
 public class AccountDto {
     private Long id;
     private String salutation;

@@ -5,9 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
-/**
- * Dto representing item-related information.
- */
+/** Dto representing item-related information. */
 public class ItemDto {
 
     private Long itemId;

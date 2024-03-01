@@ -20,13 +20,14 @@ public class OrderController {
 
     private final OrderService orderService;
 
-    // Constructor for injecting OrderMapper and OrderService
+    // Konstruktor für das Injizieren von OrderMapper and OrderService
     public OrderController(OrderMapper orderMapper, OrderService orderService) {
         this.orderMapper = orderMapper;
         this.orderService = orderService;
     }
 
-    // GET requests on "/orders" returns all orders
+    // Diese Methode verarbeitet GET-Anfragen auf dem Endpunkt "/orders".
+    // Sie ruft alle Bestellungen über den orderService ab.
     @GetMapping
     public List<OrderDto> readAll() {
         return orderService.findAll().stream()
@@ -34,14 +35,16 @@ public class OrderController {
                 .collect(Collectors.toList());
     }
 
-    // GET requests on "/orders/{id}" returns an order by ID
+    // Diese Methode verarbeitet GET-Anfragen auf dem Endpunkt "/orders/{id}".
+    // Sie ruft die Bestellung mit der angegebenen ID über den orderService ab.
     @GetMapping("/{id}")
     public OrderDto read(@PathVariable long id) {
         Order order = orderService.find(String.valueOf(id));
         return orderMapper.toDto(order);
     }
 
-    // Handler for POST requests on "/orders" creates a new order
+    // Diese Methode verarbeitet POST-Anfragen auf dem Endpunkt "/orders/create/{accountId}".
+    // Sie erstellt eine neue Bestellung für das angegebene Konto (Account) über den OrderService.
     @PostMapping("/create/{accountId}")
     @ResponseStatus(HttpStatus.CREATED)
     public OrderDto createOrder(@PathVariable Long accountId) {
@@ -49,34 +52,42 @@ public class OrderController {
         return orderMapper.toDto(order);
     }
 
-    // Handler for PUT requests on "/orders/{id}" updates an order
+    // Diese Methode verarbeitet PUT-Anfragen auf dem Endpunkt "/orders/{id}".
+    // Sie sucht die Bestellung in der Datenbank anhand ihrer ID und
+    // aktualisiert dann die Eigenschaften der Bestellung mit den neuen Werten.
     @PutMapping("/{id}")
     public OrderDto update(@PathVariable long id, @RequestBody @Valid OrderDto updatedOrderDto) {
-        // Find the order in the database by its ID
+        // Sie findet die Bestellung in der Datenbank anhand ihrer ID.
         Order order = orderService.find(String.valueOf(id));
 
-        // Update the order properties with the new values from the updatedOrderDto
+        // Sie aktualisiert dann die Eigenschaften der Bestellung mit den neuen Werten.
         order.setOrderDate(updatedOrderDto.getOrderDate());
-        // Set other properties accordingly
 
-        // Save the updated order back to the database
+        // Sie speichert die aktualisierte Bestellung zurück in die Datenbank.
         order = orderService.save(order);
 
-        // Map the updated order back to a DTO and return it
+        // Sie konvertiert die aktualisierte Bestellung zurück in ein DTO und gib es zurück.
         return orderMapper.toDto(order);
     }
 
-    // Handler for DELETE requests on "/orders/{id}" deletes an order
+    // Diese Methode verarbeitet DELETE-Anfragen auf dem Endpunkt "/orders/{id}".
+    // Sie löscht die Bestellung mit der angegebenen ID über den OrderService.
     @DeleteMapping("/{id}")
     public void delete(@PathVariable String id) {
         orderService.delete(id);
     }
-
+    // Diese Methode verarbeitet GET-Anfragen
+    // auf dem Endpunkt "/orders/accounts/{accountId}/orders".
+    // Sie ruft die Bestellhistorie für das angegebene Konto (Account)
+    // über den orderService ab und gibt sie zurück.
     @GetMapping("/accounts/{accountId}/orders")
     public List<Order> getOrderHistoryByAccountId(@PathVariable Long accountId) {
         return orderService.getOrderHistoryByAccountId(accountId);
     }
-
+    // Diese Methode verarbeitet GET-Anfragen
+    // auf dem Endpunkt "/orders/account/{accountId}/order/{orderId}/details".#
+    // Sie ruft die Bestelldetails für das angegebene Konto (Account) und
+    // die angegebene Bestell-ID über den orderService ab und gibt sie zurück.
     @GetMapping("/account/{accountId}/order/{orderId}/details")
     public List<OrderHistory> getOrderDetailsByAccountIdAndOrderId( @PathVariable Long accountId,
                                                                     @PathVariable String orderId) {

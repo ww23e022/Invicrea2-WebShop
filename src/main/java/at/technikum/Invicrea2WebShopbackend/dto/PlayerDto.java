@@ -2,9 +2,7 @@ package at.technikum.Invicrea2WebShopbackend.dto;
 
 import at.technikum.Invicrea2WebShopbackend.model.Empire;
 
-/**
- * Dto representing player-related information.
- */
+/** Dto representing player-related information. */
 public class PlayerDto {
     private Long id;
     private String name;

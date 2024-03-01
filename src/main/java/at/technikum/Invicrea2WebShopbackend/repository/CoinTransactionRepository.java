@@ -4,9 +4,6 @@ import at.technikum.Invicrea2WebShopbackend.model.CoinTransaction;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-/**
- * Repository interface for accessing database operations related to coin transactions.
- */
 @Repository
 public interface CoinTransactionRepository extends JpaRepository<CoinTransaction, Long> {
 }

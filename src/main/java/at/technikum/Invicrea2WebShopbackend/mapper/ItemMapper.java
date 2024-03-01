@@ -4,18 +4,11 @@ import at.technikum.Invicrea2WebShopbackend.dto.ItemDto;
 import at.technikum.Invicrea2WebShopbackend.model.Item;
 import org.springframework.stereotype.Component;
 
-/**
- * Mapper class responsible for mapping between Item and ItemDto objects.
- */
+// Klasse, die für die Abbildung von Objekten der Klasse Item
+// auf Objekte der Klasse ItemDto und umgekehrt verantwortlich ist.
 @Component
 public class ItemMapper {
-
-    /**
-     * Maps an Item object to an ItemDto object.
-     *
-     * @param item The Item object to map.
-     * @return The corresponding ItemDto object.
-     */
+    // Sie konvertiert ein Objekt der Klasse Item in ein Objekt der Klasse ItemDto.
     public ItemDto toItemDto(Item item) {
         ItemDto itemDto = new ItemDto();
         itemDto.setId(item.getId());
@@ -27,12 +20,8 @@ public class ItemMapper {
         return itemDto;
     }
 
-    /**
-     * Maps an ItemDto object to an Item object.
-     *
-     * @param itemDto The ItemDto object to map.
-     * @return The corresponding Item object.
-     */
+    //Sie konvertiert ein Objekt der Klasse ItemDto in ein Objekt der Klasse Item.
+
     public Item toItem(ItemDto itemDto) {
         Item item = new Item();
         item.setId(itemDto.getId());
@@ -44,4 +33,3 @@ public class ItemMapper {
         return item;
     }
 }
-

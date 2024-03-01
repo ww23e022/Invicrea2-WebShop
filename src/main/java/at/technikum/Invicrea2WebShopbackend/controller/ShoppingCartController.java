@@ -8,9 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/**
-REST-Controller für die Verwaltung von Warenkörben.
-*/
+/** Controller für die Verwaltung von Warenkörben. */
 @RestController
 @RequestMapping("/shopping-cart")
 public class ShoppingCartController {
@@ -18,30 +16,19 @@ public class ShoppingCartController {
     private final ShoppingCartService shoppingCartService;
     private final AccountService accountService;
 
-    /**
-    Konstruktor für die Injection von ShoppingCartService und AccountService.
-    @param shoppingCartService Der ShoppingCartService.
-    @param accountService      Der AccountService.
-    */
     public ShoppingCartController(ShoppingCartService shoppingCartService,
                                   AccountService accountService) {
         this.shoppingCartService = shoppingCartService;
         this.accountService = accountService;
     }
 
+    /** Ruft die Artikel im Warenkorb anhand der Account-ID ab. */
     @GetMapping("/{accountId}/items")
     public List<ShoppingCartItem> getItemsInCartByAccountId(@PathVariable Long accountId) {
         return shoppingCartService.getItemsInCartByAccountId(accountId);
     }
 
-    /**
-     * POST-Anfragen auf "/shopping-cart/{shoppingCartId}/add-item/{itemId}".
-     * Fügt einen Artikel zum Warenkorb hinzu.
-     *
-     * @param shoppingCartId Die ID des Warenkorbs.
-     * @param itemId         Die ID des hinzuzufügenden Artikels.
-     * @param quantity       Die Menge des hinzuzufügenden Artikels.
-     */
+    /** Fügt einen Artikel zum Warenkorb hinzu. */
     @PostMapping("/{shoppingCartId}/add-item/{itemId}")
     public void addItemToCart(@PathVariable Long shoppingCartId,
                               @PathVariable Long itemId,
@@ -49,14 +36,7 @@ public class ShoppingCartController {
         shoppingCartService.addItemToCart(shoppingCartId, itemId, quantity);
     }
 
-    /**
-     * PUT-Anfragen auf "/shopping-cart/{shoppingCartId}/update-item/{itemId}".
-     * Aktualisiert die Menge eines Artikels im Warenkorb.
-     *
-     * @param shoppingCartId Die ID des Warenkorbs.
-     * @param itemId         Die ID des zu aktualisierenden Artikels.
-     * @param quantity       Die neue Menge des Artikels.
-     */
+    /** Aktualisiert die Menge eines Artikels im Warenkorb. */
     @PutMapping("/{shoppingCartId}/update-item/{itemId}")
     public void updateCartItem(@PathVariable Long shoppingCartId,
                                @PathVariable Long itemId,
@@ -65,25 +45,14 @@ public class ShoppingCartController {
     }
 
 
-    /**
-     * DELETE-Anfragen auf "/shopping-cart/{shoppingCartId}/remove-item/{itemId}".
-     * Entfernt einen Artikel aus dem Warenkorb.
-     *
-     * @param shoppingCartId Die ID des Warenkorbs.
-     * @param itemId         Die ID des zu entfernenden Artikels.
-     */
+    /** Entfernt einen Artikel aus dem Warenkorb. */
     @DeleteMapping("/{shoppingCartId}/remove-item/{itemId}")
     public void removeItemFromCart(@PathVariable Long shoppingCartId,
                                    @PathVariable Long itemId) {
         shoppingCartService.removeItemFromCart(shoppingCartId, itemId);
     }
 
-    /**
-     * DELETE-Anfragen auf "/shopping-cart/{shoppingCartId}/clear".
-     * Leert den Warenkorb.
-     *
-     * @param shoppingCartId Die ID des zu leerenden Warenkorbs.
-     */
+    /** Leert den Warenkorb. */
     @DeleteMapping("/{shoppingCartId}/clear")
     public void clearCart(@PathVariable Long shoppingCartId) {
         shoppingCartService.clearCart(shoppingCartId);

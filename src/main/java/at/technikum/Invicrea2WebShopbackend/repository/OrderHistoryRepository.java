@@ -8,10 +8,13 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * Repository interface for accessing database operations related to order history objects.
+ * Repository-Schnittstelle für den Zugriff auf Datenbankoperationen
+ * im Zusammenhang mit Objekten der Bestellhistorie.
  */
 @Repository
 public interface OrderHistoryRepository extends JpaRepository<OrderHistory, Long> {
+
+    /** Sie sucht die Bestellhistorie anhand einer Bestellung.*/
     List<OrderHistory> findByOrder( Order order);
 }
 

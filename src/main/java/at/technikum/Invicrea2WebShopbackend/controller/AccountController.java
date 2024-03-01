@@ -38,7 +38,7 @@ public class AccountController {
         return accountService.getAccountById(accountId);
     }
 
-    // Handler for POST requests on "/account/register" registers a new account
+    // POST requests on "/account/register" registers a new account
     @PostMapping("/register")
     public String registerAccount(@RequestBody AccountDto accountDto) {
         // Check if passwords match

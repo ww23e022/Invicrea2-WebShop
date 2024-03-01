@@ -23,7 +23,6 @@ public class PlayerController {
     private final PlayerMapper playerMapper;
     private final AccountService accountService;
 
-    // Constructor for injecting PlayerService, PlayerMapper, and AccountService
     @Autowired
     public PlayerController(PlayerService playerService,
                             PlayerMapper playerMapper,
@@ -33,21 +32,21 @@ public class PlayerController {
         this.accountService = accountService;
     }
 
-    // Handler for GET requests on "/players" returns all players
+    // GET requests on "/players" returns all players
     @GetMapping
     public List<PlayerDto> readAllPlayers() {
         List<Player> players = playerService.getAllPlayers();
         return playerMapper.toDtos(players);
     }
 
-    // Handler for GET requests on "/players/{id}" returns a player by ID
+    // GET requests on "/players/{id}" returns a player by ID
     @GetMapping("/{id}")
     public PlayerDto readPlayer(@PathVariable Long id) {
         Player player = playerService.getPlayerById(id);
         return playerMapper.toDto(player);
     }
 
-    // Handler for POST requests on "/players" creates a new player
+    // POST requests on "/players" creates a new player
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public PlayerDto createPlayer(@RequestBody PlayerDto playerDto) {
@@ -70,7 +69,7 @@ public class PlayerController {
         }
     }
 
-    // Handler for PUT requests on "/players/{id}" updates a player
+    // PUT requests on "/players/{id}" updates a player
     @PutMapping("/{id}")
     public PlayerDto updatePlayer(@PathVariable Long id,
                                   @RequestBody PlayerDto updatedPlayerDto) {
@@ -85,13 +84,13 @@ public class PlayerController {
         }
     }
 
-    // Handler for DELETE requests on "/players/{id}" deletes a player
+    // DELETE requests on "/players/{id}" deletes a player
     @DeleteMapping("/{id}")
     public void deletePlayer(@PathVariable Long id) {
         playerService.deletePlayer(id);
     }
 
-    // Handler for GET requests on "/players/top5" returns the top 5 players by level
+    // GET requests on "/players/top5" returns the top 5 players by level
     @GetMapping("/top5")
     public List<PlayerDto> getTop5PlayersByLevel() {
         List<Player> topPlayers = playerService.getAllPlayers().stream()
@@ -101,7 +100,7 @@ public class PlayerController {
         return playerMapper.toDtos(topPlayers);
     }
 
-    // Handler for GET requests on "/players/sorted" returns all players sorted by level
+    // GET requests on "/players/sorted" returns all players sorted by level
     @GetMapping("/sorted")
     public List<PlayerDto> getAllPlayersSortedByLevel() {
         List<Player> sortedPlayers = playerService.getAllPlayers().stream()

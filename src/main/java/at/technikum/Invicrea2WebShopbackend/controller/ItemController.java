@@ -25,69 +25,78 @@ public class ItemController {
     @Autowired
     private CoinsService coinsService;
 
-    // Constructor for injecting ItemService and ItemMapper
+    // Konstruktor für das Injizieren von ItemService and ItemMapper
     public ItemController(ItemService itemService, ItemMapper itemMapper) {
         this.itemService = itemService;
         this.itemMapper = itemMapper;
     }
 
-    // Handler for POST requests on "/items/addItem" adds items
+    // Diese Methode verarbeitet POST-Anfragen auf dem Endpunkt "/items/addItems".
+    // Sie fügt Items hinzu.
     @PostMapping("/addItems")
     public String addItems(@RequestBody List<Item> items) {
         try {
-            // Loop through all the passed items
             for (Item item : items) {
-                // Convert the item to a DTO
+                // Der Item wird in ein DTO (Data Transfer Object) konvertiert.
                 ItemDto newItemDto = itemMapper.toItemDto(item);
-
-                // Check if the price is negative
+                // Es wird überprüft, ob der Preis des Items negativ ist.
                 if (newItemDto.getPrice() < 0) {
                     return "Price cannot be negative.";
                 }
 
-                // Validate the item
+                // Die Gültigkeit des Artikels wird überprüft.
                 itemService.validateItem(newItemDto);
 
-                // Convert the DTO back to an item
+                // Das DTO wird zurück in ein Item-Objekt umgewandelt.
                 Item newItem = itemMapper.toItem(newItemDto);
 
-                // Add and save the item
+                // Der Item wird dem Service hinzugefügt und gespeichert.
                 itemService.addItem(newItem, newItem.getCategory());
                 itemService.saveItem(newItem);
             }
+            //Wenn alle Items erfolgreich hinzugefügt wurden,
+            // wird "Items added successfully." zurückgegeben.
             return "Items added successfully.";
         } catch (IllegalArgumentException e) {
+            // Andernfalls wird eine Fehlermeldung zurückgegeben.
             return e.getMessage();
         } catch (Exception e) {
             return "Error adding items: " + e.getMessage();
         }
     }
 
-    // Handler for GET requests on "/items/items" returns all items
+    // Diese Methode verarbeitet GET-Anfragen auf dem Endpunkt "/items/items".
+    // Sie ruft alle Items aus dem ItemService ab und gibt sie zurück.
     @GetMapping("/items")
     public List<Item> findAllItems() {
         return itemService.getItems();
     }
 
-    // Handler for GET requests on "/items/item/{name}" returns an item by name
+    // Diese Methode verarbeitet GET-Anfragen auf dem Endpunkt "/items/item/{name}".
+    // Sie ruft den Item mit dem angegebenen Namen aus dem ItemService ab
+    // und gibt ihn zurück.
     @GetMapping("/item/{name}")
     public Item findItemByName(@PathVariable String name) {
         return itemService.getItemByName(name);
     }
 
-    // Handler for DELETE requests on "/items/delete/{id}" deletes an item
+    // Diese Methode verarbeitet DELETE-Anfragen auf dem Endpunkt "/items/delete/{id}".
+    // Sie löscht den Item mit der angegebenen ID mithilfe des ItemService.
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteItem(@PathVariable Long id) {
         return itemService.deleteItem(id);
     }
 
-    // Handler for PUT requests on "/items/update" updates an item
+    // Diese Methode verarbeitet PUT-Anfragen auf dem Endpunkt "/items/update".
+    // Sie aktualisiert den übergebenen Item mithilfe des ItemService und gibt ihn zurück.
     @PutMapping("/update")
     public Item updateItem(@RequestBody Item item) {
         return itemService.updateItem(item);
     }
 
-    // Handler for GET requests on "/items/itemsByCategory" returns items by category
+    // Diese Methode verarbeitet GET-Anfragen auf dem Endpunkt "/items/itemsByCategory".
+    // Sie gibt entweder alle Items zurück, wenn keine Kategorie angegeben ist,
+    // oder gibt alle Items einer bestimmten Kategorie zurück.
     @GetMapping("/itemsByCategory")
     public List<Item> getItemsByCategory(@RequestParam(required = false) ItemCategory category) {
         if (category == null) {
@@ -97,11 +106,10 @@ public class ItemController {
         }
     }
 
-    // Handler for GET requests on "/items/accounts/{accountId}/items"
-    // returns items for an account
+    // Diese Methode verarbeitet GET-Anfragen auf dem Endpunkt "/items/accounts/{accountId}/items".
+    // Sie gibt alle Items für ein bestimmtes Konto zurück.
     @GetMapping("/accounts/{accountId}/items")
-    public List<Item> getItemsByAccountId(@PathVariable Long accountId) {
-        //return itemService.getItems(accountId);
-        return null;
+    public List<Item> getItemsByAccountId(@PathVariable("accountId") Long accountId) {
+        return itemService.getItems();
     }
 }

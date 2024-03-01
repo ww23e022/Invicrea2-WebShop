@@ -15,9 +15,6 @@ public class PlayerMapper {
 
     /**
      * Maps a Player object to a PlayerDto object.
-     *
-     * @param player The Player object to map.
-     * @return The corresponding PlayerDto object.
      */
     public PlayerDto toDto( Player player) {
         PlayerDto playerDto = new PlayerDto();
@@ -33,9 +30,7 @@ public class PlayerMapper {
 
     /**
      * Maps a PlayerDto object to a Player object.
-     *
-     * @param playerDto The PlayerDto object to map.
-     * @return The corresponding Player object.
+
      */
     public Player toEntity(PlayerDto playerDto) {
         Player player = new Player();
@@ -50,8 +45,6 @@ public class PlayerMapper {
     /**
      * Maps a list of Player objects to a list of PlayerDto objects.
      *
-     * @param players The list of Player objects to map.
-     * @return The corresponding list of PlayerDto objects.
      */
     public List<PlayerDto> toDtos(List<Player> players) {
         return players.stream()
