@@ -17,6 +17,8 @@ import java.util.Optional;
 @Repository
 public interface ShoppingCartItemRepository extends JpaRepository<ShoppingCartItem, Long> {
 
+    List<ShoppingCartItem> findAllByShoppingCartAccountId(Long accountId);
+
     /**
      * Finds a shopping cart item by its shopping cart ID and item ID.
      *
@@ -26,13 +28,6 @@ public interface ShoppingCartItemRepository extends JpaRepository<ShoppingCartIt
      */
     Optional<ShoppingCartItem> findByShoppingCartIdAndItemId( Long shoppingCartId, Long itemId);
 
-    /**
-     * Finds all shopping cart items by shopping cart ID.
-     *
-     * @param shoppingCartId The ID of the shopping cart.
-     * @return A list of shopping cart items.
-     */
-    List<ShoppingCartItem> findAllByShoppingCartId(Long shoppingCartId);
 
     /**
      * Deletes all shopping cart items by shopping cart ID.

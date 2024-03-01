@@ -23,6 +23,10 @@ public class CoinTransaction {
     @NotBlank(message = "Transaction type must be specified")
     private String transactionType;
 
+    @ManyToOne
+    @JoinColumn(name = "account_id", referencedColumnName = "id")
+    private Account account;
+
     public Long getId() {
         return id;
     }
@@ -45,5 +49,13 @@ public class CoinTransaction {
 
     public void setTransactionType(String transactionType) {
         this.transactionType = transactionType;
+    }
+
+    public Account getAccount () {
+        return account;
+    }
+
+    public void setAccount ( Account account ) {
+        this.account = account;
     }
 }

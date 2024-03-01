@@ -30,43 +30,15 @@ public class ShoppingCartService {
         this.itemRepository = itemRepository;
     }
 
-    public Optional<ShoppingCart> getShoppingCartByAccountId(Long accountId) {
-        Optional<ShoppingCart> optionalShoppingCart =
+    public List<ShoppingCartItem> getItemsInCartByAccountId(Long accountId) {
+        ShoppingCart shoppingCart =
                 shoppingCartRepository.
-                        findByAccountId(accountId);
-
-        if (optionalShoppingCart.isPresent()) {
-            ShoppingCart shoppingCart = optionalShoppingCart.get();
-            List<ShoppingCartItem> cartItems =
-                    shoppingCartItemRepository.
-                            findAllByShoppingCartId(shoppingCart.getId());
-
-            // Iteriere durch die Warenkorbpositionen und
-            // setze den Namen basierend auf dem Item-Objekt
-            for (ShoppingCartItem item : cartItems) {
-                item.setItemName(item.getItem().getName());
-            }
-
-            shoppingCart.setCartItems(cartItems);
-            return Optional.of(shoppingCart);
-        } else {
-            return Optional.empty();
-        }
+                        findByAccountId(accountId).orElseThrow(()
+                                -> new RuntimeException(
+                                        "Shopping cart not found for account ID: "
+                                                + accountId));
+        return shoppingCartItemRepository.findAllByShoppingCartAccountId(shoppingCart.getId());
     }
-
-
-    public List<ShoppingCartItem> getItemsInCart(Long shoppingCartId) {
-        List<ShoppingCartItem> cartItems =
-                shoppingCartItemRepository.
-                        findAllByShoppingCartId(shoppingCartId);
-        // Iteriere durch die Warenkorbpositionen und
-        // setze den Namen basierend auf dem Item-Objekt
-        for (ShoppingCartItem item : cartItems) {
-            item.setItemName(item.getItem().getName());
-        }
-        return cartItems;
-    }
-
 
     public void addItemToCart(Long accountId, Long itemId, int quantity) {
         ShoppingCart shoppingCart = shoppingCartRepository.findByAccountId(accountId)

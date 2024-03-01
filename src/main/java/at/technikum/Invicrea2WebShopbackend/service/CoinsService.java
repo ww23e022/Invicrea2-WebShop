@@ -4,15 +4,12 @@ import at.technikum.Invicrea2WebShopbackend.model.Account;
 import at.technikum.Invicrea2WebShopbackend.model.CoinTransaction;
 import at.technikum.Invicrea2WebShopbackend.repository.AccountRepository;
 import at.technikum.Invicrea2WebShopbackend.repository.CoinTransactionRepository;
-import at.technikum.Invicrea2WebShopbackend.repository.ItemRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CoinsService {
-    @Autowired
-    private ItemRepository itemRepository;
 
     @Autowired
     private AccountRepository accountRepository;
@@ -40,10 +37,9 @@ public class CoinsService {
 
     private void recordCoinTransaction(Account account, int coinsChanged, String transactionType) {
         CoinTransaction coinTransaction = new CoinTransaction();
-        //coinTransaction.setAccount(account);
+        coinTransaction.setAccount(account);
         coinTransaction.setCoins(coinsChanged);
         coinTransaction.setTransactionType(transactionType);
-        //coinTransaction.setTransactionDate(LocalDateTime.now());
         coinTransactionRepository.save(coinTransaction);
     }
 

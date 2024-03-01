@@ -1,6 +1,5 @@
 package at.technikum.Invicrea2WebShopbackend.controller;
 
-import at.technikum.Invicrea2WebShopbackend.model.ShoppingCart;
 import at.technikum.Invicrea2WebShopbackend.model.ShoppingCartItem;
 import at.technikum.Invicrea2WebShopbackend.service.AccountService;
 import at.technikum.Invicrea2WebShopbackend.service.ShoppingCartService;
@@ -8,7 +7,6 @@ import at.technikum.Invicrea2WebShopbackend.service.ShoppingCartService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
 REST-Controller für die Verwaltung von Warenkörben.
@@ -31,27 +29,9 @@ public class ShoppingCartController {
         this.accountService = accountService;
     }
 
-    /**
-     * GET-Anfragen auf "/shopping-cart/{accountId}".
-     * Gibt den Warenkorb anhand der Kontonummer zurück.
-     *
-     * @param accountId Die ID des Kontos.
-     * @return Der Warenkorb des Kontos, falls vorhanden.
-     */
-    @GetMapping("/{accountId}")
-    public Optional<ShoppingCart> getShoppingCartByAccountId( @PathVariable Long accountId) {
-        return shoppingCartService.getShoppingCartByAccountId(accountId);
-    }
-
-    /**
-     * Für GET-Anfragen auf "/shopping-cart/{shoppingCartId}/items".
-     * Gibt die Artikel im Warenkorb zurück.
-     * @param shoppingCartId Die ID des Warenkorbs.
-     * @return Eine Liste von Warenkorbinhalten.
-     */
-    @GetMapping("/{shoppingCartId}/items")
-    public List<ShoppingCartItem> getItemsInCart( @PathVariable Long shoppingCartId) {
-        return shoppingCartService.getItemsInCart(shoppingCartId);
+    @GetMapping("/{accountId}/items")
+    public List<ShoppingCartItem> getItemsInCartByAccountId(@PathVariable Long accountId) {
+        return shoppingCartService.getItemsInCartByAccountId(accountId);
     }
 
     /**
