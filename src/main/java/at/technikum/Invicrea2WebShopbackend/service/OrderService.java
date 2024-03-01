@@ -1,7 +1,5 @@
 package at.technikum.Invicrea2WebShopbackend.service;
 
-import at.technikum.Invicrea2WebShopbackend.exception.EntityNotFoundException;
-import at.technikum.Invicrea2WebShopbackend.exception.InsufficientCoinsException;
 import at.technikum.Invicrea2WebShopbackend.model.*;
 import at.technikum.Invicrea2WebShopbackend.repository.AccountRepository;
 import at.technikum.Invicrea2WebShopbackend.repository.OrderHistoryRepository;
@@ -10,8 +8,6 @@ import at.technikum.Invicrea2WebShopbackend.repository.ShoppingCartItemRepositor
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -38,8 +34,8 @@ public class OrderService {
     }
 
     public Order find(String id) {
-        return orderRepository.findById(id)
-                .orElseThrow(EntityNotFoundException::new);
+
+        return null;
     }
 
     public Order save(Order order) {
@@ -51,102 +47,37 @@ public class OrderService {
     }
 
     public List<Order> getOrderHistoryByAccountId(Long accountId) {
-        Account account = accountRepository.findById(accountId)
-                .orElseThrow(() -> new EntityNotFoundException(
-                        "Das Benutzerkonto mit der ID " +
-                                accountId
-                                + " wurde nicht gefunden."));
-        return account.getOrder();
+
+        return null;
     }
 
     public Order createOrder(Long accountId) {
-        Account account = accountRepository.findById(accountId)
-                .orElseThrow(() -> new EntityNotFoundException(
-                        "Das Benutzerkonto mit der ID " +
-                                accountId +
-                                " wurde nicht gefunden."));
 
-        ShoppingCart shoppingCart = account.getShoppingCart();
-        List<ShoppingCartItem> cartItems = shoppingCart.getCartItems();
-
-        int totalCoinsNeeded = calculateTotalCoins(cartItems);
-        if (account.getCoins() < totalCoinsNeeded) {
-            throw new InsufficientCoinsException("Nicht genügend Münzen auf dem Konto");
-        }
-
-        account.setCoins(account.getCoins() - totalCoinsNeeded);
-        accountRepository.save(account);
-
-        Order order = buildOrder(account);
-
-        saveOrderAndClearShoppingCart(order, shoppingCart);
-
-        saveOrderItemsInOrderHistory(cartItems, order);
-
-        return order;
+        return null;
     }
 
     private int calculateTotalCoins(List<ShoppingCartItem> cartItems) {
-        int totalCoins = 0;
-        for (ShoppingCartItem cartItem : cartItems) {
-            totalCoins += cartItem.getItem().getPrice() * cartItem.getQuantity();
-        }
-        return totalCoins;
+
+        return 0;
     }
 
     private Order buildOrder(Account account) {
-        Order order = new Order();
-        order.setAccount(account);
-        order.setOrderDate(LocalDateTime.now());
-        return order;
+
+        return null;
     }
 
     private void saveOrderAndClearShoppingCart(Order order, ShoppingCart shoppingCart) {
-        orderRepository.save(order);
-        List<Long> cartItemIds = new ArrayList<>();
-        for (ShoppingCartItem cartItem : shoppingCart.getCartItems()) {
-            cartItemIds.add(cartItem.getId());
-        }
-        shoppingCartItemRepository.deleteAllByIdIn(cartItemIds);
+
     }
 
     private void saveOrderItemsInOrderHistory(
             List<ShoppingCartItem> cartItems,
             Order order) {
-        for (ShoppingCartItem cartItem : cartItems) {
-            OrderHistory orderHistory = new OrderHistory();
-            orderHistory.setOrder(order);
-            orderHistory.setItem(cartItem.getItem());
-            orderHistory.setItemName(cartItem.getItem().getName());
-            int totalPrice = cartItem.getItem().getPrice() * cartItem.getQuantity();
-            orderHistory.setItemPrice(totalPrice);
-            orderHistory.setQuantity(cartItem.getQuantity());
-            orderHistoryRepository.save(orderHistory);
-        }
     }
 
     public List<OrderHistory> getOrderDetailsByAccountIdAndOrderId(Long accountId, String orderId) {
-        Account account = accountRepository.findById(accountId)
-                .orElseThrow(() -> new EntityNotFoundException(
-                        "Das Benutzerkonto mit der ID " +
-                                accountId +
-                                " wurde nicht gefunden."));
 
-        Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new EntityNotFoundException(
-                        "Die Bestellung mit der ID " +
-                                orderId +
-                                " wurde nicht gefunden."));
-
-        // Überprüfen, ob die Bestellung zum angegebenen Konto gehört
-        if (!order.getAccount().equals(account)) {
-            throw new EntityNotFoundException("Die Bestellung mit der ID " +
-                    orderId +
-                    " gehört nicht zum Benutzerkonto mit der ID " +
-                    accountId);
-        }
-
-        return orderHistoryRepository.findByOrder(order);
+        return null;
     }
 
 }

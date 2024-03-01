@@ -19,7 +19,7 @@ public class CoinsController {
 
 
     /** Fügt Münzen zu einem Konto hinzu. */
-    @PutMapping("/addCoins/{accountId}")
+    @PutMapping("/{accountId}/addCoins")
     public String addCoinsToAccount(@PathVariable Long accountId,
                                     @RequestParam int coinsToAdd) {
         // Holt das Konto anhand der Account-ID
@@ -31,7 +31,7 @@ public class CoinsController {
     }
 
     /** Subtrahiert Münzen von einem Konto. */
-    @PutMapping("/subtractCoins/{accountId}")
+    @PutMapping("/{accountId}/subtractCoins")
     public String subtractCoinsFromAccount(@PathVariable Long accountId,
                                            @RequestParam int coinsToSubtract) {
         // Holt das Konto anhand der Account-ID
@@ -43,7 +43,7 @@ public class CoinsController {
     }
 
     /** Ruft die Anzahl der Münzen im angegebenen Konto ab. */
-    @GetMapping("/viewCoins/{accountId}")
+    @GetMapping()
     public int viewCoinsInAccount(@PathVariable Long accountId) {
         // Holt das Konto anhand der Account-ID
         Account account = accountService.getAccountById(accountId);

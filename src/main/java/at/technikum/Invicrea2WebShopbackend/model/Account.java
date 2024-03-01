@@ -3,11 +3,9 @@ package at.technikum.Invicrea2WebShopbackend.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+
 
 import java.util.List;
-
-// extends AbstractPersistable<Long> // Id kann man auch so angeben
 
 /** Entität, die ein Benutzerkonto im Webshop repräsentiert. */
 @Entity
@@ -25,12 +23,15 @@ public class Account {
 
     private String email;
 
-    @NotNull
+
     private String username;
+
 
     private String password;
 
+
     private String repeatPassword;
+
 
     private String country;
 
@@ -40,7 +41,7 @@ public class Account {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @NotNull
+
     private int coins;
 
     @OneToMany(mappedBy = "account")

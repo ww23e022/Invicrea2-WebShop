@@ -1,9 +1,6 @@
 package at.technikum.Invicrea2WebShopbackend.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 
 /** Entität, die ein Artikel im Webshop repräsentiert. */
 @Entity
@@ -13,17 +10,16 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long itemId;
 
-    @NotBlank
+
     private String name;
 
-    @NotNull
-    @Positive
+
     private int price;
 
-    @NotBlank
+
     private String description;
 
-    @NotBlank
+
     private String imageUrl;
 
     private ItemCategory category;

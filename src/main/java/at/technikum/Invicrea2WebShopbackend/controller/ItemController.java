@@ -20,6 +20,10 @@ public class ItemController {
     private final ItemService itemService;
     private final ItemMapper itemMapper;
 
+    @Autowired
+    private AccountService accountService;
+    @Autowired
+    private CoinsService coinsService;
 
     // Konstruktor für das Injizieren von ItemService and ItemMapper
     public ItemController(ItemService itemService, ItemMapper itemMapper) {
@@ -35,11 +39,11 @@ public class ItemController {
             for (Item item : items) {
                 // Der Item wird in ein DTO (Data Transfer Object) konvertiert.
                 ItemDto newItemDto = itemMapper.toItemDto(item);
+
                 // Es wird überprüft, ob der Preis des Items negativ ist.
                 if (newItemDto.getPrice() < 0) {
                     return "Price cannot be negative.";
                 }
-
                 // Die Gültigkeit des Artikels wird überprüft.
                 itemService.validateItem(newItemDto);
 

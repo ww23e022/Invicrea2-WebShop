@@ -4,21 +4,31 @@ import at.technikum.Invicrea2WebShopbackend.model.Order;
 import at.technikum.Invicrea2WebShopbackend.model.Role;
 import at.technikum.Invicrea2WebShopbackend.model.Status;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.NotBlank;
 
 import java.util.List;
 
-/** Dto representing account-related information. */
+/**
+ * Dto representing account-related information.
+ */
 public class AccountDto {
     private Long id;
     private String salutation;
     private String additionalInfo; // Hinzugefügtes Feld für "Other" Geschlecht
+    @NotBlank
     private String email;
+    @NotNull
     private String username;
+    @NotNull
     private String password;
+    @NotNull
     private String repeatPassword;
+    @NotBlank
     private String country;
     private Role role;
     private Status status;
+    @NotNull
     private int coins;
 
     @JsonIgnore

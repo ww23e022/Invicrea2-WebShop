@@ -109,7 +109,7 @@ public class PlayerController {
         return playerMapper.toDtos(sortedPlayers);
     }
 
-    // Handler for GET requests on "/players/search" searches players by name
+    // GET requests on "/players/search" searches players by name
     @GetMapping("/search")
     public List<PlayerDto> searchPlayersByName(@RequestParam String name) {
         List<Player> foundPlayers = playerService.findPlayersByName(name);

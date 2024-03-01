@@ -23,7 +23,7 @@ public class ShoppingCartController {
     }
 
     /** Ruft die Artikel im Warenkorb anhand der Account-ID ab. */
-    @GetMapping("/{accountId}/items")
+    @GetMapping("/{accountId}")
     public List<ShoppingCartItem> getItemsInCartByAccountId(@PathVariable Long accountId) {
         return shoppingCartService.getItemsInCartByAccountId(accountId);
     }
@@ -53,7 +53,7 @@ public class ShoppingCartController {
     }
 
     /** Leert den Warenkorb. */
-    @DeleteMapping("/{shoppingCartId}/clear")
+    @DeleteMapping("/{shoppingCartId}")
     public void clearCart(@PathVariable Long shoppingCartId) {
         shoppingCartService.clearCart(shoppingCartId);
     }

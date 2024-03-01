@@ -1,12 +1,15 @@
 package at.technikum.Invicrea2WebShopbackend.dto;
 
 import at.technikum.Invicrea2WebShopbackend.model.Empire;
+import jakarta.validation.constraints.NotNull;
 
 /** Dto representing player-related information. */
 public class PlayerDto {
     private Long id;
+    @NotNull
     private String name;
     private Empire empire;
+    @NotNull
     private int level;
     private Long accountId;
 

@@ -38,23 +38,16 @@ public class ItemService {
     }
 
     public ResponseEntity<String> deleteItem(Long id) {
-        itemRepository.deleteById(id);
-        return ResponseEntity.ok().body("Item removed !! " + id);
+
+        return null;
     }
     public Item updateItem(Item item) {
-        Item existingProduct = itemRepository.findById((item.getId())).orElse(null);
-        existingProduct.setName(item.getName());
-        existingProduct.setPrice(item.getPrice());
-        existingProduct.setDescription(item.getDescription());
-        existingProduct.setImageUrl(item.getImageUrl());
-        return itemRepository.save(existingProduct);
+
+        return item;
     }
     public List<Item> getItemsByCategory(ItemCategory category) {
-        if (category == ItemCategory.VIEW_ALL) {
-            return itemRepository.findAll();
-        } else {
-            return itemRepository.findByCategory(category);
-        }
+
+        return null;
     }
 
     public void addItem(Item item, ItemCategory category) {
@@ -68,13 +61,7 @@ public class ItemService {
     }
 
     public void validateItem(ItemDto item) {
-        if (item.getName() == null || item.getName().isEmpty() ||
-                item.getDescription() == null || item.getDescription().isEmpty() ||
-                item.getImageUrl() == null || item.getImageUrl().isEmpty() ||
-                item.getCategory() == null) {
-            throw new IllegalArgumentException("Ein oder mehrere Attribute wurden leer gelassen. " +
-                    "Bitte füllen Sie alle Felder aus.");
-        }
+
     }
 
 }

@@ -26,19 +26,19 @@ public class AccountController {
         this.itemService = itemService;
     }
 
-    // GET requests on "/account" returns a list of all accounts
+    //GET requests on "/account" returns a list of all accounts
     @GetMapping
     public List<Account> getAllAccounts() {
         return accountService.getAllAccounts();
     }
 
-    // GET requests on "/account/{accountId}" returns an account by ID
+    //GET requests on "/account/{accountId}" returns an account by ID
     @GetMapping("/{accountId}")
     public Account getAccountById(@PathVariable Long accountId) {
         return accountService.getAccountById(accountId);
     }
 
-    // POST requests on "/account/register" registers a new account
+    //POST requests on "/account/register" registers a new account
     @PostMapping("/register")
     public String registerAccount(@RequestBody AccountDto accountDto) {
         // Check if passwords match
@@ -77,22 +77,22 @@ public class AccountController {
         return "Account banned successfully";
     }
 
-    // PUT requests on "/account/unban/{accountId}" unbans an account
+    //PUT requests on "/account/unban/{accountId}" unbans an account
     @PutMapping("/unban/{accountId}")
     public String unbanAccount(@PathVariable Long accountId) {
         accountService.unbanAccount(accountId);
         return "Account unbanned successfully";
     }
 
-    // DELETE requests on "/account/{accountId}" deletes an account
+    // Handler for DELETE requests on "/account/{accountId}" deletes an account
     @DeleteMapping("/{accountId}")
     public String deleteAccount(@PathVariable Long accountId) {
         accountService.deleteAccountById(accountId);
         return "Account deleted successfully";
     }
 
-    // POST requests on "/account/login" performs a login
-    @PostMapping("/login")
+    //POST requests on "/account/login" performs a login
+    /*@PostMapping("/login")
     public String login(@RequestBody AccountDto accountDto) {
         String usernameOrEmail = accountDto.getUsername();
         // Check if email address is set, otherwise use the username
@@ -110,9 +110,9 @@ public class AccountController {
         }
     }
 
-    // POST requests on "/account/logout" performs a logout
+    // Handler for POST requests on "/account/logout" performs a logout
     @PostMapping("/logout")
     public String logout() {
         return "Logout successful";
-    }
+    }*/
 }
