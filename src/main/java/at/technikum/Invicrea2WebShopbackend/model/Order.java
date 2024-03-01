@@ -22,7 +22,6 @@ public class Order {
     @JoinColumn(name = "account_id", referencedColumnName = "id")
     private Account account;
 
-
     public Order(Long id) {
         this.id = id;
         orderDate = LocalDateTime.now();

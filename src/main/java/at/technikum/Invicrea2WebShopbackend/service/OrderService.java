@@ -124,4 +124,29 @@ public class OrderService {
             orderHistoryRepository.save(orderHistory);
         }
     }
+
+    public List<OrderHistory> getOrderDetailsByAccountIdAndOrderId(Long accountId, String orderId) {
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Das Benutzerkonto mit der ID " +
+                                accountId +
+                                " wurde nicht gefunden."));
+
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Die Bestellung mit der ID " +
+                                orderId +
+                                " wurde nicht gefunden."));
+
+        // Überprüfen, ob die Bestellung zum angegebenen Konto gehört
+        if (!order.getAccount().equals(account)) {
+            throw new EntityNotFoundException("Die Bestellung mit der ID " +
+                    orderId +
+                    " gehört nicht zum Benutzerkonto mit der ID " +
+                    accountId);
+        }
+
+        return orderHistoryRepository.findByOrder(order);
+    }
+
 }

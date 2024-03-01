@@ -16,10 +16,10 @@ public class OrderMapper {
      * @param order The Order object to map.
      * @return The corresponding OrderDto object.
      */
-    public OrderDto toDto (Order order){
+    public OrderDto toDto(Order order) {
         OrderDto orderDto = new OrderDto();
         orderDto.setId(order.getId());
-
+        orderDto.setOrderDate(order.getOrderDate());
         return orderDto;
     }
 }

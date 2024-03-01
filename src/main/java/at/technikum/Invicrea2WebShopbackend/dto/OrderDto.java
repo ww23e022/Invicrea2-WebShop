@@ -15,7 +15,6 @@ public class OrderDto {
     private LocalDateTime orderDate;
     @JsonIgnore
     private AccountDto account;
-    private List<CoinTransaction> coinTransactions;
 
     public OrderDto() {
     }
@@ -25,7 +24,6 @@ public class OrderDto {
         this.id = id;
         this.orderDate = orderDate;
         this.account = account;
-        this.coinTransactions = coinTransactions;
     }
 
     public Long getId () {
@@ -52,11 +50,4 @@ public class OrderDto {
         this.account = account;
     }
 
-    public List<CoinTransaction> getCoinTransactions() {
-        return coinTransactions;
-    }
-
-    public void setCoinTransactions(List<CoinTransaction> coinTransactions) {
-        this.coinTransactions = coinTransactions;
-    }
 }

@@ -3,6 +3,7 @@ package at.technikum.Invicrea2WebShopbackend.controller;
 import at.technikum.Invicrea2WebShopbackend.dto.OrderDto;
 import at.technikum.Invicrea2WebShopbackend.mapper.OrderMapper;
 import at.technikum.Invicrea2WebShopbackend.model.Order;
+import at.technikum.Invicrea2WebShopbackend.model.OrderHistory;
 import at.technikum.Invicrea2WebShopbackend.service.OrderService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -25,7 +26,7 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    // Handler for GET requests on "/orders" returns all orders
+    // GET requests on "/orders" returns all orders
     @GetMapping
     public List<OrderDto> readAll() {
         return orderService.findAll().stream()
@@ -33,7 +34,7 @@ public class OrderController {
                 .collect(Collectors.toList());
     }
 
-    // Handler for GET requests on "/orders/{id}" returns an order by ID
+    // GET requests on "/orders/{id}" returns an order by ID
     @GetMapping("/{id}")
     public OrderDto read(@PathVariable long id) {
         Order order = orderService.find(String.valueOf(id));
@@ -74,5 +75,11 @@ public class OrderController {
     @GetMapping("/accounts/{accountId}/orders")
     public List<Order> getOrderHistoryByAccountId(@PathVariable Long accountId) {
         return orderService.getOrderHistoryByAccountId(accountId);
+    }
+
+    @GetMapping("/account/{accountId}/order/{orderId}/details")
+    public List<OrderHistory> getOrderDetailsByAccountIdAndOrderId( @PathVariable Long accountId,
+                                                                    @PathVariable String orderId) {
+        return orderService.getOrderDetailsByAccountIdAndOrderId(accountId, orderId);
     }
 }
