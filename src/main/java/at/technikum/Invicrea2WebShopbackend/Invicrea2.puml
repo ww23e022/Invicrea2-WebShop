@@ -257,17 +257,6 @@ package "repository" {
         +findByAccountId(accountId: Long): Optional<ShoppingCart>
     }
 
-    class ShoppingCartItemRepository {
-        +findAllByShoppingCartAccountId(accountId: Long): List<ShoppingCartItem>
-        +findByShoppingCartIdAndItemId(shoppingCartId: Long, itemId: Long): Optional<ShoppingCartItem>
-        +deleteAllByShoppingCartId(shoppingCartId: Long): void
-        +deleteAllByIdIn(ids: List<Long>): void
-    }
-
-    class ShoppingCartRepository {
-        +findByAccountId(accountId: Long): Optional<ShoppingCart>
-    }
-
     JpaRepository <|.. AccountRepository
     JpaRepository <|.. CoinTransactionRepository
     JpaRepository <|.. ItemRepository

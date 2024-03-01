@@ -50,10 +50,10 @@ public class CoinsController {
     }
 
     /**
-     * Retrieves the number of coins in the specified account.
+     * Ruft die Anzahl der Münzen im angegebenen Konto ab.
      *
-     * @param accountId The ID of the account.
-     * @return The number of coins in the account.
+     * @param accountId Die ID des Kontos.
+     * @return Die Anzahl der Münzen im Konto.
      */
     @GetMapping("/viewCoins/{accountId}")
     public int viewCoinsInAccount(@PathVariable Long accountId) {
