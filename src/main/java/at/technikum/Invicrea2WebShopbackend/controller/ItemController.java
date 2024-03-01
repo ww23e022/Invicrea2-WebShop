@@ -97,14 +97,6 @@ public class ItemController {
         }
     }
 
-    // Handler for POST requests on "/items/addItemToCategory" adds an item with category
-    @PostMapping("/addItemToCategory")
-    public ResponseEntity<String> addItemWithCategory(@RequestBody Item item,
-                                                      @RequestParam ItemCategory category) {
-        itemService.addItemWithCategory(item, category);
-        return ResponseEntity.ok("Item added successfully.");
-    }
-
     // Handler for GET requests on "/items/accounts/{accountId}/items"
     // returns items for an account
     @GetMapping("/accounts/{accountId}/items")

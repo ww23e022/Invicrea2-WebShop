@@ -27,16 +27,12 @@ public class ItemService {
     public Item saveItem( Item item) {
         return itemRepository.save(item);
     }
-    public List<Item> saveItems(List<Item> items) {
-        return itemRepository.saveAll(items);
-    }
+
     public List<Item> getItems() {
         return itemRepository.findAll();
     }
     private List<Item> items = new ArrayList<>();
-    public Item getItemById(Long id) {
-        return itemRepository.findById(id).orElse(null);
-    }
+
     public Item getItemByName(String name) {
         return itemRepository.findByName(name);
     }
@@ -69,10 +65,6 @@ public class ItemService {
 
     public List<Item> getAllItems() {
         return items;
-    }
-    public void addItemWithCategory(Item item, ItemCategory category) {
-        item.setCategory(category);
-        items.add(item);
     }
 
     public void validateItem(ItemDto item) {
