@@ -263,7 +263,7 @@ package "repository" {
     JpaRepository <|.. CoinTransactionRepository
     JpaRepository <|.. ItemRepository
     JpaRepository <|.. OrderHistoryRepository
-    ListCrudRepository <|.. OrderRepository
+    JpaRepository <|.. OrderRepository
     JpaRepository <|.. PlayerRepository
     JpaRepository <|.. ShoppingCartItemRepository
     JpaRepository <|.. ShoppingCartRepository
