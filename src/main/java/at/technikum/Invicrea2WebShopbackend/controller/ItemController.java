@@ -20,10 +20,6 @@ public class ItemController {
     private final ItemService itemService;
     private final ItemMapper itemMapper;
 
-    @Autowired
-    private AccountService accountService;
-    @Autowired
-    private CoinsService coinsService;
 
     // Konstruktor für das Injizieren von ItemService and ItemMapper
     public ItemController(ItemService itemService, ItemMapper itemMapper) {
