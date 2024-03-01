@@ -222,8 +222,6 @@ package "model" {
 package "repository" {
 
     interface JpaRepository
-    interface ListCrudRepository
-    interface JpaRepository
 
     class AccountRepository {
         +findByUsername(username: String): Optional<Account>
