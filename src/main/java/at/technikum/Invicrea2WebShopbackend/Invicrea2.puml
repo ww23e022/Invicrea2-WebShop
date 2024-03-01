@@ -219,7 +219,7 @@ package "model" {
 
 }
 
-package "at.technikum.Invicrea2WebShopbackend.repository" {
+package "repository" {
 
     interface JpaRepository
     interface ListCrudRepository
