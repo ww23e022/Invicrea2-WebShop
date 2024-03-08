@@ -71,14 +71,14 @@ public class AccountController {
     }
 
     // PUT requests on "/account/ban/{accountId}" bans an account
-    @PutMapping("/ban/{accountId}")
+    @PutMapping("/{accountId}/ban")
     public String banAccount(@PathVariable Long accountId) {
         accountService.banAccount(accountId);
         return "Account banned successfully";
     }
 
     // PUT requests on "/account/unban/{accountId}" unbans an account
-    @PutMapping("/unban/{accountId}")
+    @PutMapping("/{accountId}/unban")
     public String unbanAccount(@PathVariable Long accountId) {
         accountService.unbanAccount(accountId);
         return "Account unbanned successfully";
