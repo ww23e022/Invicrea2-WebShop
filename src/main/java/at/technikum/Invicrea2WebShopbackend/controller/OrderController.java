@@ -45,7 +45,7 @@ public class OrderController {
 
     // Diese Methode verarbeitet POST-Anfragen auf dem Endpunkt "/orders/create/{accountId}".
     // Sie erstellt eine neue Bestellung für das angegebene Konto (Account) über den OrderService.
-    @PostMapping("/create/{accountId}")
+    @PostMapping("/{accountId}/create")
     @ResponseStatus(HttpStatus.CREATED)
     public OrderDto createOrder(@PathVariable Long accountId) {
         Order order = orderService.createOrder(accountId);
@@ -80,7 +80,7 @@ public class OrderController {
     // auf dem Endpunkt "/orders/accounts/{accountId}/orders".
     // Sie ruft die Bestellhistorie für das angegebene Konto (Account)
     // über den orderService ab und gibt sie zurück.
-    @GetMapping("/accounts/{accountId}/orders")
+    @GetMapping("/{accountId}")
     public List<Order> getOrderHistoryByAccountId(@PathVariable Long accountId) {
         return orderService.getOrderHistoryByAccountId(accountId);
     }
@@ -88,7 +88,7 @@ public class OrderController {
     // auf dem Endpunkt "/orders/account/{accountId}/order/{orderId}/details".#
     // Sie ruft die Bestelldetails für das angegebene Konto (Account) und
     // die angegebene Bestell-ID über den orderService ab und gibt sie zurück.
-    @GetMapping("/account/{accountId}/order/{orderId}/details")
+    @GetMapping("/{accountId}/{orderId}")
     public List<OrderHistory> getOrderDetailsByAccountIdAndOrderId( @PathVariable Long accountId,
                                                                     @PathVariable String orderId) {
         return orderService.getOrderDetailsByAccountIdAndOrderId(accountId, orderId);
