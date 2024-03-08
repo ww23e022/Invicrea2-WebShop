@@ -67,7 +67,7 @@ public class ItemController {
 
     // Diese Methode verarbeitet GET-Anfragen auf dem Endpunkt "/items/items".
     // Sie ruft alle Items aus dem ItemService ab und gibt sie zurück.
-    @GetMapping("/items")
+    @GetMapping()
     public List<Item> findAllItems() {
         return itemService.getItems();
     }
@@ -75,14 +75,14 @@ public class ItemController {
     // Diese Methode verarbeitet GET-Anfragen auf dem Endpunkt "/items/item/{name}".
     // Sie ruft den Item mit dem angegebenen Namen aus dem ItemService ab
     // und gibt ihn zurück.
-    @GetMapping("/item/{name}")
+    @GetMapping("/{name}")
     public Item findItemByName(@PathVariable String name) {
         return itemService.getItemByName(name);
     }
 
     // Diese Methode verarbeitet DELETE-Anfragen auf dem Endpunkt "/items/delete/{id}".
     // Sie löscht den Item mit der angegebenen ID mithilfe des ItemService.
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteItem(@PathVariable Long id) {
         return itemService.deleteItem(id);
     }
