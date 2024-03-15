@@ -29,7 +29,7 @@ public class ShoppingCartController {
     }
 
     /** Fügt einen Artikel zum Warenkorb hinzu. */
-    @PostMapping("/{shoppingCartId}/add-item/{itemId}")
+    @PostMapping("/{shoppingCartId}/{itemId}/add-item")
     public void addItemToCart(@PathVariable Long shoppingCartId,
                               @PathVariable Long itemId,
                               @RequestParam int quantity) {
@@ -37,7 +37,7 @@ public class ShoppingCartController {
     }
 
     /** Aktualisiert die Menge eines Artikels im Warenkorb. */
-    @PutMapping("/{shoppingCartId}/update-item/{itemId}")
+    @PutMapping("/{shoppingCartId}/{itemId}/update-item")
     public void updateCartItem(@PathVariable Long shoppingCartId,
                                @PathVariable Long itemId,
                                @RequestParam int quantity) {
@@ -46,7 +46,7 @@ public class ShoppingCartController {
 
 
     /** Entfernt einen Artikel aus dem Warenkorb. */
-    @DeleteMapping("/{shoppingCartId}/remove-item/{itemId}")
+    @DeleteMapping("/{shoppingCartId}/{itemId}/remove-item")
     public void removeItemFromCart(@PathVariable Long shoppingCartId,
                                    @PathVariable Long itemId) {
         shoppingCartService.removeItemFromCart(shoppingCartId, itemId);
