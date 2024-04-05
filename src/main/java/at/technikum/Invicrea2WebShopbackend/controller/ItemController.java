@@ -4,10 +4,7 @@ import at.technikum.Invicrea2WebShopbackend.dto.ItemDto;
 import at.technikum.Invicrea2WebShopbackend.mapper.ItemMapper;
 import at.technikum.Invicrea2WebShopbackend.model.Item;
 import at.technikum.Invicrea2WebShopbackend.model.ItemCategory;
-import at.technikum.Invicrea2WebShopbackend.service.AccountService;
-import at.technikum.Invicrea2WebShopbackend.service.CoinsService;
 import at.technikum.Invicrea2WebShopbackend.service.ItemService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -20,20 +17,15 @@ public class ItemController {
     private final ItemService itemService;
     private final ItemMapper itemMapper;
 
-    @Autowired
-    private AccountService accountService;
-    @Autowired
-    private CoinsService coinsService;
-
     // Konstruktor für das Injizieren von ItemService and ItemMapper
     public ItemController(ItemService itemService, ItemMapper itemMapper) {
         this.itemService = itemService;
         this.itemMapper = itemMapper;
     }
 
-    // Diese Methode verarbeitet POST-Anfragen auf dem Endpunkt "/items/addItems".
+    // Diese Methode verarbeitet POST-Anfragen auf dem Endpunkt "/items".
     // Sie fügt Items hinzu.
-    @PostMapping("/addItems")
+    @PostMapping()
     public String addItems(@RequestBody List<Item> items) {
         try {
             for (Item item : items) {
@@ -65,14 +57,14 @@ public class ItemController {
         }
     }
 
-    // Diese Methode verarbeitet GET-Anfragen auf dem Endpunkt "/items/items".
+    // Diese Methode verarbeitet GET-Anfragen auf dem Endpunkt "/items".
     // Sie ruft alle Items aus dem ItemService ab und gibt sie zurück.
     @GetMapping()
     public List<Item> findAllItems() {
         return itemService.getItems();
     }
 
-    // Diese Methode verarbeitet GET-Anfragen auf dem Endpunkt "/items/item/{name}".
+    // Diese Methode verarbeitet GET-Anfragen auf dem Endpunkt "/items/{name}".
     // Sie ruft den Item mit dem angegebenen Namen aus dem ItemService ab
     // und gibt ihn zurück.
     @GetMapping("/{name}")
@@ -80,7 +72,7 @@ public class ItemController {
         return itemService.getItemByName(name);
     }
 
-    // Diese Methode verarbeitet DELETE-Anfragen auf dem Endpunkt "/items/delete/{id}".
+    // Diese Methode verarbeitet DELETE-Anfragen auf dem Endpunkt "/items/{id}".
     // Sie löscht den Item mit der angegebenen ID mithilfe des ItemService.
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteItem(@PathVariable Long id) {
@@ -89,7 +81,7 @@ public class ItemController {
 
     // Diese Methode verarbeitet PUT-Anfragen auf dem Endpunkt "/items/update".
     // Sie aktualisiert den übergebenen Item mithilfe des ItemService und gibt ihn zurück.
-    @PutMapping("/update")
+    @PutMapping()
     public Item updateItem(@RequestBody Item item) {
         return itemService.updateItem(item);
     }
@@ -97,7 +89,7 @@ public class ItemController {
     // Diese Methode verarbeitet GET-Anfragen auf dem Endpunkt "/items/itemsByCategory".
     // Sie gibt entweder alle Items zurück, wenn keine Kategorie angegeben ist,
     // oder gibt alle Items einer bestimmten Kategorie zurück.
-    @GetMapping("/itemsByCategory")
+    @GetMapping(params = "category")
     public List<Item> getItemsByCategory(@RequestParam(required = false) ItemCategory category) {
         if (category == null) {
             return itemService.getAllItems();
