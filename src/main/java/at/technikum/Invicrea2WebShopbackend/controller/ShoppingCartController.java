@@ -22,14 +22,15 @@ public class ShoppingCartController {
         this.accountService = accountService;
     }
 
-    /** Ruft die Artikel im Warenkorb anhand der Account-ID ab. */
-    @GetMapping("/{accountId}")
-    public List<ShoppingCartItem> getItemsInCartByAccountId(@PathVariable Long accountId) {
-        return shoppingCartService.getItemsInCartByAccountId(accountId);
+    /** Ruft die Artikel im Warenkorb anhand der shoppingCartId ab. */
+    @GetMapping("/{shoppingCartId}")
+    public List<ShoppingCartItem> getItemsInCartByShoppingCartId(
+            @PathVariable Long shoppingCartId) {
+        return shoppingCartService.getItemsInCartByShoppingCartId(shoppingCartId);
     }
 
     /** Fügt einen Artikel zum Warenkorb hinzu. */
-    @PostMapping("/{shoppingCartId}/{itemId}/add-item")
+    @PostMapping("/{shoppingCartId}/{itemId}")
     public void addItemToCart(@PathVariable Long shoppingCartId,
                               @PathVariable Long itemId,
                               @RequestParam int quantity) {
@@ -37,16 +38,15 @@ public class ShoppingCartController {
     }
 
     /** Aktualisiert die Menge eines Artikels im Warenkorb. */
-    @PutMapping("/{shoppingCartId}/{itemId}/update-item")
+    @PutMapping("/{shoppingCartId}/{itemId}/")
     public void updateCartItem(@PathVariable Long shoppingCartId,
                                @PathVariable Long itemId,
                                @RequestParam int quantity) {
         shoppingCartService.updateCartItem(shoppingCartId, itemId, quantity);
     }
 
-
     /** Entfernt einen Artikel aus dem Warenkorb. */
-    @DeleteMapping("/{shoppingCartId}/{itemId}/remove-item")
+    @DeleteMapping("/{shoppingCartId}/{itemId}/")
     public void removeItemFromCart(@PathVariable Long shoppingCartId,
                                    @PathVariable Long itemId) {
         shoppingCartService.removeItemFromCart(shoppingCartId, itemId);
