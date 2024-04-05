@@ -18,8 +18,7 @@ public class Account {
     @Enumerated(EnumType.STRING)
     private Salutation salutation;
 
-    @Column(length = 30) // Passen Sie die Länge an Ihre Anforderungen an
-    private String additionalInfo; // Hinzugefügtes Feld für "Other"
+    private String additionalInfo;
 
     private String email;
 
@@ -44,6 +43,7 @@ public class Account {
 
     private int coins;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "account")
     @JsonManagedReference
     private List<Player> players;
@@ -52,6 +52,7 @@ public class Account {
     @OneToMany(mappedBy = "account")
     private List<Order> order;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "account")
     private ShoppingCart shoppingCart;
 

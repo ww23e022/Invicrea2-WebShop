@@ -90,8 +90,8 @@ public class PlayerController {
         playerService.deletePlayer(id);
     }
 
-    // GET requests on "/players/top5" returns the top 5 players by level
-    @GetMapping("/top5")
+    // GET requests on "/players?level=top5" returns the top 5 players by level
+    @GetMapping(params = "level=top5")
     public List<PlayerDto> getTop5PlayersByLevel() {
         List<Player> topPlayers = playerService.getAllPlayers().stream()
                 .sorted(Comparator.comparingInt(Player::getLevel).reversed())
@@ -100,8 +100,8 @@ public class PlayerController {
         return playerMapper.toDtos(topPlayers);
     }
 
-    // GET requests on "/players/sorted" returns all players sorted by level
-    @GetMapping("/sorted")
+    // GET requests on "/players?level=sorted" returns all players sorted by level
+    @GetMapping(params = "level=sorted")
     public List<PlayerDto> getAllPlayersSortedByLevel() {
         List<Player> sortedPlayers = playerService.getAllPlayers().stream()
                 .sorted(Comparator.comparingInt(Player::getLevel).reversed())
@@ -109,8 +109,8 @@ public class PlayerController {
         return playerMapper.toDtos(sortedPlayers);
     }
 
-    // GET requests on "/players/search" searches players by name
-    @GetMapping("/search")
+    // GET requests on "/players?search=name" searches players by name
+    @GetMapping(params = "search=name")
     public List<PlayerDto> searchPlayersByName(@RequestParam String name) {
         List<Player> foundPlayers = playerService.findPlayersByName(name);
         return playerMapper.toDtos(foundPlayers);

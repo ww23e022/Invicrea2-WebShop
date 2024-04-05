@@ -14,8 +14,10 @@ import java.util.Optional;
 @Repository
 public interface ShoppingCartItemRepository extends JpaRepository<ShoppingCartItem, Long> {
 
-    /** Sucht alle Warenkorb Inhalt anhand der Konto-ID des Warenkorbs. */
-    List<ShoppingCartItem> findAllByShoppingCartAccountId(Long accountId);
+
+    /** Sucht alle Warenkorb Inhalt anhand der Warenkorb-ID. */
+    List<ShoppingCartItem> findAllByShoppingCartId(Long shoppingCartId);
+
 
     /**
      * Sucht ein Warenkorb Inhalt anhand ihrer Warenkorb-ID und Artikel-ID.

@@ -4,6 +4,7 @@ import at.technikum.Invicrea2WebShopbackend.model.Order;
 import at.technikum.Invicrea2WebShopbackend.model.Role;
 import at.technikum.Invicrea2WebShopbackend.model.Status;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -15,7 +16,10 @@ import java.util.List;
 public class AccountDto {
     private Long id;
     private String salutation;
-    private String additionalInfo; // Hinzugefügtes Feld für "Other" Geschlecht
+
+    @Column(length = 30) // Passen Sie die Länge an Ihre Anforderungen an
+    private String additionalInfo; // Hinzugefügtes Feld für "Other"
+
     @NotBlank
     private String email;
     @NotNull

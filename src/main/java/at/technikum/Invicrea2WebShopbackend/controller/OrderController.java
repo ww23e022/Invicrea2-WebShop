@@ -26,6 +26,17 @@ public class OrderController {
         this.orderService = orderService;
     }
 
+    /**
+     * Diese Methode wird aufgerufen, um die Gesamtmenge der verkauften Artikel abzurufen.
+     * Sie wird über einen GET-Request orders?status=sold aufgerufen,
+     * wenn der 'status' den Wert 'sold' hat.
+     * Die Gesamtmenge der verkauften Artikel.
+     */
+    @GetMapping(params = "status=sold")
+    public long getTotalQuantitySold() {
+        return orderService.getTotalQuantitySold();
+    }
+
     // Diese Methode verarbeitet GET-Anfragen auf dem Endpunkt "/orders".
     // Sie ruft alle Bestellungen über den orderService ab.
     @GetMapping
@@ -43,9 +54,9 @@ public class OrderController {
         return orderMapper.toDto(order);
     }
 
-    // Diese Methode verarbeitet POST-Anfragen auf dem Endpunkt "/orders/create/{accountId}".
+    // Diese Methode verarbeitet POST-Anfragen auf dem Endpunkt "/orders/{accountId}".
     // Sie erstellt eine neue Bestellung für das angegebene Konto (Account) über den OrderService.
-    @PostMapping("/create/{accountId}")
+    @PostMapping("/{accountId}")
     @ResponseStatus(HttpStatus.CREATED)
     public OrderDto createOrder(@PathVariable Long accountId) {
         Order order = orderService.createOrder(accountId);
@@ -76,19 +87,20 @@ public class OrderController {
     public void delete(@PathVariable String id) {
         orderService.delete(id);
     }
+
     // Diese Methode verarbeitet GET-Anfragen
-    // auf dem Endpunkt "/orders/accounts/{accountId}/orders".
+    // auf dem Endpunkt "/orders/{accountId}".
     // Sie ruft die Bestellhistorie für das angegebene Konto (Account)
     // über den orderService ab und gibt sie zurück.
-    @GetMapping("/accounts/{accountId}/orders")
+    @GetMapping("/{accountId}")
     public List<Order> getOrderHistoryByAccountId(@PathVariable Long accountId) {
         return orderService.getOrderHistoryByAccountId(accountId);
     }
     // Diese Methode verarbeitet GET-Anfragen
-    // auf dem Endpunkt "/orders/account/{accountId}/order/{orderId}/details".#
+    // auf dem Endpunkt "/orders/{accountId}/{orderId}".#
     // Sie ruft die Bestelldetails für das angegebene Konto (Account) und
     // die angegebene Bestell-ID über den orderService ab und gibt sie zurück.
-    @GetMapping("/account/{accountId}/order/{orderId}/details")
+    @GetMapping("/{accountId}/{orderId}")
     public List<OrderHistory> getOrderDetailsByAccountIdAndOrderId( @PathVariable Long accountId,
                                                                     @PathVariable String orderId) {
         return orderService.getOrderDetailsByAccountIdAndOrderId(accountId, orderId);

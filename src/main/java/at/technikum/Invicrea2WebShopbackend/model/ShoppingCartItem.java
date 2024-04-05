@@ -1,5 +1,6 @@
 package at.technikum.Invicrea2WebShopbackend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -9,6 +10,7 @@ import jakarta.validation.constraints.NotNull;
  */
 @Entity
 @Table(name = "shopping_cart_items") // Ändern Sie den Tabellennamen entsprechend
+@JsonIgnoreProperties(value = {"id", "shoppingCart", "item"})
 public class ShoppingCartItem {
 
     @Id
@@ -83,15 +85,4 @@ public class ShoppingCartItem {
         this.itemPrice = itemPrice;
     }
 
-    @Override
-    public String toString() {
-        return "ShoppingCartItem{" +
-                "id=" + id +
-                ", shoppingCart=" + shoppingCart +
-                ", item=" + item +
-                ", itemName='" + itemName + '\'' +
-                ", itemPrice=" + itemPrice +
-                ", quantity=" + quantity +
-                '}';
-    }
 }
