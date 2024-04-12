@@ -7,9 +7,11 @@ import jakarta.validation.constraints.NotNull;
 public class PlayerDto {
     private Long id;
     @NotNull
+    @Size(min = 1, max = 100) // name length between 1 and 100 characters
     private String name;
     private Empire empire;
     @NotNull
+    @Min(value = 1) // level must be at least 1
     private int level;
     private Long accountId;
 
