@@ -18,6 +18,7 @@ public class ItemDto {
     private int price;
 
     @NotBlank
+    @Size(min = 1, max = 500)
     private String description;
 
     @NotBlank
