@@ -17,6 +17,7 @@ public class AccountDto {
     private String salutation;
     private String additionalInfo; // Hinzugefügtes Feld für "Other" Geschlecht
     @NotBlank
+    @Email // Ensures email format is valid
     private String email;
     @NotNull
     private String username;
