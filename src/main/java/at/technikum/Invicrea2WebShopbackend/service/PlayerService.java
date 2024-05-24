@@ -22,8 +22,7 @@ public class PlayerService {
     }
 
     public Player getPlayerById(Long id) {
-
-        return null;
+        return playerRepository.findById(id).orElse(null);
     }
 
     public Player savePlayer(Player player) {
@@ -31,8 +30,15 @@ public class PlayerService {
     }
 
     public Player updatePlayer(Long id, Player updatedPlayer) {
-
-        return updatedPlayer;
+        Player existingPlayer = getPlayerById(id);
+        if (existingPlayer != null) {
+            existingPlayer.setName(updatedPlayer.getName());
+            existingPlayer.setEmpire(updatedPlayer.getEmpire());
+            existingPlayer.setLevel(updatedPlayer.getLevel());
+            // Weitere Aktualisierungen hinzufügen, falls erforderlich
+            return savePlayer(existingPlayer);
+        }
+        return null;
     }
 
     public void deletePlayer(Long id) {
