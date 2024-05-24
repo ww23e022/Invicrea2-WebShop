@@ -16,7 +16,7 @@ import java.util.List;
 @CrossOrigin
 public class AccountController {
 
-    // Dependency Injection for AccountService and ItemService
+    // Dependency Injection for AccountService and ItemService ss
     private final AccountService accountService;
     private final ItemService itemService;
 
@@ -27,7 +27,7 @@ public class AccountController {
         this.itemService = itemService;
     }
 
-    // GET requests on "/account" returns a list of all accountss
+    // GET requests on "/account" returns a list of all accounts
     @GetMapping
     public List<Account> getAllAccounts() {
         return accountService.getAllAccounts();
