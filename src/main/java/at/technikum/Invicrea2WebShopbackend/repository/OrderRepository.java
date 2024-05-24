@@ -5,7 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 /**
- * Repository interface for accessing database operations related to order history objects.
+ * Repository-Schnittstelle für den Zugriff auf
+ * Datenbankoperationen im Zusammenhang mit Bestellungen
  */
 @Repository
 public interface OrderRepository extends JpaRepository<Order, String> {
