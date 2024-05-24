@@ -39,6 +39,9 @@ public class ItemController {
                 // Die Gültigkeit des Artikels wird überprüft.
                 itemService.validateItem(newItemDto);
 
+
+
+
                 // Das DTO wird zurück in ein Item-Objekt umgewandelt.
                 Item newItem = itemMapper.toItem(newItemDto);
 
