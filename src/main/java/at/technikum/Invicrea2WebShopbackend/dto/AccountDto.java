@@ -21,6 +21,7 @@ public class AccountDto {
     private String additionalInfo; // Hinzugefügtes Feld für "Other"
 
     @NotBlank
+    @Email // Ensures email format is valid
     private String email;
     @NotNull
     private String username;
