@@ -12,11 +12,6 @@ import java.util.Optional;
 @Repository
 public interface ShoppingCartRepository extends JpaRepository<ShoppingCart, Long> {
 
-    /**
-     * Finds a shopping cart by account ID.
-     *
-     * @param accountId The ID of the account.
-     * @return The shopping cart of the account, if found.
-     */
+    /** Sucht einen Warenkorb anhand der Kontonummer. */
     Optional<ShoppingCart> findByAccountId( Long accountId);
 }

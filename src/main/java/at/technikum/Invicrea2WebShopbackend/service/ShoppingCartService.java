@@ -10,6 +10,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,22 +31,34 @@ public class ShoppingCartService {
         this.itemRepository = itemRepository;
     }
 
-    public List<ShoppingCartItem> getItemsInCartByAccountId(Long accountId) {
-        ShoppingCart shoppingCart =
-                shoppingCartRepository.
-                        findByAccountId(accountId).orElseThrow(()
-                                -> new RuntimeException(
-                                        "Shopping cart not found for account ID: "
-                                                + accountId));
-        return shoppingCartItemRepository.findAllByShoppingCartAccountId(shoppingCart.getId());
+    public List<ShoppingCartItem> getItemsInCartByShoppingCartId(Long shoppingCartId) {
+        List<ShoppingCartItem> cartItems =
+                shoppingCartItemRepository.findAllByShoppingCartId(shoppingCartId);
+
+        List<ShoppingCartItem> cartItemInfos = new ArrayList<>();
+        int totalPrice = 0;
+
+        for (ShoppingCartItem cartItem : cartItems) {
+            ShoppingCartItem itemInfo = new ShoppingCartItem();
+            itemInfo.setItemName(cartItem.getItemName());
+            itemInfo.setQuantity(cartItem.getQuantity());
+            itemInfo.setItemPrice(cartItem.getItemPrice());
+            totalPrice += cartItem.getItemPrice();
+            cartItemInfos.add(itemInfo);
+        }
+
+        // Add total price to a dummy item for convenience
+        ShoppingCartItem totalItem = new ShoppingCartItem();
+        totalItem.setItemName("Total Price");
+        totalItem.setItemPrice(totalPrice);
+        cartItemInfos.add(totalItem);
+
+        return cartItemInfos;
     }
 
-    public void addItemToCart(Long accountId, Long itemId, int quantity) {
-        ShoppingCart shoppingCart = shoppingCartRepository.findByAccountId(accountId)
-                .orElseGet(() -> createShoppingCart(accountId));
-
+    public void addItemToCart(Long shoppingCartId, Long itemId, int quantity) {
         Optional<ShoppingCartItem> existingItem = shoppingCartItemRepository
-                .findByShoppingCartIdAndItemId(shoppingCart.getId(), itemId);
+                .findByShoppingCartIdAndItemId(shoppingCartId, itemId);
 
         if (existingItem.isPresent()) {
             ShoppingCartItem item = existingItem.get();
@@ -58,7 +71,7 @@ public class ShoppingCartService {
             shoppingCartItemRepository.save(item);
         } else {
             ShoppingCartItem newItem = new ShoppingCartItem();
-            newItem.setShoppingCart(shoppingCart);
+            newItem.setShoppingCart(shoppingCartRepository.getById(shoppingCartId));
             newItem.setItem(itemRepository.getById(itemId));
             newItem.setQuantity(quantity);
             newItem.setItemName(newItem.getItem().getName());

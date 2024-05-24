@@ -11,35 +11,27 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * Repository interface for accessing database operations related to shopping cart items.
- */
 @Repository
 public interface ShoppingCartItemRepository extends JpaRepository<ShoppingCartItem, Long> {
 
-    List<ShoppingCartItem> findAllByShoppingCartAccountId(Long accountId);
+
+    /** Sucht alle Warenkorb Inhalt anhand der Warenkorb-ID. */
+    List<ShoppingCartItem> findAllByShoppingCartId(Long shoppingCartId);
+
 
     /**
-     * Finds a shopping cart item by its shopping cart ID and item ID.
-     *
-     * @param shoppingCartId The ID of the shopping cart.
-     * @param itemId         The ID of the item.
-     * @return The shopping cart item, if found.
+     * Sucht ein Warenkorb Inhalt anhand ihrer Warenkorb-ID und Artikel-ID.
      */
     Optional<ShoppingCartItem> findByShoppingCartIdAndItemId( Long shoppingCartId, Long itemId);
 
 
     /**
-     * Deletes all shopping cart items by shopping cart ID.
-     *
-     * @param shoppingCartId The ID of the shopping cart.
+     * Löscht alle Warenkorb Inhalt anhand der Warenkorb-ID.
      */
     void deleteAllByShoppingCartId(Long shoppingCartId);
 
     /**
-     * Deletes all shopping cart items by a list of IDs.
-     *
-     * @param ids The list of IDs of shopping cart items.
+     * Löscht alle Warenkorb Inhalt anhand einer Liste von IDs.
      */
     @Transactional
     @Modifying

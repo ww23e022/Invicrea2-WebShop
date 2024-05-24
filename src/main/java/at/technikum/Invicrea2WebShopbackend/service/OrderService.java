@@ -33,6 +33,18 @@ public class OrderService {
         this.orderHistoryRepository = orderHistoryRepository;
     }
 
+    public long getTotalQuantitySold() {
+        List<OrderHistory> orderHistories = orderHistoryRepository.findAll();
+        long totalQuantitySold = 0;
+
+        for (OrderHistory orderHistory : orderHistories) {
+            totalQuantitySold += orderHistory.getQuantity();
+        }
+
+        return totalQuantitySold;
+    }
+
+
     public List<Order> findAll() {
         return orderRepository.findAll();
     }
@@ -73,16 +85,19 @@ public class OrderService {
         if (account.getCoins() < totalCoinsNeeded) {
             throw new InsufficientCoinsException("Nicht genügend Münzen auf dem Konto");
         }
-
         account.setCoins(account.getCoins() - totalCoinsNeeded);
         accountRepository.save(account);
 
+        int totalCartPrice = 0; // Variable für den Gesamtpreis des Warenkorbs
         Order order = buildOrder(account);
-
+        // Berechne den Gesamtpreis des Warenkorbs und speichere ihn
+        for (ShoppingCartItem cartItem : cartItems) {
+            int totalPrice = cartItem.getItem().getPrice() * cartItem.getQuantity();
+            totalCartPrice += totalPrice;
+        }
+        order.setTotalPrice(totalCartPrice);
         saveOrderAndClearShoppingCart(order, shoppingCart);
-
         saveOrderItemsInOrderHistory(cartItems, order);
-
         return order;
     }
 

@@ -17,6 +17,8 @@ public class Order {
 
     private LocalDateTime orderDate;
 
+    private int totalPrice;
+
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "account_id", referencedColumnName = "id")
@@ -45,6 +47,14 @@ public class Order {
 
     public void setOrderDate(LocalDateTime orderDate) {
         this.orderDate = orderDate;
+    }
+
+    public int getTotalPrice () {
+        return totalPrice;
+    }
+
+    public void setTotalPrice ( int totalPrice ) {
+        this.totalPrice = totalPrice;
     }
 
     public Account getAccount() {

@@ -4,10 +4,7 @@ import at.technikum.Invicrea2WebShopbackend.dto.ItemDto;
 import at.technikum.Invicrea2WebShopbackend.mapper.ItemMapper;
 import at.technikum.Invicrea2WebShopbackend.model.Item;
 import at.technikum.Invicrea2WebShopbackend.model.ItemCategory;
-import at.technikum.Invicrea2WebShopbackend.service.AccountService;
-import at.technikum.Invicrea2WebShopbackend.service.CoinsService;
 import at.technikum.Invicrea2WebShopbackend.service.ItemService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -20,88 +17,84 @@ public class ItemController {
     private final ItemService itemService;
     private final ItemMapper itemMapper;
 
-    @Autowired
-    private AccountService accountService;
-    @Autowired
-    private CoinsService coinsService;
-
-    // Constructor for injecting ItemService and ItemMapper
+    // Konstruktor für das Injizieren von ItemService and ItemMapper
     public ItemController(ItemService itemService, ItemMapper itemMapper) {
         this.itemService = itemService;
         this.itemMapper = itemMapper;
     }
 
-    // Handler for POST requests on "/items/addItem" adds items
-    @PostMapping("/addItems")
+    // Diese Methode verarbeitet POST-Anfragen auf dem Endpunkt "/items".
+    // Sie fügt Items hinzu.
+    @PostMapping()
     public String addItems(@RequestBody List<Item> items) {
         try {
-            // Loop through all the passed items
             for (Item item : items) {
-                // Convert the item to a DTO
+                // Der Item wird in ein DTO (Data Transfer Object) konvertiert.
                 ItemDto newItemDto = itemMapper.toItemDto(item);
 
-                // Check if the price is negative
+                // Es wird überprüft, ob der Preis des Items negativ ist.
                 if (newItemDto.getPrice() < 0) {
                     return "Price cannot be negative.";
                 }
-
-                // Validate the item
+                // Die Gültigkeit des Artikels wird überprüft.
                 itemService.validateItem(newItemDto);
 
-                // Convert the DTO back to an item
+                // Das DTO wird zurück in ein Item-Objekt umgewandelt.
                 Item newItem = itemMapper.toItem(newItemDto);
 
-                // Add and save the item
+                // Der Item wird dem Service hinzugefügt und gespeichert.
                 itemService.addItem(newItem, newItem.getCategory());
                 itemService.saveItem(newItem);
             }
+            //Wenn alle Items erfolgreich hinzugefügt wurden,
+            // wird "Items added successfully." zurückgegeben.
             return "Items added successfully.";
         } catch (IllegalArgumentException e) {
+            // Andernfalls wird eine Fehlermeldung zurückgegeben.
             return e.getMessage();
         } catch (Exception e) {
             return "Error adding items: " + e.getMessage();
         }
     }
 
-    // Handler for GET requests on "/items/items" returns all items
-    @GetMapping("/items")
+    // Diese Methode verarbeitet GET-Anfragen auf dem Endpunkt "/items".
+    // Sie ruft alle Items aus dem ItemService ab und gibt sie zurück.
+    @GetMapping()
     public List<Item> findAllItems() {
         return itemService.getItems();
     }
 
-    // Handler for GET requests on "/items/item/{name}" returns an item by name
-    @GetMapping("/item/{name}")
+    // Diese Methode verarbeitet GET-Anfragen auf dem Endpunkt "/items/{name}".
+    // Sie ruft den Item mit dem angegebenen Namen aus dem ItemService ab
+    // und gibt ihn zurück.
+    @GetMapping("/{name}")
     public Item findItemByName(@PathVariable String name) {
         return itemService.getItemByName(name);
     }
 
-    // Handler for DELETE requests on "/items/delete/{id}" deletes an item
-    @DeleteMapping("/delete/{id}")
+    // Diese Methode verarbeitet DELETE-Anfragen auf dem Endpunkt "/items/{id}".
+    // Sie löscht den Item mit der angegebenen ID mithilfe des ItemService.
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteItem(@PathVariable Long id) {
         return itemService.deleteItem(id);
     }
 
-    // Handler for PUT requests on "/items/update" updates an item
-    @PutMapping("/update")
+    // Diese Methode verarbeitet PUT-Anfragen auf dem Endpunkt "/items/update".
+    // Sie aktualisiert den übergebenen Item mithilfe des ItemService und gibt ihn zurück.
+    @PutMapping()
     public Item updateItem(@RequestBody Item item) {
         return itemService.updateItem(item);
     }
 
-    // Handler for GET requests on "/items/itemsByCategory" returns items by category
-    @GetMapping("/itemsByCategory")
+    // Diese Methode verarbeitet GET-Anfragen auf dem Endpunkt "/items/itemsByCategory".
+    // Sie gibt entweder alle Items zurück, wenn keine Kategorie angegeben ist,
+    // oder gibt alle Items einer bestimmten Kategorie zurück.
+    @GetMapping(params = "category")
     public List<Item> getItemsByCategory(@RequestParam(required = false) ItemCategory category) {
         if (category == null) {
             return itemService.getAllItems();
         } else {
             return itemService.getItemsByCategory(category);
         }
-    }
-
-    // Handler for GET requests on "/items/accounts/{accountId}/items"
-    // returns items for an account
-    @GetMapping("/accounts/{accountId}/items")
-    public List<Item> getItemsByAccountId(@PathVariable Long accountId) {
-        //return itemService.getItems(accountId);
-        return null;
     }
 }

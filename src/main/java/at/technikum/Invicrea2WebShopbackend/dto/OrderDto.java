@@ -2,6 +2,8 @@ package at.technikum.Invicrea2WebShopbackend.dto;
 
 import at.technikum.Invicrea2WebShopbackend.model.CoinTransaction;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -13,6 +15,10 @@ import java.util.List;
 public class OrderDto {
     private Long id;
     private LocalDateTime orderDate;
+
+    @NotNull
+    @Positive
+    private int totalPrice;
     @JsonIgnore
     private AccountDto account;
 
@@ -40,6 +46,14 @@ public class OrderDto {
 
     public void setOrderDate(LocalDateTime orderDate) {
         this.orderDate = orderDate;
+    }
+
+    public int getTotalPrice () {
+        return totalPrice;
+    }
+
+    public void setTotalPrice ( int totalPrice ) {
+        this.totalPrice = totalPrice;
     }
 
     public AccountDto getAccount() {

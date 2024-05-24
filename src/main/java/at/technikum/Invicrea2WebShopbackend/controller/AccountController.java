@@ -6,6 +6,7 @@ import at.technikum.Invicrea2WebShopbackend.model.Salutation;
 import at.technikum.Invicrea2WebShopbackend.service.AccountService;
 import at.technikum.Invicrea2WebShopbackend.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.List;
 @CrossOrigin
 public class AccountController {
 
-    // Dependency Injection for AccountService and ItemService
+    // Dependency Injection for AccountService and ItemService ss
     private final AccountService accountService;
     private final ItemService itemService;
 
@@ -32,14 +33,15 @@ public class AccountController {
         return accountService.getAllAccounts();
     }
 
-    // GET requests on "/account/{accountId}" returns an account by ID
+    //GET requests on "/account/{accountId}" returns an account by ID
     @GetMapping("/{accountId}")
     public Account getAccountById(@PathVariable Long accountId) {
         return accountService.getAccountById(accountId);
     }
 
-    // Handler for POST requests on "/account/register" registers a new account
-    @PostMapping("/register")
+    //POST requests registers a new account
+    @PostMapping()
+    @ResponseStatus(HttpStatus.CREATED)
     public String registerAccount(@RequestBody AccountDto accountDto) {
         // Check if passwords match
         if (!accountDto.getPassword().equals(accountDto.getRepeatPassword())) {
@@ -70,27 +72,29 @@ public class AccountController {
         return accountService.updateAccount(accountId, accountDto);
     }
 
-    // PUT requests on "/account/ban/{accountId}" bans an account
-    @PutMapping("/ban/{accountId}")
+    // PUT requests on "/account?{accountId}=ban" bans an account
+    @PutMapping(params = "{accountId}=ban")
     public String banAccount(@PathVariable Long accountId) {
         accountService.banAccount(accountId);
         return "Account banned successfully";
     }
 
-    // PUT requests on "/account/unban/{accountId}" unbans an account
-    @PutMapping("/unban/{accountId}")
+    // PUT requests on "/account?{accountId}=unban" unbans an account
+    @PutMapping(params = "{accountId}=unban")
     public String unbanAccount(@PathVariable Long accountId) {
         accountService.unbanAccount(accountId);
         return "Account unbanned successfully";
     }
 
     // DELETE requests on "/account/{accountId}" deletes an account
-    @DeleteMapping("/{accountId}")
+    @DeleteMapping(params = "/{accountId}")
     public String deleteAccount(@PathVariable Long accountId) {
         accountService.deleteAccountById(accountId);
         return "Account deleted successfully";
     }
 
+
+/*
     // POST requests on "/account/login" performs a login
     @PostMapping("/login")
     public String login(@RequestBody AccountDto accountDto) {
@@ -115,4 +119,5 @@ public class AccountController {
     public String logout() {
         return "Logout successful";
     }
+    */
 }

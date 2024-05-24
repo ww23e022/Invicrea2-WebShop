@@ -13,6 +13,8 @@ import java.util.List;
  */
 @Repository
 public interface OrderHistoryRepository extends JpaRepository<OrderHistory, Long> {
+
+    /** Sie sucht die Bestellhistorie anhand einer Bestellung.*/
     List<OrderHistory> findByOrder( Order order);
 }
 
