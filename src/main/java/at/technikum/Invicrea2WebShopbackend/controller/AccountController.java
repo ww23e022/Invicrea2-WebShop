@@ -27,7 +27,7 @@ public class AccountController {
         this.itemService = itemService;
     }
 
-    // GET requests on "/account" returns a list of all accountssss
+    // GET requests on "/account" returns a list of all accounts
     @GetMapping
     public List<Account> getAllAccounts() {
         return accountService.getAllAccounts();
