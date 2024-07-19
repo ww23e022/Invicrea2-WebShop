@@ -4,6 +4,7 @@ import at.technikum.Invicrea2WebShopbackend.model.ItemCategory;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 
 /** Dto representing item-related information. */
 public class ItemDto {

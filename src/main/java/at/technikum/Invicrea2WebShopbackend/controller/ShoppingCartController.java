@@ -1,9 +1,9 @@
 package at.technikum.Invicrea2WebShopbackend.controller;
 
 import at.technikum.Invicrea2WebShopbackend.model.ShoppingCartItem;
-import at.technikum.Invicrea2WebShopbackend.service.AccountService;
 import at.technikum.Invicrea2WebShopbackend.service.ShoppingCartService;
 
+import at.technikum.Invicrea2WebShopbackend.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,12 +14,12 @@ import java.util.List;
 public class ShoppingCartController {
 
     private final ShoppingCartService shoppingCartService;
-    private final AccountService accountService;
+    private final UserService userService;
 
     public ShoppingCartController(ShoppingCartService shoppingCartService,
-                                  AccountService accountService) {
+                                  UserService userService) {
         this.shoppingCartService = shoppingCartService;
-        this.accountService = accountService;
+        this.userService = userService;
     }
 
     /** Ruft die Artikel im Warenkorb anhand der shoppingCartId ab. */

@@ -1,6 +1,7 @@
 package at.technikum.Invicrea2WebShopbackend.dto;
 
 import at.technikum.Invicrea2WebShopbackend.model.CoinTransaction;
+import at.technikum.Invicrea2WebShopbackend.model.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -20,16 +21,16 @@ public class OrderDto {
     @Positive
     private int totalPrice;
     @JsonIgnore
-    private AccountDto account;
+    private User user;
 
     public OrderDto() {
     }
 
-    public OrderDto(Long id, LocalDateTime orderDate, AccountDto account,
+    public OrderDto(Long id, LocalDateTime orderDate, User user,
                     List<CoinTransaction> coinTransactions) {
         this.id = id;
         this.orderDate = orderDate;
-        this.account = account;
+        this.user = user;
     }
 
     public Long getId () {
@@ -56,12 +57,11 @@ public class OrderDto {
         this.totalPrice = totalPrice;
     }
 
-    public AccountDto getAccount() {
-        return account;
+    public User getUser () {
+        return user;
     }
 
-    public void setAccount(AccountDto account) {
-        this.account = account;
+    public void setUser ( User user ) {
+        this.user = user;
     }
-
 }

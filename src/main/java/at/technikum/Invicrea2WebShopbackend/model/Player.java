@@ -5,11 +5,15 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Entität, die einen Spieler im Spiel repräsentiert.
  */
 @Entity
+@Getter
+@Setter
 @Table(name = "player")
 public class Player{
     @Id
@@ -23,51 +27,7 @@ public class Player{
     private int level;
 
     @ManyToOne
-    @JoinColumn(name = "account_id")
+    @JoinColumn(name = "user_id")
     @JsonBackReference
-    private Account account;
-
-
-    // Constructors, getters, and setters...
-
-
-    public Long getId () {
-        return id;
-    }
-
-    public void setId ( Long id ) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Empire getEmpire() {
-        return empire;
-    }
-
-    public void setEmpire(Empire empire) {
-        this.empire = empire;
-    }
-
-    public int getLevel() {
-        return level;
-    }
-
-    public void setLevel(int level) {
-        this.level = level;
-    }
-
-    public Account getAccount() {
-        return account;
-    }
-
-    public void setAccount(Account account) {
-        this.account = account;
-    }
+    private User user;
 }

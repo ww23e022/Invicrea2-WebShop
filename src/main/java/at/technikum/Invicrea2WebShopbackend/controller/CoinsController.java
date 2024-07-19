@@ -1,8 +1,8 @@
 package at.technikum.Invicrea2WebShopbackend.controller;
 
-import at.technikum.Invicrea2WebShopbackend.model.Account;
-import at.technikum.Invicrea2WebShopbackend.service.AccountService;
+import at.technikum.Invicrea2WebShopbackend.model.User;
 import at.technikum.Invicrea2WebShopbackend.service.CoinsService;
+import at.technikum.Invicrea2WebShopbackend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,39 +15,39 @@ public class CoinsController {
     private CoinsService coinsService;
 
     @Autowired
-    private AccountService accountService;
+    private UserService userService;
 
 
     /** Fügt Münzen zu einem Konto hinzu. */
-    @PostMapping("/{accountId}/")
-    public String addCoinsToAccount(@PathVariable Long accountId,
+    @PostMapping("/{userId}/")
+    public String addCoinsToUser(@PathVariable Long userId,
                                     @RequestParam int coinsToAdd) {
-        // Holt das Konto anhand der Account-ID
-        Account account = accountService.getAccountById(accountId);
+        // Holt das Konto anhand der User-ID
+        User user = userService.getUserById(userId);
         // Fügt die Münzen dem Konto hinzu
-        coinsService.addCoinsToAccount(account, coinsToAdd);
+        coinsService.addCoinsToUser(user, coinsToAdd);
         // Gibt eine Bestätigungsnachricht zurück
         return "Münzen wurden erfolgreich hinzugefügt.";
     }
 
     /** Subtrahiert Münzen von einem Konto. */
-    @PutMapping("/{accountId}/")
-    public String subtractCoinsFromAccount(@PathVariable Long accountId,
+    @PutMapping("/{userId}/")
+    public String subtractCoinsFromUser(@PathVariable Long userId,
                                            @RequestParam int coinsToSubtract) {
-        // Holt das Konto anhand der Account-ID
-        Account account = accountService.getAccountById(accountId);
+        // Holt das Konto anhand der User-ID
+        User user = userService.getUserById(userId);
         // Subtrahiert die Münzen vom Konto
-        coinsService.subtractCoinsFromAccount(account, coinsToSubtract);
+        coinsService.subtractCoinsFromUser(user, coinsToSubtract);
         // Gibt eine Bestätigungsnachricht zurück
         return "Münzen wurden erfolgreich abgezogen.";
     }
 
     /** Ruft die Anzahl der Münzen im angegebenen Konto ab. */
-    @GetMapping("/{accountId}")
-    public int viewCoinsInAccount(@PathVariable Long accountId) {
-        // Holt das Konto anhand der Account-ID
-        Account account = accountService.getAccountById(accountId);
+    @GetMapping("/{userId}")
+    public int viewCoinsInUser(@PathVariable Long userId) {
+        // Holt das Konto anhand der User-ID
+        User user = userService.getUserById(userId);
         // Ruft die Anzahl der Münzen im Konto ab
-        return coinsService.getCoinsInAccount(account);
+        return coinsService.getCoinsInUser(user);
     }
 }

@@ -3,7 +3,7 @@ package at.technikum.Invicrea2WebShopbackend.service;
 import at.technikum.Invicrea2WebShopbackend.exception.EntityNotFoundException;
 import at.technikum.Invicrea2WebShopbackend.exception.InsufficientCoinsException;
 import at.technikum.Invicrea2WebShopbackend.model.*;
-import at.technikum.Invicrea2WebShopbackend.repository.AccountRepository;
+import at.technikum.Invicrea2WebShopbackend.repository.UserRepository;
 import at.technikum.Invicrea2WebShopbackend.repository.OrderHistoryRepository;
 import at.technikum.Invicrea2WebShopbackend.repository.OrderRepository;
 import at.technikum.Invicrea2WebShopbackend.repository.ShoppingCartItemRepository;
@@ -18,17 +18,17 @@ import java.util.List;
 public class OrderService {
 
     private final OrderRepository orderRepository;
-    private final AccountRepository accountRepository;
+    private final UserRepository userRepository;
     private final ShoppingCartItemRepository shoppingCartItemRepository;
     private final OrderHistoryRepository orderHistoryRepository;
 
     @Autowired
     public OrderService(OrderRepository orderRepository,
-                        AccountRepository accountRepository,
+                        UserRepository userRepository,
                         ShoppingCartItemRepository shoppingCartItemRepository,
                         OrderHistoryRepository orderHistoryRepository) {
         this.orderRepository = orderRepository;
-        this.accountRepository = accountRepository;
+        this.userRepository = userRepository;
         this.shoppingCartItemRepository = shoppingCartItemRepository;
         this.orderHistoryRepository = orderHistoryRepository;
     }
@@ -43,7 +43,6 @@ public class OrderService {
 
         return totalQuantitySold;
     }
-
 
     public List<Order> findAll() {
         return orderRepository.findAll();
@@ -62,34 +61,34 @@ public class OrderService {
         orderRepository.deleteById(id);
     }
 
-    public List<Order> getOrderHistoryByAccountId(Long accountId) {
-        Account account = accountRepository.findById(accountId)
+    public List<Order> getOrderHistoryByUserId(Long userId) {
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException(
-                        "Das Benutzerkonto mit der ID " +
-                                accountId
-                                + " wurde nicht gefunden."));
-        return account.getOrder();
+                        "Der Benutzer mit der ID " +
+                                userId +
+                                " wurde nicht gefunden."));
+        return user.getOrder();
     }
 
-    public Order createOrder(Long accountId) {
-        Account account = accountRepository.findById(accountId)
+    public Order createOrder(Long userId) {
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException(
-                        "Das Benutzerkonto mit der ID " +
-                                accountId +
+                        "Der Benutzer mit der ID " +
+                                userId +
                                 " wurde nicht gefunden."));
 
-        ShoppingCart shoppingCart = account.getShoppingCart();
+        ShoppingCart shoppingCart = user.getShoppingCart();
         List<ShoppingCartItem> cartItems = shoppingCart.getCartItems();
 
         int totalCoinsNeeded = calculateTotalCoins(cartItems);
-        if (account.getCoins() < totalCoinsNeeded) {
+        if (user.getCoins() < totalCoinsNeeded) {
             throw new InsufficientCoinsException("Nicht genügend Münzen auf dem Konto");
         }
-        account.setCoins(account.getCoins() - totalCoinsNeeded);
-        accountRepository.save(account);
+        user.setCoins(user.getCoins() - totalCoinsNeeded);
+        userRepository.save(user);
 
         int totalCartPrice = 0; // Variable für den Gesamtpreis des Warenkorbs
-        Order order = buildOrder(account);
+        Order order = buildOrder(user);
         // Berechne den Gesamtpreis des Warenkorbs und speichere ihn
         for (ShoppingCartItem cartItem : cartItems) {
             int totalPrice = cartItem.getItem().getPrice() * cartItem.getQuantity();
@@ -109,9 +108,9 @@ public class OrderService {
         return totalCoins;
     }
 
-    private Order buildOrder(Account account) {
+    private Order buildOrder(User user) {
         Order order = new Order();
-        order.setAccount(account);
+        order.setUser(user);
         order.setOrderDate(LocalDateTime.now());
         return order;
     }
@@ -140,11 +139,11 @@ public class OrderService {
         }
     }
 
-    public List<OrderHistory> getOrderDetailsByAccountIdAndOrderId(Long accountId, String orderId) {
-        Account account = accountRepository.findById(accountId)
+    public List<OrderHistory> getOrderDetailsByUserIdAndOrderId(Long userId, String orderId) {
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException(
-                        "Das Benutzerkonto mit der ID " +
-                                accountId +
+                        "Der Benutzer mit der ID " +
+                                userId +
                                 " wurde nicht gefunden."));
 
         Order order = orderRepository.findById(orderId)
@@ -153,15 +152,14 @@ public class OrderService {
                                 orderId +
                                 " wurde nicht gefunden."));
 
-        // Überprüfen, ob die Bestellung zum angegebenen Konto gehört
-        if (!order.getAccount().equals(account)) {
+        // Überprüfen, ob die Bestellung zum angegebenen Benutzer gehört
+        if (!order.getUser().equals(user)) {
             throw new EntityNotFoundException("Die Bestellung mit der ID " +
                     orderId +
-                    " gehört nicht zum Benutzerkonto mit der ID " +
-                    accountId);
+                    " gehört nicht zum Benutzer mit der ID " +
+                    userId);
         }
 
         return orderHistoryRepository.findByOrder(order);
     }
-
 }

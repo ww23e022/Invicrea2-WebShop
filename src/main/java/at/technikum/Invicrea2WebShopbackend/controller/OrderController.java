@@ -17,10 +17,9 @@ import java.util.stream.Collectors;
 @CrossOrigin
 public class OrderController {
     private final OrderMapper orderMapper;
-
     private final OrderService orderService;
 
-    // Konstruktor für das Injizieren von OrderMapper and OrderService
+    // Konstruktor für das Injizieren von OrderMapper und OrderService
     public OrderController(OrderMapper orderMapper, OrderService orderService) {
         this.orderMapper = orderMapper;
         this.orderService = orderService;
@@ -54,12 +53,12 @@ public class OrderController {
         return orderMapper.toDto(order);
     }
 
-    // Diese Methode verarbeitet POST-Anfragen auf dem Endpunkt "/orders/{accountId}".
-    // Sie erstellt eine neue Bestellung für das angegebene Konto (Account) über den OrderService.
-    @PostMapping("/{accountId}")
+    // Diese Methode verarbeitet POST-Anfragen auf dem Endpunkt "/orders/{userId}".
+    // Sie erstellt eine neue Bestellung für das angegebene Konto (User) über den OrderService.
+    @PostMapping("/{userId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public OrderDto createOrder(@PathVariable Long accountId) {
-        Order order = orderService.createOrder(accountId);
+    public OrderDto createOrder(@PathVariable Long userId) {
+        Order order = orderService.createOrder(userId);
         return orderMapper.toDto(order);
     }
 
@@ -77,7 +76,7 @@ public class OrderController {
         // Sie speichert die aktualisierte Bestellung zurück in die Datenbank.
         order = orderService.save(order);
 
-        // Sie konvertiert die aktualisierte Bestellung zurück in ein DTO und gib es zurück.
+        // Sie konvertiert die aktualisierte Bestellung zurück in ein DTO und gibt es zurück.
         return orderMapper.toDto(order);
     }
 
@@ -89,20 +88,20 @@ public class OrderController {
     }
 
     // Diese Methode verarbeitet GET-Anfragen
-    // auf dem Endpunkt "/orders/{accountId}".
-    // Sie ruft die Bestellhistorie für das angegebene Konto (Account)
+    // auf dem Endpunkt "/orders/{userId}".
+    // Sie ruft die Bestellhistorie für das angegebene Konto (User)
     // über den orderService ab und gibt sie zurück.
-    @GetMapping("/{accountId}")
-    public List<Order> getOrderHistoryByAccountId(@PathVariable Long accountId) {
-        return orderService.getOrderHistoryByAccountId(accountId);
+    @GetMapping("/history/{userId}")
+    public List<Order> getOrderHistoryByUserId(@PathVariable Long userId) {
+        return orderService.getOrderHistoryByUserId(userId);
     }
     // Diese Methode verarbeitet GET-Anfragen
-    // auf dem Endpunkt "/orders/{accountId}/{orderId}".#
-    // Sie ruft die Bestelldetails für das angegebene Konto (Account) und
+    // auf dem Endpunkt "/orders/{userId}/{orderId}".
+    // Sie ruft die Bestelldetails für das angegebene Konto (User) und
     // die angegebene Bestell-ID über den orderService ab und gibt sie zurück.
-    @GetMapping("/{accountId}/{orderId}")
-    public List<OrderHistory> getOrderDetailsByAccountIdAndOrderId( @PathVariable Long accountId,
-                                                                    @PathVariable String orderId) {
-        return orderService.getOrderDetailsByAccountIdAndOrderId(accountId, orderId);
+    @GetMapping("/details/{userId}/{orderId}")
+    public List<OrderHistory> getOrderDetailsByUserIdAndOrderId(@PathVariable Long userId,
+                                                                @PathVariable String orderId) {
+        return orderService.getOrderDetailsByUserIdAndOrderId(userId, orderId);
     }
 }

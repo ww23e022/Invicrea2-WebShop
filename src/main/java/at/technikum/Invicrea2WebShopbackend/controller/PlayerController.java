@@ -2,10 +2,10 @@ package at.technikum.Invicrea2WebShopbackend.controller;
 
 import at.technikum.Invicrea2WebShopbackend.dto.PlayerDto;
 import at.technikum.Invicrea2WebShopbackend.mapper.PlayerMapper;
-import at.technikum.Invicrea2WebShopbackend.model.Account;
 import at.technikum.Invicrea2WebShopbackend.model.Player;
-import at.technikum.Invicrea2WebShopbackend.service.AccountService;
+import at.technikum.Invicrea2WebShopbackend.model.User;
 import at.technikum.Invicrea2WebShopbackend.service.PlayerService;
+import at.technikum.Invicrea2WebShopbackend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -21,15 +21,15 @@ public class PlayerController {
 
     private final PlayerService playerService;
     private final PlayerMapper playerMapper;
-    private final AccountService accountService;
+    private final UserService userService;
 
     @Autowired
     public PlayerController(PlayerService playerService,
                             PlayerMapper playerMapper,
-                            AccountService accountService) {
+                            UserService userService) {
         this.playerService = playerService;
         this.playerMapper = playerMapper;
-        this.accountService = accountService;
+        this.userService = userService;
     }
 
     // GET requests on "/players" returns all players
@@ -50,22 +50,22 @@ public class PlayerController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public PlayerDto createPlayer(@RequestBody PlayerDto playerDto) {
-        // Check if the account_id is valid
-        if (accountService.isValidAccountId(playerDto.getAccountId())) {
-            // Check if the account already has 4 players
-            if (playerService.getPlayerCountByAccountId(playerDto.getAccountId()) < 4) {
-                // Get the Account object for the given account_id
-                Account account = accountService.getAccountById(playerDto.getAccountId());
-                // Create a player object and assign it to the account
+        // Check if the user_id is valid
+        if (userService.isValidUserId(playerDto.getUserId())) {
+            // Check if the user already has 4 players
+            if (playerService.getPlayerCountByUserId(playerDto.getUserId()) < 4) {
+                // Get the User object for the given user_id
+                User user = userService.getUserById(playerDto.getUserId());
+                // Create a player object and assign it to the user
                 Player player = playerMapper.toEntity(playerDto);
-                player.setAccount(account);
+                player.setUser(user);
                 player = playerService.savePlayer(player);
                 return playerMapper.toDto(player);
             } else {
-                throw new IllegalArgumentException("An account can create a maximum of 4 players.");
+                throw new IllegalArgumentException("An User can create a maximum of 4 players.");
             }
         } else {
-            throw new IllegalArgumentException("Invalid account_id.");
+            throw new IllegalArgumentException("Invalid user_id.");
         }
     }
 
@@ -73,14 +73,14 @@ public class PlayerController {
     @PutMapping("/{id}")
     public PlayerDto updatePlayer(@PathVariable Long id,
                                   @RequestBody PlayerDto updatedPlayerDto) {
-        // Check if the account_id is valid
-        if (accountService.isValidAccountId(updatedPlayerDto.getAccountId())) {
+        // Check if the user_id is valid
+        if (userService.isValidUserId(updatedPlayerDto.getUserId())) {
             Player updatedPlayer = playerMapper.toEntity(updatedPlayerDto);
             PlayerDto resultDto = playerMapper.toDto(playerService.updatePlayer(id, updatedPlayer));
             resultDto.setId(id); // Keep the same ID as requested
             return resultDto;
         } else {
-            throw new IllegalArgumentException("Invalid Account ID.");
+            throw new IllegalArgumentException("Invalid User ID.");
         }
     }
 

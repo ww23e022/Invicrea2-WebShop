@@ -1,7 +1,9 @@
 package at.technikum.Invicrea2WebShopbackend.dto;
 
 import at.technikum.Invicrea2WebShopbackend.model.Empire;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 /** Dto representing player-related information. */
 public class PlayerDto {
@@ -13,7 +15,7 @@ public class PlayerDto {
     @NotNull
     @Min(value = 1) // level must be at least 1
     private int level;
-    private Long accountId;
+    private Long userId;
 
     // Constructors, getters, and setters...
 
@@ -49,11 +51,11 @@ public class PlayerDto {
         this.level = level;
     }
 
-    public Long getAccountId() {
-        return accountId;
+    public Long getUserId () {
+        return userId;
     }
 
-    public void setAccountId(Long accountId) {
-        this.accountId = accountId;
+    public void setUserId ( Long userId ) {
+        this.userId = userId;
     }
 }

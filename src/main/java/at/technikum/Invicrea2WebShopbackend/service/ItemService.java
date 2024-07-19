@@ -3,8 +3,8 @@ package at.technikum.Invicrea2WebShopbackend.service;
 import at.technikum.Invicrea2WebShopbackend.dto.ItemDto;
 import at.technikum.Invicrea2WebShopbackend.model.Item;
 import at.technikum.Invicrea2WebShopbackend.model.ItemCategory;
-import at.technikum.Invicrea2WebShopbackend.repository.AccountRepository;
 import at.technikum.Invicrea2WebShopbackend.repository.ItemRepository;
+import at.technikum.Invicrea2WebShopbackend.repository.UserRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -17,11 +17,11 @@ public class ItemService {
 
     private final ItemRepository itemRepository;
 
-    private final AccountRepository accountRepository;
+    private final UserRepository userRepository;
 
-    public ItemService ( ItemRepository itemRepository, AccountRepository accountRepository ) {
+    public ItemService ( ItemRepository itemRepository, UserRepository userRepository ) {
         this.itemRepository = itemRepository;
-        this.accountRepository = accountRepository;
+        this.userRepository = userRepository;
     }
 
     public Item saveItem( Item item) {

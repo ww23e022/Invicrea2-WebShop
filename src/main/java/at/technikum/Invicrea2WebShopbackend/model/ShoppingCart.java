@@ -1,6 +1,9 @@
 package at.technikum.Invicrea2WebShopbackend.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
@@ -8,6 +11,8 @@ import java.util.List;
  * Entität, die einen Warenkorb repräsentiert.
  */
 @Entity
+@Getter
+@Setter
 public class ShoppingCart {
 
     @Id
@@ -15,33 +20,11 @@ public class ShoppingCart {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "account_id", referencedColumnName = "id")
-    private Account account;
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JsonBackReference
+    private User user;
 
     @OneToMany(mappedBy = "shoppingCart", cascade = CascadeType.ALL)
     private List<ShoppingCartItem> cartItems;
 
-    public Long getId () {
-        return id;
-    }
-
-    public void setId ( Long id ) {
-        this.id = id;
-    }
-
-    public Account getAccount () {
-        return account;
-    }
-
-    public void setAccount ( Account account ) {
-        this.account = account;
-    }
-
-    public List<ShoppingCartItem> getCartItems () {
-        return cartItems;
-    }
-
-    public void setCartItems ( List<ShoppingCartItem> cartItems ) {
-        this.cartItems = cartItems;
-    }
 }

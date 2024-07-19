@@ -2,13 +2,14 @@ package at.technikum.Invicrea2WebShopbackend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-/**
- * Entität, die eine Bestellung im Webshop repräsentiert.
- */
 @Entity
+@Getter
+@Setter
 @Table(name = "orders")
 public class Order {
     @Id
@@ -21,8 +22,8 @@ public class Order {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "account_id", referencedColumnName = "id")
-    private Account account;
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 
     public Order(Long id) {
         this.id = id;
@@ -32,37 +33,4 @@ public class Order {
     public Order() {
         orderDate = LocalDateTime.now();
     }
-
-    public Long getId () {
-        return id;
-    }
-
-    public void setId ( Long id ) {
-        this.id = id;
-    }
-
-    public LocalDateTime getOrderDate() {
-        return orderDate;
-    }
-
-    public void setOrderDate(LocalDateTime orderDate) {
-        this.orderDate = orderDate;
-    }
-
-    public int getTotalPrice () {
-        return totalPrice;
-    }
-
-    public void setTotalPrice ( int totalPrice ) {
-        this.totalPrice = totalPrice;
-    }
-
-    public Account getAccount() {
-        return account;
-    }
-
-    public void setAccount(Account account) {
-        this.account = account;
-    }
-
 }
