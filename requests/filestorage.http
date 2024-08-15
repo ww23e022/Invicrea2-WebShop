@@ -1,0 +1,16 @@
+###
+POST http://localhost:8080/covers
+Content-Type: multipart/form-data; boundary=boundary
+
+
+--boundary
+Content-Type: image/jpeg
+Content-Disposition: form-data; name="file"; filename="the_hobbit_cover.jpg"
+
+
+< /Users/lena/Downloads/the_hobbit_cover.jpg
+# use the path to your image file
+
+###
+GET http://localhost:8080/covers/a8084e84-c864-493d-994a-c4e2e0b9b036
+# use the file id from the file response above
