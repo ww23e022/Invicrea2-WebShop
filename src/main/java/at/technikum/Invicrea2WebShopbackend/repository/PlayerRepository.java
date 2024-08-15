@@ -12,8 +12,8 @@ import java.util.List;
 @Repository
 public interface PlayerRepository extends JpaRepository<Player, Long> {
     /** Ruft die Anzahl der Spieler ab, die mit der angegebenen Kontonummer verknüpft sind. */
-    @Query("SELECT COUNT(p) FROM Player p WHERE p.account.id = :accountId")
-    int countPlayersByAccountId(@Param("accountId") Long accountId);
+    @Query("SELECT COUNT(p) FROM Player p WHERE p.user.id = :userId")
+    int countPlayersByUserId(@Param("userId") Long userId);
 
     /** Sucht Spieler anhand ihres Namens. */
     List<Player> findByName( String name);

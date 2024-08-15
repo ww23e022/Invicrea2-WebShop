@@ -2,12 +2,15 @@ package at.technikum.Invicrea2WebShopbackend.controller;
 
 import at.technikum.Invicrea2WebShopbackend.dto.PlayerDto;
 import at.technikum.Invicrea2WebShopbackend.mapper.PlayerMapper;
-import at.technikum.Invicrea2WebShopbackend.model.Account;
 import at.technikum.Invicrea2WebShopbackend.model.Player;
-import at.technikum.Invicrea2WebShopbackend.service.AccountService;
+import at.technikum.Invicrea2WebShopbackend.model.User;
+import at.technikum.Invicrea2WebShopbackend.security.user.UserPrincipal;
 import at.technikum.Invicrea2WebShopbackend.service.PlayerService;
+import at.technikum.Invicrea2WebShopbackend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Comparator;
@@ -21,76 +24,75 @@ public class PlayerController {
 
     private final PlayerService playerService;
     private final PlayerMapper playerMapper;
-    private final AccountService accountService;
+    private final UserService userService;
 
     @Autowired
     public PlayerController(PlayerService playerService,
                             PlayerMapper playerMapper,
-                            AccountService accountService) {
+                            UserService userService) {
         this.playerService = playerService;
         this.playerMapper = playerMapper;
-        this.accountService = accountService;
+        this.userService = userService;
     }
 
-    // GET requests on "/players" returns all players
     @GetMapping
     public List<PlayerDto> readAllPlayers() {
         List<Player> players = playerService.getAllPlayers();
         return playerMapper.toDtos(players);
     }
 
-    // GET requests on "/players/{id}" returns a player by ID
     @GetMapping("/{id}")
-    public PlayerDto readPlayer(@PathVariable Long id) {
+    @PreAuthorize("hasPermission(#principal.id, " +
+            "'at.technikum.Invicrea2WebShopbackend.model.Player', 'read')")
+    public PlayerDto readPlayer(@PathVariable Long id,
+                                @AuthenticationPrincipal UserPrincipal principal) {
         Player player = playerService.getPlayerById(id);
         return playerMapper.toDto(player);
     }
 
-    // POST requests on "/players" creates a new player
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public PlayerDto createPlayer(@RequestBody PlayerDto playerDto) {
-        // Check if the account_id is valid
-        if (accountService.isValidAccountId(playerDto.getAccountId())) {
-            // Check if the account already has 4 players
-            if (playerService.getPlayerCountByAccountId(playerDto.getAccountId()) < 4) {
-                // Get the Account object for the given account_id
-                Account account = accountService.getAccountById(playerDto.getAccountId());
-                // Create a player object and assign it to the account
+    public PlayerDto createPlayer(@RequestBody PlayerDto playerDto,
+                                  @AuthenticationPrincipal UserPrincipal principal) {
+        if (userService.isValidUserId(principal.getId())) {
+            if (playerService.getPlayerCountByUserId(principal.getId()) < 4) {
+                User user = userService.getUserById(principal.getId());
                 Player player = playerMapper.toEntity(playerDto);
-                player.setAccount(account);
+                player.setUser(user);
                 player = playerService.savePlayer(player);
                 return playerMapper.toDto(player);
             } else {
-                throw new IllegalArgumentException("An account can create a maximum of 4 players.");
+                throw new IllegalArgumentException("An User can create a maximum of 4 players.");
             }
         } else {
-            throw new IllegalArgumentException("Invalid account_id.");
+            throw new IllegalArgumentException("Invalid user_id.");
         }
     }
 
-    // PUT requests on "/players/{id}" updates a player
     @PutMapping("/{id}")
+    @PreAuthorize("hasPermission(#principal.id, " +
+            "'at.technikum.Invicrea2WebShopbackend.model.Player', 'write')")
     public PlayerDto updatePlayer(@PathVariable Long id,
-                                  @RequestBody PlayerDto updatedPlayerDto) {
-        // Check if the account_id is valid
-        if (accountService.isValidAccountId(updatedPlayerDto.getAccountId())) {
+                                  @RequestBody PlayerDto updatedPlayerDto,
+                                  @AuthenticationPrincipal UserPrincipal principal) {
+        if (userService.isValidUserId(principal.getId())) {
             Player updatedPlayer = playerMapper.toEntity(updatedPlayerDto);
             PlayerDto resultDto = playerMapper.toDto(playerService.updatePlayer(id, updatedPlayer));
-            resultDto.setId(id); // Keep the same ID as requested
+            resultDto.setId(id);
             return resultDto;
         } else {
-            throw new IllegalArgumentException("Invalid Account ID.");
+            throw new IllegalArgumentException("Invalid User ID.");
         }
     }
 
-    // DELETE requests on "/players/{id}" deletes a player
     @DeleteMapping("/{id}")
-    public void deletePlayer(@PathVariable Long id) {
+    @PreAuthorize("hasPermission(#principal.id, " +
+            "'at.technikum.Invicrea2WebShopbackend.model.Player', 'delete')")
+    public void deletePlayer(@PathVariable Long id,
+                             @AuthenticationPrincipal UserPrincipal principal) {
         playerService.deletePlayer(id);
     }
 
-    // GET requests on "/players?level=top5" returns the top 5 players by level
     @GetMapping(params = "level=top5")
     public List<PlayerDto> getTop5PlayersByLevel() {
         List<Player> topPlayers = playerService.getAllPlayers().stream()
@@ -100,7 +102,6 @@ public class PlayerController {
         return playerMapper.toDtos(topPlayers);
     }
 
-    // GET requests on "/players?level=sorted" returns all players sorted by level
     @GetMapping(params = "level=sorted")
     public List<PlayerDto> getAllPlayersSortedByLevel() {
         List<Player> sortedPlayers = playerService.getAllPlayers().stream()
@@ -109,7 +110,6 @@ public class PlayerController {
         return playerMapper.toDtos(sortedPlayers);
     }
 
-    // GET requests on "/players?search=name" searches players by name
     @GetMapping(params = "search=name")
     public List<PlayerDto> searchPlayersByName(@RequestParam String name) {
         List<Player> foundPlayers = playerService.findPlayersByName(name);

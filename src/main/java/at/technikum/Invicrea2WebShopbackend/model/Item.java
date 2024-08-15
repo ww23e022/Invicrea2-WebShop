@@ -2,7 +2,6 @@ package at.technikum.Invicrea2WebShopbackend.model;
 
 import jakarta.persistence.*;
 
-/** Entität, die ein Artikel im Webshop repräsentiert. */
 @Entity
 @Table(name = "items")
 public class Item {
@@ -10,39 +9,24 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long itemId;
 
-
     private String name;
-
 
     private int price;
 
-
     private String description;
 
-
-    private String imageUrl;
+    @ManyToOne
+    @JoinColumn(name = "file_id")
+    private File file;
 
     private ItemCategory category;
 
-    public Item(Long id, String name, int price, String description,
-                String imageUrl, ItemCategory category) {
-        this.itemId = id;
-        this.name = name;
-        this.price = price;
-        this.description = description;
-        this.imageUrl = imageUrl;
-        this.category = category;
-    }
-
-    public Item() {
-        this.category = ItemCategory.VIEW_ALL;
-    }
-
-    public Long getId () {
+    // Getter und Setter
+    public Long getId() {
         return itemId;
     }
 
-    public void setId ( Long id ) {
+    public void setId(Long id) {
         this.itemId = id;
     }
 
@@ -70,12 +54,12 @@ public class Item {
         this.description = description;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public File getFile() {
+        return file;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setFile(File file) {
+        this.file = file;
     }
 
     public ItemCategory getCategory() {

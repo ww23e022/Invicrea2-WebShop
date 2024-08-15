@@ -1,37 +1,38 @@
 package at.technikum.Invicrea2WebShopbackend.service;
 
 import at.technikum.Invicrea2WebShopbackend.dto.ItemDto;
+import at.technikum.Invicrea2WebShopbackend.model.File;
 import at.technikum.Invicrea2WebShopbackend.model.Item;
 import at.technikum.Invicrea2WebShopbackend.model.ItemCategory;
-import at.technikum.Invicrea2WebShopbackend.repository.AccountRepository;
+import at.technikum.Invicrea2WebShopbackend.repository.FileRepository;
 import at.technikum.Invicrea2WebShopbackend.repository.ItemRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-
+import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class ItemService {
 
     private final ItemRepository itemRepository;
+    private final FileRepository fileRepository;
 
-    private final AccountRepository accountRepository;
-
-    public ItemService ( ItemRepository itemRepository, AccountRepository accountRepository ) {
+    public ItemService(ItemRepository itemRepository, FileRepository fileRepository) {
         this.itemRepository = itemRepository;
-        this.accountRepository = accountRepository;
+        this.fileRepository = fileRepository;
     }
 
-    public Item saveItem( Item item) {
+    public Item saveItem(Item item) {
         return itemRepository.save(item);
     }
 
     public List<Item> getItems() {
-        return itemRepository.findAll();
+        return StreamSupport.stream(itemRepository.findAll().spliterator(), false)
+                .collect(Collectors.toList());
     }
-    private List<Item> items = new ArrayList<>();
 
     public Item getItemByName(String name) {
         return itemRepository.findByName(name);
@@ -41,17 +42,21 @@ public class ItemService {
         itemRepository.deleteById(id);
         return ResponseEntity.ok().body("Item removed !! " + id);
     }
+
     public Item updateItem(Item item) {
-        Item existingProduct = itemRepository.findById((item.getId())).orElse(null);
-        existingProduct.setName(item.getName());
-        existingProduct.setPrice(item.getPrice());
-        existingProduct.setDescription(item.getDescription());
-        existingProduct.setImageUrl(item.getImageUrl());
-        return itemRepository.save(existingProduct);
+        Item existingItem = itemRepository.findById(item.getId()).orElse(null);
+        existingItem.setName(item.getName());
+        existingItem.setPrice(item.getPrice());
+        existingItem.setDescription(item.getDescription());
+        existingItem.setFile(item.getFile());
+        existingItem.setCategory(item.getCategory());
+        return itemRepository.save(existingItem);
     }
+
     public List<Item> getItemsByCategory(ItemCategory category) {
         if (category == ItemCategory.VIEW_ALL) {
-            return itemRepository.findAll();
+            return StreamSupport.stream(itemRepository.findAll().spliterator(), false)
+                    .collect(Collectors.toList());
         } else {
             return itemRepository.findByCategory(category);
         }
@@ -59,22 +64,21 @@ public class ItemService {
 
     public void addItem(Item item, ItemCategory category) {
         item.setCategory(category);
-
-        items.add(item);
+        itemRepository.save(item);
     }
 
-    public List<Item> getAllItems() {
-        return items;
-    }
-
-    public void validateItem(ItemDto item) {
-        if (item.getName() == null || item.getName().isEmpty() ||
-                item.getDescription() == null || item.getDescription().isEmpty() ||
-                item.getImageUrl() == null || item.getImageUrl().isEmpty() ||
-                item.getCategory() == null) {
+    public void validateItem(ItemDto itemDto) {
+        if (itemDto.getName() == null || itemDto.getName().isEmpty() ||
+                itemDto.getDescription() == null || itemDto.getDescription().isEmpty() ||
+                itemDto.getFileId() == null ||
+                itemDto.getCategory() == null) {
             throw new IllegalArgumentException("Ein oder mehrere Attribute wurden leer gelassen. " +
                     "Bitte füllen Sie alle Felder aus.");
         }
     }
 
+    public File getFileById(UUID fileId) {
+        return fileRepository.findById(fileId)
+                .orElseThrow(() -> new RuntimeException("File not found"));
+    }
 }

@@ -45,8 +45,8 @@ public class PlayerService {
         playerRepository.deleteById(id);
     }
 
-    public int getPlayerCountByAccountId(Long accountId) {
-        return playerRepository.countPlayersByAccountId(accountId);
+    public int getPlayerCountByUserId(Long userId) {
+        return playerRepository.countPlayersByUserId(userId);
     }
 
     public List<Player> findPlayersByName(String name) {

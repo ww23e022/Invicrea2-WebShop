@@ -2,18 +2,10 @@ package at.technikum.Invicrea2WebShopbackend.repository;
 
 import at.technikum.Invicrea2WebShopbackend.model.Item;
 import at.technikum.Invicrea2WebShopbackend.model.ItemCategory;
-import jakarta.transaction.Transactional;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
+import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
-@Transactional
-@Repository
-public interface ItemRepository extends JpaRepository<Item, Long> {
-    // Sie findet Item mit Namen.
-    Item findByName(String name);
-
-    // Sie findet Items durch Kategorie.
+public interface ItemRepository extends CrudRepository<Item, Long> {
     List<Item> findByCategory(ItemCategory category);
+    Item findByName(String name);
 }

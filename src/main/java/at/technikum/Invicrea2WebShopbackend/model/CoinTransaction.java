@@ -24,8 +24,8 @@ public class CoinTransaction {
     private String transactionType;
 
     @ManyToOne
-    @JoinColumn(name = "account_id", referencedColumnName = "id")
-    private Account account;
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 
     public Long getId() {
         return id;
@@ -51,11 +51,11 @@ public class CoinTransaction {
         this.transactionType = transactionType;
     }
 
-    public Account getAccount () {
-        return account;
+    public User getUser () {
+        return user;
     }
 
-    public void setAccount ( Account account ) {
-        this.account = account;
+    public void setUser ( User user ) {
+        this.user = user;
     }
 }

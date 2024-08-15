@@ -22,8 +22,8 @@ public class PlayerMapper {
         playerDto.setName(player.getName());
         playerDto.setEmpire(player.getEmpire());
         playerDto.setLevel(player.getLevel());
-        if (player.getAccount() != null) {
-            playerDto.setAccountId(player.getAccount().getId());
+        if (player.getUser() != null) {
+            playerDto.setUserId(player.getUser().getId());
         }
         return playerDto;
     }
@@ -38,7 +38,7 @@ public class PlayerMapper {
         player.setName(playerDto.getName());
         player.setEmpire(playerDto.getEmpire());
         player.setLevel(playerDto.getLevel());
-        // Account hier nicht setzen, da es separat behandelt wird
+        // User hier nicht setzen, da es separat behandelt wird
         return player;
     }
 

@@ -5,7 +5,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
-/** Dto representing item-related information. */
+import java.util.UUID;
+
 public class ItemDto {
 
     private Long itemId;
@@ -18,19 +19,19 @@ public class ItemDto {
     private int price;
 
     @NotBlank
-    @Size(min = 1, max = 500)
     private String description;
 
-    @NotBlank
-    private String imageUrl;
+    @NotNull
+    private UUID fileId;
 
     private ItemCategory category;
 
-    public Long getId () {
+    // Getter und Setter
+    public Long getId() {
         return itemId;
     }
 
-    public void setId ( Long id ) {
+    public void setId(Long id) {
         this.itemId = id;
     }
 
@@ -58,12 +59,12 @@ public class ItemDto {
         this.description = description;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public UUID getFileId() {
+        return fileId;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setFileId(UUID fileId) {
+        this.fileId = fileId;
     }
 
     public ItemCategory getCategory() {
@@ -73,7 +74,4 @@ public class ItemDto {
     public void setCategory(ItemCategory category) {
         this.category = category;
     }
-
 }
-
-
