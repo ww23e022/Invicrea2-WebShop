@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -40,5 +41,9 @@ public class FileService {
     public Resource asResource(File file) {
         InputStream stream = fileStorage.load(file.getExternalId());
         return new InputStreamResource(stream);
+    }
+
+    public List<File> getAllFiles() {
+        return fileRepository.findAll();
     }
 }

@@ -10,7 +10,7 @@ import jakarta.validation.constraints.NotNull;
  */
 @Entity
 @Table(name = "shopping_cart_items") // Ändern Sie den Tabellennamen entsprechend
-@JsonIgnoreProperties(value = {"id", "shoppingCart", "item"})
+@JsonIgnoreProperties(value = {"id", "shoppingCart"})
 public class ShoppingCartItem {
 
     @Id
@@ -18,11 +18,11 @@ public class ShoppingCartItem {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "shopping_cart_id", referencedColumnName = "id")
+    @JoinColumn(name = "shopping_cart_id", nullable = false)
     private ShoppingCart shoppingCart;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "item_id", referencedColumnName = "itemId")
+    @ManyToOne
+    @JoinColumn(name = "item_id", nullable = false)
     private Item item;
 
     @Column(name = "item_name")

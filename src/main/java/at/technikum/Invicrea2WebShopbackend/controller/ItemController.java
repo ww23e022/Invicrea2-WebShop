@@ -44,13 +44,16 @@ public class ItemController {
     }
 
     @GetMapping()
+    @PreAuthorize("isAuthenticated()")
     public List<Item> findAllItems() {
         return itemService.getItems();
     }
 
-    @GetMapping("/{name}")
-    public Item findItemByName(@PathVariable String name) {
-        return itemService.getItemByName(name);
+    @GetMapping("/search")
+    @PreAuthorize("isAuthenticated()")
+    public List<Item> searchItemsByCategoryAndName(@RequestParam String name,
+                                                   @RequestParam ItemCategory category) {
+        return itemService.searchItemsByNameAndCategory(name, category);
     }
 
     @DeleteMapping("/{id}")
@@ -68,11 +71,18 @@ public class ItemController {
     }
 
     @GetMapping(params = "category")
+    @PreAuthorize("isAuthenticated()")
     public List<Item> getItemsByCategory(@RequestParam(required = false) ItemCategory category) {
         if (category == null) {
             return itemService.getItems();
         } else {
             return itemService.getItemsByCategory(category);
         }
+    }
+
+    @GetMapping("/count")
+    public ResponseEntity<Long> getItemCount() {
+        long itemCount = itemService.getItemCount();
+        return ResponseEntity.ok(itemCount);
     }
 }

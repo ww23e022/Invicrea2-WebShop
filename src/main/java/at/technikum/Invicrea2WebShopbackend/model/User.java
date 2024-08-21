@@ -55,4 +55,14 @@ public class User {
     @OneToOne(mappedBy = "user")
     private ShoppingCart shoppingCart;
     // Weitere Felder und Methoden nach Bedarf
+
+    public User ( String username, String email, String role, int coins ) {
+        this.username = username;
+        this.email = email;
+        this.role = role;
+        this.coins = coins;
+    }
+
+    public User() {
+    }
 }

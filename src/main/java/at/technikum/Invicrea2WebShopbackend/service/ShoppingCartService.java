@@ -1,5 +1,6 @@
 package at.technikum.Invicrea2WebShopbackend.service;
 
+import at.technikum.Invicrea2WebShopbackend.model.Item;
 import at.technikum.Invicrea2WebShopbackend.model.ShoppingCart;
 import at.technikum.Invicrea2WebShopbackend.model.ShoppingCartItem;
 import at.technikum.Invicrea2WebShopbackend.model.User;
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -44,15 +44,15 @@ public class ShoppingCartService {
         int totalPrice = 0;
 
         for (ShoppingCartItem cartItem : cartItems) {
-            ShoppingCartItem itemInfo = new ShoppingCartItem();
-            itemInfo.setItemName(cartItem.getItemName());
-            itemInfo.setQuantity(cartItem.getQuantity());
-            itemInfo.setItemPrice(cartItem.getItemPrice());
+            // Hier sicherstellen, dass der Name und der Preis aktualisiert werden
+            Item item = cartItem.getItem();
+            cartItem.setItemName(item.getName());
+            cartItem.setItemPrice(item.getPrice() * cartItem.getQuantity());
             totalPrice += cartItem.getItemPrice();
-            cartItemInfos.add(itemInfo);
+            cartItemInfos.add(cartItem);
         }
 
-        // Add total price to a dummy item for convenience
+        // Optional: Gesamtpreis hinzufügen
         ShoppingCartItem totalItem = new ShoppingCartItem();
         totalItem.setItemName("Total Price");
         totalItem.setItemPrice(totalPrice);
@@ -63,17 +63,19 @@ public class ShoppingCartService {
 
     public void addItemToCart(Long userId, Long itemId, int quantity) {
         ShoppingCart cart = getOrCreateShoppingCart(userId);
-        Optional<ShoppingCartItem> existingItem = shoppingCartItemRepository
-                .findByShoppingCartIdAndItemId(cart.getId(), itemId);
+        List<ShoppingCartItem> existingItems = shoppingCartItemRepository
+                .findAllByShoppingCartIdAndItemId(cart.getId(), itemId);
 
-        if (existingItem.isPresent()) {
-            ShoppingCartItem item = existingItem.get();
+        if (!existingItems.isEmpty()) {
+            // Aktualisiere das vorhandene Item
+            ShoppingCartItem item = existingItems.get(0);
             item.setQuantity(item.getQuantity() + quantity);
             item.setItemName(item.getItem().getName());
             int totalPrice = item.getItem().getPrice() * item.getQuantity();
-            item.setItemPrice(totalPrice); // Setzen des Gesamtpreises
+            item.setItemPrice(totalPrice);
             shoppingCartItemRepository.save(item);
         } else {
+            // Neues Item zum Warenkorb hinzufügen
             ShoppingCartItem newItem = new ShoppingCartItem();
             newItem.setShoppingCart(cart);
             newItem.setItem(itemRepository.findById(itemId).orElseThrow(()
@@ -81,30 +83,34 @@ public class ShoppingCartService {
             newItem.setQuantity(quantity);
             newItem.setItemName(newItem.getItem().getName());
             int totalPrice = newItem.getItem().getPrice() * newItem.getQuantity();
-            newItem.setItemPrice(totalPrice); // Setzen des Gesamtpreises
+            newItem.setItemPrice(totalPrice);
             shoppingCartItemRepository.save(newItem);
         }
     }
 
     public void updateCartItem(Long userId, Long itemId, int quantity) {
         ShoppingCart cart = getOrCreateShoppingCart(userId);
-        Optional<ShoppingCartItem> existingItem = shoppingCartItemRepository
-                .findByShoppingCartIdAndItemId(cart.getId(), itemId);
+        List<ShoppingCartItem> existingItems = shoppingCartItemRepository
+                .findAllByShoppingCartIdAndItemId(cart.getId(), itemId);
 
-        existingItem.ifPresent(item -> {
+        if (!existingItems.isEmpty()) {
+            ShoppingCartItem item = existingItems.get(0);
             item.setQuantity(quantity);
             int totalPrice = item.getItem().getPrice() * quantity;
             item.setItemPrice(totalPrice);
             shoppingCartItemRepository.save(item);
-        });
+        }
     }
 
     public void removeItemFromCart(Long userId, Long itemId) {
         ShoppingCart cart = getOrCreateShoppingCart(userId);
-        Optional<ShoppingCartItem> existingItem = shoppingCartItemRepository
-                .findByShoppingCartIdAndItemId(cart.getId(), itemId);
+        List<ShoppingCartItem> existingItems = shoppingCartItemRepository
+                .findAllByShoppingCartIdAndItemId(cart.getId(), itemId);
 
-        existingItem.ifPresent(shoppingCartItemRepository::delete);
+        if (!existingItems.isEmpty()) {
+            ShoppingCartItem item = existingItems.get(0);
+            shoppingCartItemRepository.delete(item);
+        }
     }
 
     public void clearCart(Long userId) {
@@ -124,4 +130,6 @@ public class ShoppingCartService {
         cart.setUser(user);
         return shoppingCartRepository.save(cart);
     }
+
+
 }

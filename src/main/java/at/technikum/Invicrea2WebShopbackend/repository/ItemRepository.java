@@ -7,5 +7,10 @@ import java.util.List;
 
 public interface ItemRepository extends CrudRepository<Item, Long> {
     List<Item> findByCategory(ItemCategory category);
+
+    List<Item> findByNameContainingIgnoreCase(String name);
+
+    List<Item> findByNameContainingIgnoreCaseAndCategory(String name, ItemCategory category);
+
     Item findByName(String name);
 }

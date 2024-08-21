@@ -9,29 +9,33 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface ShoppingCartItemRepository extends JpaRepository<ShoppingCartItem, Long> {
 
-
-    /** Sucht alle Warenkorb Inhalt anhand der Warenkorb-ID. */
+    /**
+     * Sucht alle Warenkorb-Inhalte anhand der Warenkorb-ID.
+     */
     List<ShoppingCartItem> findAllByShoppingCartId(Long shoppingCartId);
 
+    /**
+     * Sucht alle Warenkorb-Inhalte anhand ihrer Warenkorb-ID und Artikel-ID.
+     */
+    List<ShoppingCartItem> findAllByShoppingCartIdAndItemId(Long shoppingCartId, Long itemId);
 
     /**
-     * Sucht ein Warenkorb Inhalt anhand ihrer Warenkorb-ID und Artikel-ID.
+     * Sucht alle Warenkorb-Inhalte anhand der Artikel-ID.
      */
-    Optional<ShoppingCartItem> findByShoppingCartIdAndItemId( Long shoppingCartId, Long itemId);
-
+    List<ShoppingCartItem> findAllByItemId(Long itemId);
 
     /**
-     * Löscht alle Warenkorb Inhalt anhand der Warenkorb-ID.
+     * Löscht alle Warenkorb-Inhalte anhand der Warenkorb-ID.
      */
+    @Transactional
     void deleteAllByShoppingCartId(Long shoppingCartId);
 
     /**
-     * Löscht alle Warenkorb Inhalt anhand einer Liste von IDs.
+     * Löscht alle Warenkorb-Inhalte anhand einer Liste von IDs.
      */
     @Transactional
     @Modifying

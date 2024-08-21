@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -41,5 +42,11 @@ public class FileController {
                 .ok()
                 .contentType(mediaType)
                 .body(resource);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<File>> getAllFiles() {
+        List<File> files = fileService.getAllFiles();
+        return ResponseEntity.ok(files);
     }
 }
