@@ -39,6 +39,12 @@ public class AuthService {
         }
 
         User user = optionalUser.get();
+
+        // Überprüfen, ob der Benutzer gesperrt ist
+        if (user.getStatus() == Status.BANNED) {
+            throw new RuntimeException("User is banned and cannot log in");
+        }
+
         if (!passwordEncoder.matches(tokenRequest.getPassword(), user.getPassword())) {
             throw new RuntimeException("Invalid password");
         }
@@ -53,6 +59,29 @@ public class AuthService {
                 principal.getUsername(), principal.getRole());
         return new TokenResponse(token);
     }
+
+/*    public TokenResponse authenticate(TokenRequest tokenRequest) {
+        Optional<User> optionalUser = userService.findByUsernameOrEmail(tokenRequest.getUsername());
+
+        if (optionalUser.isEmpty()) {
+            throw new RuntimeException("Invalid username or email");
+        }
+
+        User user = optionalUser.get();
+        if (!passwordEncoder.matches(tokenRequest.getPassword(), user.getPassword())) {
+            throw new RuntimeException("Invalid password");
+        }
+
+        Authentication authentication = authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(
+                        user.getUsername(), tokenRequest.getPassword()));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();
+
+        String token = tokenIssuer.issue(principal.getId(),
+                principal.getUsername(), principal.getRole());
+        return new TokenResponse(token);
+    } */
 
     private static final String EMAIL_REGEX =
             "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";

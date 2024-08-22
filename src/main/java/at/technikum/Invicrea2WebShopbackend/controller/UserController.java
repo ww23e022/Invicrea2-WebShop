@@ -8,9 +8,11 @@ import at.technikum.Invicrea2WebShopbackend.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
 
 @RestController
 @RequestMapping("/users")
@@ -22,6 +24,13 @@ public class UserController {
 
     public UserController ( AuthService authService ) {
         this.authService = authService;
+    }
+
+    @GetMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<List<User>> getAllUsers() {
+        List<User> users = userService.getAllUsers();
+        return ResponseEntity.ok(users);
     }
 
     @GetMapping("/count")
@@ -50,6 +59,18 @@ public class UserController {
         try {
             userService.updateUserProfile(username, updatedUser);
             return ResponseEntity.ok("Profile updated successfully");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/{id}/profile")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> updateAnyUserProfile(@PathVariable Long id,
+                                                  @RequestBody User updatedUser) {
+        try {
+            userService.updateUserProfileById(id, updatedUser);
+            return ResponseEntity.ok("User profile updated successfully");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
