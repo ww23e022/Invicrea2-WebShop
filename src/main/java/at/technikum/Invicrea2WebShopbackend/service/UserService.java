@@ -71,7 +71,6 @@ public class UserService {
     public void updateUserProfileById(Long userId, User updatedUser) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-
         // Überprüfen und Aktualisieren des Benutzernamens
         if (updatedUser.getUsername() != null && !updatedUser.getUsername()
                 .equals(user.getUsername())) {
@@ -80,7 +79,6 @@ public class UserService {
             }
             user.setUsername(updatedUser.getUsername());
         }
-
         // Überprüfen und Aktualisieren der E-Mail
         if (updatedUser.getEmail() != null && !updatedUser.getEmail().equals(user.getEmail())) {
             if (userRepository.findByEmail(updatedUser.getEmail()).isPresent()) {
@@ -88,13 +86,14 @@ public class UserService {
             }
             user.setEmail(updatedUser.getEmail());
         }
-
         // Status ändern, falls angegeben
         if (updatedUser.getStatus() != null && updatedUser.getStatus() != user.getStatus()) {
             user.setStatus(updatedUser.getStatus());
         }
-
+        // Rolle ändern, falls angegeben
+        if (updatedUser.getRole() != null && !updatedUser.getRole().equals(user.getRole())) {
+            user.setRole(updatedUser.getRole());
+        }
         userRepository.save(user);
     }
-
 }
