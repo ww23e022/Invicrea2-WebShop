@@ -19,6 +19,8 @@ public class OrderMapper {
         OrderDto orderDto = new OrderDto();
         orderDto.setId(order.getId());
         orderDto.setOrderDate(order.getOrderDate());
+        orderDto.setTotalPrice(order.getTotalPrice());
+        orderDto.setUser(order.getUser());
         return orderDto;
     }
 }

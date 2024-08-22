@@ -90,4 +90,10 @@ public class OrderController {
                                               @AuthenticationPrincipal UserPrincipal principal) {
         return orderService.getOrderDetailsByUserIdAndOrderId(principal.getId(), orderId);
     }
+
+    @GetMapping("/details/all")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public List<OrderHistory> getAllOrderDetails() {
+        return orderService.getAllOrderDetails();
+    }
 }

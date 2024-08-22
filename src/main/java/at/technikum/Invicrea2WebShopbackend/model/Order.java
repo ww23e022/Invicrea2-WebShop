@@ -1,6 +1,5 @@
 package at.technikum.Invicrea2WebShopbackend.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,7 +19,6 @@ public class Order {
 
     private int totalPrice;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;

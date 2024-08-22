@@ -162,4 +162,8 @@ public class OrderService {
 
         return orderHistoryRepository.findByOrder(order);
     }
+
+    public List<OrderHistory> getAllOrderDetails() {
+        return orderHistoryRepository.findAll();
+    }
 }
