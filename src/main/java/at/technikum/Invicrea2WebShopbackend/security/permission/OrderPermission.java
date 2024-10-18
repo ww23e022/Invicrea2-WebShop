@@ -11,14 +11,14 @@ import org.springframework.stereotype.Component;
 public class OrderPermission implements AccessPermission {
 
     @Override
-    public boolean supports(Authentication authentication, String className) {
-        return className.equals(Order.class.getName());
+    public boolean supports ( Authentication authentication, String className ) {
+        return className.equals( Order.class.getName( ) );
     }
 
     @Override
-    public boolean hasPermission(Authentication authentication, long resourceId) {
-        log.info("Order Permission accessed for {}", resourceId);
-        UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();
-        return principal.getId().equals(resourceId) || principal.getRole().equals("ROLE_ADMIN");
+    public boolean hasPermission ( Authentication authentication, long resourceId ) {
+        //log.info("Order Permission accessed for {}", resourceId);
+        UserPrincipal principal = (UserPrincipal) authentication.getPrincipal( );
+        return principal.getId( ).equals( resourceId ) || principal.getRole( ).equals( "ROLE_ADMIN" );
     }
 }
