@@ -15,12 +15,13 @@ public class OrderMapper {
     /**
      * Bildet ein Order-Objekt auf ein OrderDto-Objekt ab.
      */
-    public OrderDto toDto(Order order) {
-        OrderDto orderDto = new OrderDto();
-        orderDto.setId(order.getId());
-        orderDto.setOrderDate(order.getOrderDate());
-        orderDto.setTotalPrice(order.getTotalPrice());
-        orderDto.setUser(order.getUser());
+    public OrderDto toDto ( Order order ) {
+        OrderDto orderDto = new OrderDto( );
+        orderDto.setId( order.getId( ) );
+        orderDto.setOrderDate( order.getOrderDate( ) );
+        orderDto.setTotalPrice( order.getTotalPrice( ) );
+        orderDto.setStatus( order.getStatus( ) );
+        orderDto.setUser( order.getUser( ) );
         return orderDto;
     }
 }

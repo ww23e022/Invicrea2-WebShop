@@ -52,7 +52,7 @@ public class UserController {
         return ResponseEntity.ok(userProfile);
     }
 
-    @PutMapping("/profile")
+    @PutMapping()
     public ResponseEntity<?> updateUserProfile(
             @RequestBody User updatedUser, Principal principal) {
         String username = principal.getName();
@@ -64,7 +64,7 @@ public class UserController {
         }
     }
 
-    @PutMapping("/{id}/profile")
+    @PutMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> updateAnyUserProfile(@PathVariable Long id,
                                                   @RequestBody User updatedUser) {

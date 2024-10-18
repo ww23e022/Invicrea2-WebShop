@@ -19,16 +19,15 @@ public class Order {
 
     private int totalPrice;
 
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status = OrderStatus.BOUGHT;
+
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    public Order(Long id) {
-        this.id = id;
-        orderDate = LocalDateTime.now();
-    }
-
-    public Order() {
-        orderDate = LocalDateTime.now();
+    public Order () {
+        this.orderDate = LocalDateTime.now( );
+        this.status = OrderStatus.BOUGHT;
     }
 }

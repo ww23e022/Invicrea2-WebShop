@@ -1,6 +1,6 @@
 package at.technikum.Invicrea2WebShopbackend.security.jwt;
 
-import at.technikum.Invicrea2WebShopbackend.security.user.UserPrincipal;
+import at.technikum.Invicrea2WebShopbackend.security.principal.UserPrincipal;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import org.springframework.stereotype.Component;
 

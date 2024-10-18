@@ -1,7 +1,7 @@
 package at.technikum.Invicrea2WebShopbackend.security.permission;
 
 import at.technikum.Invicrea2WebShopbackend.model.Item;
-import at.technikum.Invicrea2WebShopbackend.security.user.UserPrincipal;
+import at.technikum.Invicrea2WebShopbackend.security.principal.UserPrincipal;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 

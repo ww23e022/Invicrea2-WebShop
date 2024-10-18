@@ -16,12 +16,15 @@ import java.time.temporal.ChronoUnit;
 public class JwtIssuer implements TokenIssuer {
     private final JwtProperties jwtProperties;
 
+    //@Value("${}")
+    //private String xxx;
+
 
     @Override
     public String issue(Long userId, String username, String role) {
         return JWT.create()
                 .withSubject(String.valueOf(userId))
-                .withExpiresAt(Instant.now().plus(Duration.of(24, ChronoUnit.HOURS)))
+                .withExpiresAt(Instant.now().plus(Duration.of(1, ChronoUnit.HOURS)))
                 .withClaim("username", username)
                 .withClaim("role", role)
                 .sign(Algorithm.HMAC256(jwtProperties.getSecret()));

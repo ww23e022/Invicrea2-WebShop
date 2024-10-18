@@ -1,5 +1,6 @@
 package at.technikum.Invicrea2WebShopbackend.dto;
 
+import at.technikum.Invicrea2WebShopbackend.model.OrderStatus;
 import at.technikum.Invicrea2WebShopbackend.model.User;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -18,16 +19,26 @@ public class OrderDto {
     @Positive
     private int totalPrice;
 
+    private OrderStatus status;
+
     private User user;
 
-    public OrderDto() {
+    public OrderDto () {
     }
 
-    public OrderDto(Long id, LocalDateTime orderDate, int totalPrice, User user) {
+    public OrderDto ( Long id, LocalDateTime orderDate, int totalPrice, User user ) {
         this.id = id;
         this.orderDate = orderDate;
         this.totalPrice = totalPrice;
         this.user = user;
+    }
+
+    public OrderStatus getStatus () {
+        return status;
+    }
+
+    public void setStatus ( OrderStatus status ) {
+        this.status = status;
     }
 
     public Long getId () {
@@ -38,11 +49,11 @@ public class OrderDto {
         this.id = id;
     }
 
-    public LocalDateTime getOrderDate() {
+    public LocalDateTime getOrderDate () {
         return orderDate;
     }
 
-    public void setOrderDate(LocalDateTime orderDate) {
+    public void setOrderDate ( LocalDateTime orderDate ) {
         this.orderDate = orderDate;
     }
 

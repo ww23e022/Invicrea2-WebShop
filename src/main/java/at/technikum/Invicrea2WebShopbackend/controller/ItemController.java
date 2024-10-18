@@ -1,14 +1,15 @@
 package at.technikum.Invicrea2WebShopbackend.controller;
 
 import at.technikum.Invicrea2WebShopbackend.dto.ItemDto;
-import at.technikum.Invicrea2WebShopbackend.mapper.ItemMapper;
-import at.technikum.Invicrea2WebShopbackend.model.File;
 import at.technikum.Invicrea2WebShopbackend.model.Item;
 import at.technikum.Invicrea2WebShopbackend.model.ItemCategory;
 import at.technikum.Invicrea2WebShopbackend.service.ItemService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -18,71 +19,74 @@ import java.util.List;
 public class ItemController {
 
     private final ItemService itemService;
-    private final ItemMapper itemMapper;
 
-    public ItemController(ItemService itemService, ItemMapper itemMapper) {
+    public ItemController ( ItemService itemService ) {
         this.itemService = itemService;
-        this.itemMapper = itemMapper;
     }
 
-    @PostMapping()
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String addItems(@RequestBody List<ItemDto> itemDtos) {
+    public ResponseEntity<String> addItems (
+            @RequestPart("items") List<ItemDto> itemDtos,
+            @RequestPart(value = "file", required = false) MultipartFile fileToUpload ) {
         try {
-            for (ItemDto itemDto : itemDtos) {
-                itemService.validateItem(itemDto);
-                File file = itemService.getFileById(itemDto.getFileId());
-                Item item = itemMapper.toItem(itemDto, file);
-                itemService.addItem(item, item.getCategory());
-            }
-            return "Items added successfully.";
+            itemService.addItems( itemDtos, fileToUpload );
+            return ResponseEntity.ok( "Items added successfully." );
         } catch (IllegalArgumentException e) {
-            return e.getMessage();
+            return ResponseEntity.badRequest( ).body( e.getMessage( ) );
         } catch (Exception e) {
-            return "Error adding items: " + e.getMessage();
+            return ResponseEntity.status( HttpStatus.INTERNAL_SERVER_ERROR )
+                    .body( "Error adding items: " + e.getMessage( ) );
+        }
+    }
+
+    @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<Item> updateItem (
+            @RequestPart("item") ItemDto itemDto,
+            @RequestPart(value = "file", required = false) MultipartFile fileToUpload ) {
+        try {
+            Item updatedItem = itemService.updateItem( itemDto, fileToUpload );
+            return ResponseEntity.ok( updatedItem );
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest( ).body( null );
+        } catch (Exception e) {
+            return ResponseEntity.status( HttpStatus.INTERNAL_SERVER_ERROR ).body( null );
         }
     }
 
     @GetMapping()
     @PreAuthorize("isAuthenticated()")
-    public List<Item> findAllItems() {
-        return itemService.getItems();
+    public List<Item> findAllItems () {
+        return itemService.getItems( );
     }
 
     @GetMapping("/search")
     @PreAuthorize("isAuthenticated()")
-    public List<Item> searchItemsByCategoryAndName(@RequestParam String name,
-                                                   @RequestParam ItemCategory category) {
-        return itemService.searchItemsByNameAndCategory(name, category);
+    public List<Item> searchItemsByCategoryAndName ( @RequestParam String name,
+                                                     @RequestParam ItemCategory category ) {
+        return itemService.searchItemsByNameAndCategory( name, category );
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<String> deleteItem(@PathVariable Long id) {
-        return itemService.deleteItem(id);
-    }
-
-    @PutMapping()
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public Item updateItem(@RequestBody ItemDto itemDto) {
-        File file = itemService.getFileById(itemDto.getFileId());
-        Item item = itemMapper.toItem(itemDto, file);
-        return itemService.updateItem(item);
+    public ResponseEntity<String> deleteItem ( @PathVariable Long id ) {
+        return itemService.deleteItem( id );
     }
 
     @GetMapping(params = "category")
     @PreAuthorize("isAuthenticated()")
-    public List<Item> getItemsByCategory(@RequestParam(required = false) ItemCategory category) {
+    public List<Item> getItemsByCategory ( @RequestParam(required = false) ItemCategory category ) {
         if (category == null) {
-            return itemService.getItems();
+            return itemService.getItems( );
         } else {
-            return itemService.getItemsByCategory(category);
+            return itemService.getItemsByCategory( category );
         }
     }
 
     @GetMapping("/count")
-    public ResponseEntity<Long> getItemCount() {
-        long itemCount = itemService.getItemCount();
-        return ResponseEntity.ok(itemCount);
+    public ResponseEntity<Long> getItemCount () {
+        long itemCount = itemService.getItemCount( );
+        return ResponseEntity.ok( itemCount );
     }
 }

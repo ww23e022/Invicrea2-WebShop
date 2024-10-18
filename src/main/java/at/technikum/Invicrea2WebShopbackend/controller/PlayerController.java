@@ -4,7 +4,7 @@ import at.technikum.Invicrea2WebShopbackend.dto.PlayerDto;
 import at.technikum.Invicrea2WebShopbackend.mapper.PlayerMapper;
 import at.technikum.Invicrea2WebShopbackend.model.Player;
 import at.technikum.Invicrea2WebShopbackend.model.User;
-import at.technikum.Invicrea2WebShopbackend.security.user.UserPrincipal;
+import at.technikum.Invicrea2WebShopbackend.security.principal.UserPrincipal;
 import at.technikum.Invicrea2WebShopbackend.service.PlayerService;
 import at.technikum.Invicrea2WebShopbackend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package at.technikum.Invicrea2WebShopbackend.security.user;
+package at.technikum.Invicrea2WebShopbackend.security.principal;
 
 import lombok.Getter;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

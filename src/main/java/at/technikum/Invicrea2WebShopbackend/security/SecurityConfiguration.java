@@ -1,7 +1,6 @@
 package at.technikum.Invicrea2WebShopbackend.security;
 
-import at.technikum.Invicrea2WebShopbackend.security.jwt.JwtAuthenticationFilter;
-import at.technikum.Invicrea2WebShopbackend.security.user.CustomUserDetailsService;
+import at.technikum.Invicrea2WebShopbackend.security.filter.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -52,7 +51,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(
                         registry -> registry
                                 .requestMatchers("/").permitAll()
-                                .requestMatchers("/auth/token").permitAll()
+                                .requestMatchers("/auth").permitAll()
                                 .requestMatchers("/users/register").permitAll()
                                 .requestMatchers("/users/count").permitAll()
                                 .requestMatchers("/items/count").permitAll()
@@ -62,7 +61,7 @@ public class SecurityConfiguration {
                                 .requestMatchers(HttpMethod.PUT,"/players/{id}").hasRole("ADMIN")
                                 .requestMatchers("/items/**").authenticated()
                                 .requestMatchers(HttpMethod.GET, "/orders").permitAll()
-                                .requestMatchers("/swagger-ui/**").hasRole("ADMIN")
+                                .requestMatchers("/swagger-ui/**").authenticated()
                                 .requestMatchers("/error").permitAll()
                                 .anyRequest().authenticated());
         httpSecurity.httpBasic(basic -> {});

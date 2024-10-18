@@ -1,7 +1,7 @@
 package at.technikum.Invicrea2WebShopbackend.controller;
 
 import at.technikum.Invicrea2WebShopbackend.model.User;
-import at.technikum.Invicrea2WebShopbackend.security.user.UserPrincipal;
+import at.technikum.Invicrea2WebShopbackend.security.principal.UserPrincipal;
 import at.technikum.Invicrea2WebShopbackend.service.CoinsService;
 import at.technikum.Invicrea2WebShopbackend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +41,7 @@ public class CoinsController {
     }
 
     /** Ruft die Anzahl der Münzen im Konto des eingeloggten Nutzers ab. */
-    @GetMapping("/me")
+    @GetMapping()
     @PreAuthorize("hasPermission(#principal.id, " +
             "'at.technikum.Invicrea2WebShopbackend.model.User', 'read')")
     public int viewCoinsInUser(@AuthenticationPrincipal UserPrincipal principal) {

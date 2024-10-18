@@ -7,7 +7,7 @@ import at.technikum.Invicrea2WebShopbackend.model.Salutation;
 import at.technikum.Invicrea2WebShopbackend.model.Status;
 import at.technikum.Invicrea2WebShopbackend.repository.UserRepository;
 import at.technikum.Invicrea2WebShopbackend.security.TokenIssuer;
-import at.technikum.Invicrea2WebShopbackend.security.user.UserPrincipal;
+import at.technikum.Invicrea2WebShopbackend.security.principal.UserPrincipal;
 import at.technikum.Invicrea2WebShopbackend.model.User;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -40,7 +40,6 @@ public class AuthService {
 
         User user = optionalUser.get();
 
-        // Überprüfen, ob der Benutzer gesperrt ist
         if (user.getStatus() == Status.BANNED) {
             throw new RuntimeException("User is banned and cannot log in");
         }
@@ -160,7 +159,6 @@ public class AuthService {
         Matcher matcher = pattern.matcher(input);
         return matcher.matches();
     }
-
     private boolean isValidPassword(String password) {
         if (password.length() < 12) {
             return false;
@@ -179,11 +177,9 @@ public class AuthService {
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
     }
-
     private boolean usernameExists(String username) {
         return userRepository.findByUsername(username).isPresent();
     }
-
     private boolean emailExists(String email) {
         return userRepository.findByEmail(email).isPresent();
     }

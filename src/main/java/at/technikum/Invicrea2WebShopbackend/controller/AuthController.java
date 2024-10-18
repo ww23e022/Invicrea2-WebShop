@@ -19,7 +19,7 @@ public class AuthController {
         this.authService = authService;
     }
 
-    @PostMapping("/token")
+    @PostMapping()
     public TokenResponse token(@RequestBody @Valid TokenRequest tokenRequest) {
         return authService.authenticate(tokenRequest);
     }

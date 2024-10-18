@@ -1,6 +1,7 @@
-package at.technikum.Invicrea2WebShopbackend.security.user;
+package at.technikum.Invicrea2WebShopbackend.security;
 
 import at.technikum.Invicrea2WebShopbackend.model.User;
+import at.technikum.Invicrea2WebShopbackend.security.principal.UserPrincipal;
 import at.technikum.Invicrea2WebShopbackend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
