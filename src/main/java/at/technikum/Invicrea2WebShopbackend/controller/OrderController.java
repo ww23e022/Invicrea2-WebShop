@@ -41,15 +41,6 @@ public class OrderController {
                 .collect( Collectors.toList( ) );
     }
 
-    @GetMapping("/{id}")
-    @PreAuthorize("hasPermission(#principal.id, " +
-            "'at.technikum.Invicrea2WebShopbackend.model.Order', 'read')")
-    public OrderDto read ( @PathVariable long id,
-                           @AuthenticationPrincipal UserPrincipal principal ) {
-        Order order = orderService.find( String.valueOf( id ) );
-        return orderMapper.toDto( order );
-    }
-
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public OrderDto createOrder ( @AuthenticationPrincipal UserPrincipal principal ) {
@@ -92,7 +83,7 @@ public class OrderController {
         return orderService.getOrderDetailsByUserIdAndOrderId( principal.getId( ), orderId );
     }
 
-    @GetMapping("/details/{orderId}")
+    @GetMapping("/orders/list")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<OrderHistory> getAllOrderDetails () {
         return orderService.getAllOrderDetails( );

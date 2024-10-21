@@ -28,51 +28,57 @@ public class UserController {
 
     @GetMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<List<User>> getAllUsers() {
-        List<User> users = userService.getAllUsers();
-        return ResponseEntity.ok(users);
+    public ResponseEntity<List<User>> getAllUsers () {
+        List<User> users = userService.getAllUsers( );
+        return ResponseEntity.ok( users );
     }
 
     @GetMapping("/count")
-    public ResponseEntity<Long> getUserCount() {
-        long userCount = userService.getUserCount();
-        return ResponseEntity.ok(userCount);
+    public ResponseEntity<Long> getUserCount () {
+        long userCount = userService.getUserCount( );
+        return ResponseEntity.ok( userCount );
     }
 
     @PostMapping("/register")
-    public TokenResponse register( @RequestBody @Valid
-                                   UserRegistrationRequest registrationRequest) {
-        return authService.register(registrationRequest);
+    public TokenResponse register ( @RequestBody @Valid
+                                    UserRegistrationRequest registrationRequest ) {
+        return authService.register( registrationRequest );
     }
 
     @GetMapping("/profile")
-    public ResponseEntity<User> getUserProfile( Principal principal) {
-        String username = principal.getName();
-        User userProfile = userService.getUserProfile(username);
-        return ResponseEntity.ok(userProfile);
+    public ResponseEntity<User> getUserProfile ( Principal principal ) {
+        String username = principal.getName( );
+        User userProfile = userService.getUserProfile( username );
+        return ResponseEntity.ok( userProfile );
     }
 
     @PutMapping()
-    public ResponseEntity<?> updateUserProfile(
-            @RequestBody User updatedUser, Principal principal) {
-        String username = principal.getName();
+    public ResponseEntity<?> updateUserProfile (
+            @RequestBody User updatedUser, Principal principal ) {
+        String username = principal.getName( );
         try {
-            userService.updateUserProfile(username, updatedUser);
-            return ResponseEntity.ok("Profile updated successfully");
+            TokenResponse tokenResponse = userService.updateUserProfile( username, updatedUser );
+
+            if (tokenResponse != null) {
+                return ResponseEntity.ok( tokenResponse );
+            }
+
+            return ResponseEntity.ok( "Profile updated successfully" );
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest( ).body( e.getMessage( ) );
         }
     }
 
+
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<?> updateAnyUserProfile(@PathVariable Long id,
-                                                  @RequestBody User updatedUser) {
+    public ResponseEntity<?> updateAnyUserProfile ( @PathVariable Long id,
+                                                    @RequestBody User updatedUser ) {
         try {
-            userService.updateUserProfileById(id, updatedUser);
-            return ResponseEntity.ok("User profile updated successfully");
+            userService.updateUserProfileById( id, updatedUser );
+            return ResponseEntity.ok( "User profile updated successfully" );
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest( ).body( e.getMessage( ) );
         }
     }
 }

@@ -19,6 +19,7 @@ public class OrderPermission implements AccessPermission {
     public boolean hasPermission ( Authentication authentication, long resourceId ) {
         //log.info("Order Permission accessed for {}", resourceId);
         UserPrincipal principal = (UserPrincipal) authentication.getPrincipal( );
-        return principal.getId( ).equals( resourceId ) || principal.getRole( ).equals( "ROLE_ADMIN" );
+        return principal.getId( ).equals( resourceId ) ||
+                principal.getRole( ).equals( "ROLE_ADMIN" );
     }
 }

@@ -58,11 +58,11 @@ class FileServiceTest {
     }
 
     @Test
-    public void testUpload () {
+    public void testUpload_ValidImageFile_ShouldSucceed () {
         // Arrange
         String externalId = "some-external-id";
-        String fileName = "test.txt";
-        String contentType = "text/plain";
+        String fileName = "test.jpg"; // Valid image file
+        String contentType = "image/jpeg"; // Valid image content type
 
         when( multipartFile.getOriginalFilename( ) ).thenReturn( fileName );
         when( multipartFile.getContentType( ) ).thenReturn( contentType );
@@ -79,6 +79,20 @@ class FileServiceTest {
         verify( fileStorage ).upload( multipartFile );
         verify( fileRepository ).save( any( File.class ) );
     }
+
+    @Test
+    public void testUpload_NonImageFile_ShouldThrowException () {
+        // Arrange
+        String fileName = "test.pdf"; // Invalid non-image file
+        String contentType = "application/pdf"; // Invalid non-image content type
+
+        when( multipartFile.getOriginalFilename( ) ).thenReturn( fileName );
+        when( multipartFile.getContentType( ) ).thenReturn( contentType );
+
+        // Act & Assert
+        assertThrows( IllegalArgumentException.class, () -> fileService.upload( multipartFile ) );
+    }
+
 
     @Test
     public void testFindById_Found () {
